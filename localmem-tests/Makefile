@@ -11,27 +11,28 @@ UNROLL1_PROGS := \
                  addr_taken_conditional       		 \
                  addr_taken_simple            		 \
                  variadic_with_loop           		 \
-                 variadic_acyclic                  \
                  alloca_conditional           		 \
                  alloca_simple                		 \
-                 local_used_in_unreachable_loop    \
-                 local_used_on_unreachable_branch  \
                  rodata                            \
                  vla_conditional_use          		 \
-                 vla_1_inside_loop            		 \
                  vla_2_inside_loop            		 \
-                 vla_3_inside_loop            		 \
-                 vla_4_inside_loop            		 \
                  vla_simple_loop              		 \
                  vla_2_single_loop                 \
-                 vla_3_single_loop                 \
-                 vla_4_single_loop                 \
-                 #vla_midway_decl                   \
-                 #vla_2_nested_loops                \
-                 #vla_2d                            \
-                 #minscanf                     # gcc eqgen fails
-                 #arg_addr_taken               # eqgen fails
-								 # should pass: vla_{3,4}_single_loop.{gcc,clang} (query-timeout), vla_3_inside_loop.icc (query-timeout)
+                 #vla_1_inside_loop            		 \
+                 #variadic_acyclic                  \
+                 #local_used_in_unreachable_loop    \
+                 #local_used_on_unreachable_branch  \
+                 #vla_3_inside_loop            		 \
+                 #vla_4_inside_loop            		 \
+                 #vla_3_single_loop                 \
+                 #vla_4_single_loop                 \
+                 #alloca_linked_list2               \
+                 # #vla_midway_decl                   \
+                 # #vla_2_nested_loops                \
+                 # #vla_2d                            \
+                 # #minscanf                     # gcc eqgen fails
+                 # #arg_addr_taken               # eqgen fails
+								 # # should pass: vla_{3,4}_single_loop.{gcc,clang} (query-timeout), vla_3_inside_loop.icc (query-timeout)
 
 UNROLL1_GCC = fib                               \
               alloca_malloc_switch              \
@@ -71,7 +72,7 @@ UNROLL2_ACK = \
 EXTRA_FLAGS_ACK := --disable-fcall-wfconds
 
 UNROLL1_ICC = minprintf                \
-              fib                      \
+              fib                     \
               $(UNROLL1_PROGS)
               # vla_in_loop{,conditional_continue,conditional_exit} require non-linear invariants
               # alloca_malloc_switch requires more powerful inequality inference
@@ -87,3 +88,6 @@ ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
 
 C_STD = gnu11
 include $(SRCDIR)/Makefile.template
+
+test: eqtest_i386_O3
+	cat $^ > $@

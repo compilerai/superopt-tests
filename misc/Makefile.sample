@@ -41,3 +41,7 @@ EXPECTED_FAILS_SRCDST := # SRCDST PROGRAMS WHICH ARE EXPECTED TO FAIL HERE
 # ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_VEC_FLAGS)
 
 include $(SRCDIR)/Makefile.template
+
+# generate commands for computing eq for O1, O3 and srcdst in file 'test'
+test: eqtest_i386_O1 eqtest_i386_O3 eqtest_srcdst
+	cat $^ > $@

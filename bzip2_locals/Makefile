@@ -14,7 +14,7 @@ UNROLL1 := bzip2_locals \
            qSort3 \
 
 EXPECTED_FAILS_CLANG := bzip2_locals \
-	                      undoReversibleTransformation_small \
+                        undoReversibleTransformation_small \
                         hbMakeCodeLengths \
                         sortIt \
 
@@ -28,3 +28,6 @@ CLANG_EQCHECKER_FLAGS_EXTRA= $(CLANG_EQCHECKER_NOUNROLL_FLAGS)
 ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
 
 include $(SRCDIR)/Makefile.template
+
+test: eqtest_i386_O1
+	cat $^ > $@

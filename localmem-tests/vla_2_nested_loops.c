@@ -6,11 +6,11 @@ int vla_2_nested_loops(int* a, unsigned n)
   int v[n];
   int w[n];
   for (unsigned i = 0; i < n-1; ++i) {
-    MYmyDBG();
+    MYmyDBG(); // XXX
     unsigned vv[i+1];
     vv[0] = a[0];
     for (unsigned j = 1; j <= i; ++j) {
-      MYmyDBG();
+      MYmyDBG(); // XXX
       if (a[j] < 0)
         goto end;
       vv[j] = a[j]+vv[j-1];

@@ -1,10 +1,13 @@
-unsigned fib(unsigned n)
+extern void printa(int*,int);
+
+unsigned fib(int n, int m)
 {
-  unsigned f[n+2];
-  f[0] = 0;
-  f[1] = 1;
-  for (unsigned i = 2; i <= n; ++i) {
-    f[i] = f[i-1]+f[i-2];
+  int v[n+2];
+  v[0] = 0;
+  v[1] = 1;
+  for (int i = 2; i <= m; ++i) {
+    v[i] = v[i-1]+v[i-2];
   }
-  return f[n];
+  printa(v, m);
+  return v[m];
 }

@@ -7,8 +7,9 @@ int vla_2_single_loop(int *a, unsigned n)
 
   int v[n];
   int w[n];
+#pragma clang loop vectorize(disable) unroll(disable)
   for (unsigned i = 0; i < n; ++i) {
-    MYmyDBG();
+    MYmyDBG(); // XXX
     v[i] = a[i]*a[i];
     w[i] = a[i]+a[i];
   }

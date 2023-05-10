@@ -24,7 +24,6 @@ int alloca_linked_list()
   Node* tmp = hd;
   int ret = 0;
   while (tmp != 0) {
-    //MYmyDBG();
     ret += tmp->data;
     tmp = tmp->next;
   }

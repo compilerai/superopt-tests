@@ -10,8 +10,9 @@ int vla_4_single_loop(int *a, unsigned n)
   int w[n];
   int x[n];
   int y[n];
+#pragma clang loop vectorize(disable) unroll(disable)
   for (unsigned i = 0; i < n; ++i) {
-    MYmyDBG();
+    MYmyDBG(); // XXX
     v[i] = a[i]*a[i];
     w[i] = a[i]+a[i];
     x[i] = a[i]^a[i];

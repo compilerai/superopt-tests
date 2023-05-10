@@ -19,7 +19,7 @@ int alloca_malloc_switch(char* s, int fd)
     if (!a) return 0;
   }
   for (int i = 0; i < n; ++i) {
-    MYmyDBG();
+    MYmyDBG(); // XXX
     a[i] = s[i] ^ 1;
   }
   int ret = write(fd, a, n);

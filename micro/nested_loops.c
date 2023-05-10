@@ -1,7 +1,8 @@
-int nested_loop_unrolling_depth_1(int **a, int n, int m)
+int nested_loops_depth_1(int **a, int n, int m)
 {
   for (int i = 0; i<n; i++) {
     int j = 0;
+  #pragma clang loop unroll(disable) vectorize(disable)
     while (j < m) {
       a[i][j] = i;
       j++;
@@ -10,11 +11,12 @@ int nested_loop_unrolling_depth_1(int **a, int n, int m)
   return 0;
 }
 
-int nested_loop_unrolling_depth_2(int ***a, int n, int m, int p)
+int nested_loops_depth_2(int ***a, int n, int m, int p)
 {
   for (int k = 0; k<p; k++) {
     for (int i = 0; i<n; i++) {
       int j = 0;
+  #pragma clang loop unroll(disable) vectorize(disable)
       while (j < m) {
         a[i][j][k] = i;
         j++;
@@ -24,12 +26,13 @@ int nested_loop_unrolling_depth_2(int ***a, int n, int m, int p)
   return 0;
 }
 
-int nested_loop_unrolling_depth_3(int ****a, int n, int m, int p, int q)
+int nested_loops_depth_3(int ****a, int n, int m, int p, int q)
 {
   for (int l = 0; l<q; l++) {
     for (int k = 0; k<p; k++) {
       for (int i = 0; i<n; i++) {
         int j = 0;
+  #pragma clang loop unroll(disable) vectorize(disable)
         while (j < m) {
           a[i][j][k][l] = i;
           j++;
@@ -44,13 +47,14 @@ int nested_loop_unrolling_depth_3(int ****a, int n, int m, int p, int q)
  * XXX eqtime increases exponentially for each loop depth
  */
 /*
-int nested_loop_unrolling_depth_4(int *****a, int n, int m, int p, int q, int r)
+int nested_loops_depth_4(int *****a, int n, int m, int p, int q, int r)
 {
   for (int t = 0; t<r; t++) {
     for (int l = 0; l<q; l++) {
       for (int k = 0; k<p; k++) {
         for (int i = 0; i<n; i++) {
           int j = 0;
+  #pragma clang loop unroll(disable) vectorize(disable)
           while (j < m) {
             a[i][j][k][l][t] = i;
             j++;
@@ -62,7 +66,7 @@ int nested_loop_unrolling_depth_4(int *****a, int n, int m, int p, int q, int r)
   return 0;
 }
 
-int nested_loop_unrolling_depth_5(int ******a, int n, int m, int p, int q, int r, int s)
+int nested_loops_depth_5(int ******a, int n, int m, int p, int q, int r, int s)
 {
   for (int x = 0; x<s; x++) {
     for (int t = 0; t<r; t++) {
@@ -70,6 +74,7 @@ int nested_loop_unrolling_depth_5(int ******a, int n, int m, int p, int q, int r
         for (int k = 0; k<p; k++) {
           for (int i = 0; i<n; i++) {
             int j = 0;
+  #pragma clang loop unroll(disable) vectorize(disable)
             while (j < m) {
               a[i][j][k][l][t][x] = i;
               j++;

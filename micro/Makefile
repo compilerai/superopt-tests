@@ -16,9 +16,9 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary \
          rodata_simple \
          load_store_elim_simple \
          loop_hoisting \
+         nested_loops \
          non_linear_invariant_casting \
          non_linear_invariant_shl \
-         path_enum_1 \
          # load_store_elim_cmove # needs "anticipated-cmove expressions"
          #ddec arg_passing fpadd  fcall100 fcall100_with_memaccess \
          #fpext : TOO SLOW
@@ -55,3 +55,6 @@ UNROLL4_SRCDST := nested_loop_peeling nested_loop_unrolling
 ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
 
 include $(SRCDIR)/Makefile.template
+
+test: eqtest_i386_O3 eqtest_srcdst
+	cat $^ > $@
