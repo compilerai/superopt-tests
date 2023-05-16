@@ -76,7 +76,7 @@ foreach(my $i = 8; $i <= $#ARGV; $i++) {
 
 open(OUT, '>', $filename) or die $!;
 foreach my $prog (keys %unroll) {
-  my $tmpdir = "$PWD/eqcheck.$prog";
+  my $tmpdir = "$PWD/eqcheck.$prog.$compiler$compiler_suffix";
   my $u = $unroll{$prog};
   my $prog_extraflagsstr = $extraflagsstr;
   if (-f "$VPATH/$prog.$compiler.pclsprels") {
