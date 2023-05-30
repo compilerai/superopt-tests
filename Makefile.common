@@ -475,42 +475,42 @@ ack_helper.o: %.o: %.c
 #	# no linking
 
 # XML for compiler-explorer
-%.gcc.i386.O3.xml: %.c %.gcc.eqchecker.O3.i386.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
-%.gcc.i386.O3.xml: %.cpp %.gcc.eqchecker.O3.i386.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.gcc.i386.O3.xml: %.c %.gcc.eqchecker.O3.i386.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.gcc.i386.O3.xml: %.cpp %.gcc.eqchecker.O3.i386.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
 
-%.clang.i386.O3.xml: %.c %.clang.eqchecker.O3.i386.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
-%.clang.i386.O3.xml: %.cpp %.clang.eqchecker.O3.i386.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.clang.i386.O3.xml: %.c %.clang.eqchecker.O3.i386.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.clang.i386.O3.xml: %.cpp %.clang.eqchecker.O3.i386.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
 
-%.gcc.x64.O3.xml: %.c %.gcc.eqchecker.O3.x64.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
-%.gcc.x64.O3.xml: %.cpp %.gcc.eqchecker.O3.x64.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.gcc.x64.O3.xml: %.c %.gcc.eqchecker.O3.x64.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.gcc.x64.O3.xml: %.cpp %.gcc.eqchecker.O3.x64.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
 
-%.clang.x64.O3.xml: %.c %.clang.eqchecker.O3.x64.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
-%.clang.x64.O3.xml: %.cpp %.clang.eqchecker.O3.x64.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.clang.x64.O3.xml: %.c %.clang.eqchecker.O3.x64.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.clang.x64.O3.xml: %.cpp %.clang.eqchecker.O3.x64.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
 
-%.icc.i386.O3.xml: %.c %.icc.eqchecker.O3.i386.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
-%.icc.i386.O3.xml: %.cpp %.icc.eqchecker.O3.i386.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.icc.i386.O3.xml: %.c %.icc.eqchecker.O3.i386.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.icc.i386.O3.xml: %.cpp %.icc.eqchecker.O3.i386.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
 
-%.icc.x64.O3.xml: %.c %.icc.eqchecker.O3.x64.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
-%.icc.x64.O3.xml: %.cpp %.icc.eqchecker.O3.x64.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.icc.x64.O3.xml: %.c %.icc.eqchecker.O3.x64.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.icc.x64.O3.xml: %.cpp %.icc.eqchecker.O3.x64.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
 
-%.icx.i386.O3.xml: %.c %.icx.eqchecker.O3.i386.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
-%.icx.i386.O3.xml: %.cpp %.icx.eqchecker.O3.i386.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.icx.i386.O3.xml: %.c %.icx.eqchecker.O3.i386.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.icx.i386.O3.xml: %.cpp %.icx.eqchecker.O3.i386.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
 
-%.icx.x64.O3.xml: %.c %.icx.eqchecker.O3.x64.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
-%.icx.x64.O3.xml: %.cpp %.icx.eqchecker.O3.x64.s
-	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.icx.x64.O3.xml: %.c %.icx.eqchecker.O3.x64.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@
+#%.icx.x64.O3.xml: %.cpp %.icx.eqchecker.O3.x64.s
+#	perl -I $(SRCDIR) $(SRCDIR)/scripts/gen_xml_file.pl $^ > $@

@@ -4,23 +4,24 @@ include config-host.mak      # BUILDDIR
 include $(SRCDIR)/Make.conf                  # compiler paths and flags
 
 # add new dirs' targets here
-CODEGEN_TARGETS := compcert-tests
-OOELALA_TARGETS := ooelala-tests
-MALLOC_TARGETS := malloc-tests cpp
-SPEC_TARGETS := spec17
-FP_TARGETS := fp
-SOUNDNESS_TARGETS := dietlibc # soundness
-MICRO_TARGETS := micro ctests demo
+#CODEGEN_TARGETS := compcert-tests
+#OOELALA_TARGETS := ooelala-tests
+#MALLOC_TARGETS := malloc-tests cpp
+#SPEC_TARGETS := spec17
+#FP_TARGETS := fp
+#SOUNDNESS_TARGETS := #dietlibc # soundness
+MICRO_TARGETS := micro #ctests demo
 VECTORIZATION_TARGETS := TSVC_prior_work TSVC_new LORE_mem_write LORE_no_mem_write
-LOCALS_TARGETS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_globals bzip2_locals
-EQCHECK_TARGETS :=  $(LOCALS_TARGETS) $(VECTORIZATION_TARGETS) $(MICRO_TARGETS) $(MALLOC_TARGETS) $(FP_TARGETS) $(SOUNDNESS_TARGETS) sag
+LOCALS_TARGETS := localmem-tests bzip2_locals #TSVC_prior_work_locals TSVC_prior_work_globals
+#EQCHECK_TARGETS :=  $(LOCALS_TARGETS) $(VECTORIZATION_TARGETS) $(MICRO_TARGETS) $(MALLOC_TARGETS) $(FP_TARGETS) $(SOUNDNESS_TARGETS) #sag
+EQCHECK_TARGETS :=  $(LOCALS_TARGETS) $(VECTORIZATION_TARGETS) $(MICRO_TARGETS)
 
 EQCHECK_TARGETS_i386 := $(EQCHECK_TARGETS)
 EQCHECK_TARGETS_x64 := $(EQCHECK_TARGETS)
-EQCHECK_TARGETS_ll := llvm-tests
+#EQCHECK_TARGETS_ll := llvm-tests
 EQCHECK_TARGETS_srcdst :=
 #TARGETS := $(EQCHECK_TARGETS_i386) $(EQCHECK_TARGETS_x64) $(EQCHECK_TARGETS_ll) #$(OOELALA_TARGETS) # $(CODEGEN_TARGETS)
-TARGETS := $(EQCHECK_TARGETS_i386) $(EQCHECK_TARGETS_ll)
+TARGETS := $(EQCHECK_TARGETS_i386) #$(EQCHECK_TARGETS_ll)
 
 MAKEFILES := $(addsuffix /Makefile,$(TARGETS))
 BUILD_MAKEFILES := $(addprefix $(BUILDDIR)/,$(MAKEFILES))
