@@ -49,12 +49,13 @@ $(TARGETS) $(SPEC_TARGETS)::
 ack-progs::
 	$(MAKE) -C $(BUILDDIR)/localmem-tests $@
 
+test_i386: ARCH=i386
 eqtest_x64: ARCH=x64
 eqtest_i386: ARCH=i386
 eqtest_ll: ARCH=ll
 eqtest_srcdst: ARCH=srcdst
 
-eqtest_x64 eqtest_i386 eqtest_ll eqtest_srcdst: eqtest_%: $(BUILD_MAKEFILES)
+eqtest_x64 eqtest_i386 eqtest_ll eqtest_srcdst test_i386: %: $(BUILD_MAKEFILES)
 	$(foreach t,$(EQCHECK_TARGETS_$(ARCH)),$(MAKE) -C $(BUILDDIR)/$(t) $@ || exit;)
 	true > $(BUILDDIR)/$@
 	$(foreach t,$(EQCHECK_TARGETS_$(ARCH)), [[ -f $(BUILDDIR)/$(t)/$@ ]] && cat $(BUILDDIR)/$(t)/$@ >> $(BUILDDIR)/$@ || exit;)

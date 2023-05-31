@@ -95,7 +95,8 @@ foreach my $prog (keys %unroll) {
   if ($compiler eq "srcdst") {
     my $src_pathname = identify_filetype_extension("$VPATH/$prog\_src");
     my $dst_pathname = identify_filetype_extension("$VPATH/$prog\_dst");
-    print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -logdir 'logs_$benchmark' -extra_flags='$prog_extraflagsstr' $prog_expectfailstr -tmpdir $tmpdir $src_pathname $dst_pathname.UNROLL$u\n";
+    #print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -logdir 'logs_$benchmark' -extra_flags='$prog_extraflagsstr' $prog_expectfailstr -tmpdir $tmpdir $src_pathname $dst_pathname.UNROLL$u\n";
+    print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -extra_flags='$prog_extraflagsstr' $prog_expectfailstr -tmpdir $tmpdir $src_pathname $dst_pathname.UNROLL$u\n";
   } else {
     my $compile_log_str = "";
     if ($compiler =~ /^clang/) {
@@ -103,7 +104,8 @@ foreach my $prog (keys %unroll) {
     }
     my $src_pathname = identify_filetype_extension("$VPATH/$prog");
     if ($compiler ne "ack" || -f "$PWD/$prog.$compiler$compiler_suffix") { # skip missing binaries for 'ack' which does not support VLA/alloca()
-      print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -logdir 'logs_$benchmark' -extra_flags='$prog_extraflagsstr' $prog_expectfailstr  -tmpdir $tmpdir $src_pathname $PWD/$prog.$compiler$compiler_suffix.UNROLL$u $compile_log_str\n";
+      #print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -logdir 'logs_$benchmark' -extra_flags='$prog_extraflagsstr' $prog_expectfailstr  -tmpdir $tmpdir $src_pathname $PWD/$prog.$compiler$compiler_suffix.UNROLL$u $compile_log_str\n";
+      print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -extra_flags='$prog_extraflagsstr' $prog_expectfailstr  -tmpdir $tmpdir $src_pathname $PWD/$prog.$compiler$compiler_suffix.UNROLL$u $compile_log_str\n";
     } else {
     }
   }
