@@ -15,6 +15,7 @@ VECTORIZATION_TARGETS := TSVC_prior_work TSVC_new LORE_mem_write LORE_no_mem_wri
 LOCALS_TARGETS := localmem-tests bzip2_locals #TSVC_prior_work_locals TSVC_prior_work_globals
 #EQCHECK_TARGETS :=  $(LOCALS_TARGETS) $(VECTORIZATION_TARGETS) $(MICRO_TARGETS) $(MALLOC_TARGETS) $(FP_TARGETS) $(SOUNDNESS_TARGETS) #sag
 EQCHECK_TARGETS :=  $(LOCALS_TARGETS) $(VECTORIZATION_TARGETS) $(MICRO_TARGETS)
+CLANGV_TARGETS :=  $(LOCALS_TARGETS) $(VECTORIZATION_TARGETS) $(MICRO_TARGETS)
 
 EQCHECK_TARGETS_i386 := $(EQCHECK_TARGETS)
 EQCHECK_TARGETS_x64 := $(EQCHECK_TARGETS)
@@ -22,6 +23,10 @@ EQCHECK_TARGETS_x64 := $(EQCHECK_TARGETS)
 EQCHECK_TARGETS_srcdst :=
 #TARGETS := $(EQCHECK_TARGETS_i386) $(EQCHECK_TARGETS_x64) $(EQCHECK_TARGETS_ll) #$(OOELALA_TARGETS) # $(CODEGEN_TARGETS)
 TARGETS := $(EQCHECK_TARGETS_i386) #$(EQCHECK_TARGETS_ll)
+
+CLANGV_TARGETS_O1 := $(CLANGV_TARGETS)
+CLANGV_TARGETS_O2 := $(CLANGV_TARGETS)
+CLANGV_TARGETS_O3 := $(CLANGV_TARGETS)
 
 MAKEFILES := $(addsuffix /Makefile,$(TARGETS))
 BUILD_MAKEFILES := $(addprefix $(BUILDDIR)/,$(MAKEFILES))
@@ -49,6 +54,9 @@ $(TARGETS) $(SPEC_TARGETS)::
 ack-progs::
 	$(MAKE) -C $(BUILDDIR)/localmem-tests $@
 
+clangv_O1: OPT_LEVEL=O1
+clangv_O2: OPT_LEVEL=O2
+clangv_O3: OPT_LEVEL=O3
 test_i386: ARCH=i386
 eqtest_x64: ARCH=x64
 eqtest_i386: ARCH=i386
@@ -59,6 +67,13 @@ eqtest_x64 eqtest_i386 eqtest_ll eqtest_srcdst test_i386: %: $(BUILD_MAKEFILES)
 	$(foreach t,$(EQCHECK_TARGETS_$(ARCH)),$(MAKE) -C $(BUILDDIR)/$(t) $@ || exit;)
 	true > $(BUILDDIR)/$@
 	$(foreach t,$(EQCHECK_TARGETS_$(ARCH)), [[ -f $(BUILDDIR)/$(t)/$@ ]] && cat $(BUILDDIR)/$(t)/$@ >> $(BUILDDIR)/$@ || exit;)
+	parallel --load "33%" < $(BUILDDIR)/$@
+
+clangv_O1 clangv_O2 clangv_O3: %: $(BUILD_MAKEFILES)
+	echo "OPT_LEVEL=$(OPT_LEVEL)"
+	$(foreach t,$(CLANGV_TARGETS_$(OPT_LEVEL)),$(MAKE) -C $(BUILDDIR)/$(t) $@ || exit;)
+	true > $(BUILDDIR)/$@
+	$(foreach t,$(CLANGV_TARGETS_$(OPT_LEVEL)), [[ -f $(BUILDDIR)/$(t)/$@ ]] && cat $(BUILDDIR)/$(t)/$@ >> $(BUILDDIR)/$@ || exit;)
 	parallel --load "33%" < $(BUILDDIR)/$@
 
 ack-compiler::
