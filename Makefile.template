@@ -141,7 +141,7 @@ eqtest_ll.helper:: CUR_COMPILER=LL
 eqtest_ll.helper:: ARCH=x64 #we use the x64 build for llvm-to-llvm checks
 eqtest_ll.helper:: ARCH_OPT_SUFFIX=.ll
 
-eqtest_i386_O0 eqtest_i386_O1 eqtest_i386_O2 eqtest_i386_O3 eqtest_x64_O0 eqtest_x64_O1 eqtest_x64_O2 eqtest_x64_O3: eqtest_%: eqtest_%_clang.helper eqtest_%_clangPP.helper #eqtest_%_gcc.helper eqtest_%_gPP.helper eqtest_%_ack.helper eqtest_%_ack.O1.helper eqtest_%_icx.helper eqtest_%_icpx.helper eqtest_%_icc.helper eqtest_%_icpc.helper
+eqtest_i386_O0 eqtest_i386_O1 eqtest_i386_O2 eqtest_i386_O3 eqtest_x64_O0 eqtest_x64_O1 eqtest_x64_O2 eqtest_x64_O3: eqtest_%: eqtest_%_gcc.helper eqtest_%_gPP.helper eqtest_%_clang.helper eqtest_%_clangPP.helper eqtest_%_ack.helper eqtest_%_ack.O1.helper eqtest_%_icx.helper eqtest_%_icpx.helper eqtest_%_icc.helper eqtest_%_icpc.helper
 	cat $^ > $@
 
 eqtest_i386 eqtest_x64: eqtest_%: eqtest_%_O0 eqtest_%_O1 eqtest_%_O2 eqtest_%_O3
