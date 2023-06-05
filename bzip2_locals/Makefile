@@ -31,3 +31,6 @@ include $(SRCDIR)/Makefile.template
 
 test_i386: eqtest_i386_O1
 	cat $^ > $@
+
+clangv_Od: clangv_O1
+	cat $^ > $@

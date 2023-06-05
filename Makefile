@@ -27,6 +27,7 @@ TARGETS := $(EQCHECK_TARGETS_i386) #$(EQCHECK_TARGETS_ll)
 CLANGV_TARGETS_O1 := $(CLANGV_TARGETS)
 CLANGV_TARGETS_O2 := $(CLANGV_TARGETS)
 CLANGV_TARGETS_O3 := $(CLANGV_TARGETS)
+CLANGV_TARGETS_Od := $(CLANGV_TARGETS)
 
 MAKEFILES := $(addsuffix /Makefile,$(TARGETS))
 BUILD_MAKEFILES := $(addprefix $(BUILDDIR)/,$(MAKEFILES))
@@ -57,6 +58,7 @@ ack-progs::
 clangv_O1: OPT_LEVEL=O1
 clangv_O2: OPT_LEVEL=O2
 clangv_O3: OPT_LEVEL=O3
+clangv_Od: OPT_LEVEL=Od
 test_i386: ARCH=i386
 eqtest_x64: ARCH=x64
 eqtest_i386: ARCH=i386
@@ -69,8 +71,7 @@ eqtest_x64 eqtest_i386 eqtest_ll eqtest_srcdst test_i386: %: $(BUILD_MAKEFILES)
 	$(foreach t,$(EQCHECK_TARGETS_$(ARCH)), [[ -f $(BUILDDIR)/$(t)/$@ ]] && cat $(BUILDDIR)/$(t)/$@ >> $(BUILDDIR)/$@ || exit;)
 	parallel --load "33%" < $(BUILDDIR)/$@
 
-clangv_O1 clangv_O2 clangv_O3: %: $(BUILD_MAKEFILES)
-	echo "OPT_LEVEL=$(OPT_LEVEL)"
+clangv_O1 clangv_O2 clangv_O3 clangv_Od: %: $(BUILD_MAKEFILES)
 	$(foreach t,$(CLANGV_TARGETS_$(OPT_LEVEL)),$(MAKE) -C $(BUILDDIR)/$(t) $@ || exit;)
 	true > $(BUILDDIR)/$@
 	$(foreach t,$(CLANGV_TARGETS_$(OPT_LEVEL)), [[ -f $(BUILDDIR)/$(t)/$@ ]] && cat $(BUILDDIR)/$(t)/$@ >> $(BUILDDIR)/$@ || exit;)
