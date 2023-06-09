@@ -118,6 +118,8 @@ clean:
 	find . -name *.log | xargs rm -f
 	find . -name cscope.out | xargs rm -f
 	find . -name core | xargs rm -f
+	find build -name clangv.* | xargs rm -rf
+	find build -name eqcheck.* | xargs rm -rf
 
 distclean: clean
 	rm -rf config-host.mak $(BUILDDIR)
