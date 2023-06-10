@@ -4,14 +4,14 @@ include ../config.mak                        # paths
 VPATH = $(SRCDIR)/bzip2_locals
 
 UNROLL1 := bzip2_locals \
-           recvDecodingTables \
-           generateMTFValues \
-           undoReversibleTransformation_fast \
-           undoReversibleTransformation_small \
-           hbMakeCodeLengths \
-           getAndMoveToFrontDecode \
-           sortIt \
-           qSort3 \
+           #recvDecodingTables \
+           #generateMTFValues \
+           #undoReversibleTransformation_fast \
+           #undoReversibleTransformation_small \
+           #hbMakeCodeLengths \
+           #getAndMoveToFrontDecode \
+           #sortIt \
+           #qSort3 \
 
 EXPECTED_FAILS_CLANG := bzip2_locals \
                         undoReversibleTransformation_small \
