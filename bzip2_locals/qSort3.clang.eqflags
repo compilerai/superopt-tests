@@ -1,0 +1,1 @@
+--enable-query-decomposition --qd-smt-query-timeout 60
