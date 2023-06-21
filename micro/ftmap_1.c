@@ -16,8 +16,13 @@ int w_g_x(int* p)
   return *p+10;
 }
 
-int main(int n, char* argv[])
+int ftmap_1_main(int n, char* argv[])
 {
   w_arg(&x);        // R: x,  W: x
   return w_g_x(&x); // R: x,y W: x
+}
+
+int main(int n, char* argv[])
+{
+  return ftmap_1_main(n, argv);
 }

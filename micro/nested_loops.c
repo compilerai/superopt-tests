@@ -46,7 +46,6 @@ int nested_loops_depth_3(int ****a, int n, int m, int p, int q)
 /*
  * XXX eqtime increases exponentially for each loop depth
  */
-/*
 int nested_loops_depth_4(int *****a, int n, int m, int p, int q, int r)
 {
   for (int t = 0; t<r; t++) {
@@ -86,4 +85,3 @@ int nested_loops_depth_5(int ******a, int n, int m, int p, int q, int r, int s)
   }
   return 0;
 }
-*/

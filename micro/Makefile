@@ -80,5 +80,8 @@ ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
 
 include $(SRCDIR)/Makefile.template
 
-test: eqtest_i386_O3 eqtest_srcdst
+test_i386: eqtest_i386_O3 eqtest_srcdst
+	cat $^ > $@
+
+clangv_Od: clangv_O1
 	cat $^ > $@
