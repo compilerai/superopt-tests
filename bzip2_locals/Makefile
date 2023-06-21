@@ -3,7 +3,7 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/bzip2_locals
 
-UNROLL1 := bzip2_locals \
+UNROLL2 := bzip2_locals \
            #recvDecodingTables \
            #generateMTFValues \
            #undoReversibleTransformation_fast \
@@ -18,7 +18,7 @@ EXPECTED_FAILS_CLANG := bzip2_locals \
                         hbMakeCodeLengths \
                         sortIt \
 
-UNROLL1_CLANG = $(UNROLL1)
+UNROLL2_CLANG = $(UNROLL2)
 
 EXTRA_FLAGS := --smt-query-timeout 300 --eqcheck-timeout 7200 --global-timeout 64000 --max-address-space-size-gb 32
 
