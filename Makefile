@@ -1,7 +1,9 @@
 SHELL := /bin/bash
 
-include config-host.mak      # BUILDDIR
-include $(SRCDIR)/Make.conf                  # compiler paths and flags
+SUPEROPT_PROJECT_DIR ?= $(realpath $(CURDIR)/..)
+SUPEROPT_INSTALL_DIR ?= $(SUPEROPT_PROJECT_DIR)/usr/local
+
+BUILDDIR=$(CURDIR)/build
 
 # add new dirs' targets here
 #CODEGEN_TARGETS := compcert-tests
@@ -109,19 +111,21 @@ specclean::
 identify_durables::
 	python $(SUPEROPT_PROJECT_DIR)/superopt/utils/identify_durables.py --max-call-context-depth 4 $(IDENTIFY_DURABLES_FILES)
 
-clean:
-	$(foreach t,$(TARGETS),$(MAKE) -C $(BUILDDIR)/$(t) clean;)
+clean_outside_build:
 	find . -name *.bc | xargs rm -f
 	find . -name *.cg.ll | xargs rm -f
 	find . -name "*.etfg" | xargs rm -f
 	find . -name *.tmp | xargs rm -f
 	find . -name *.log | xargs rm -f
 	find . -name cscope.out | xargs rm -f
-	-find . -name core | xargs rm -f
-	find build -name "clangv.*" | xargs rm -rf
-	find build -name "eqcheck.*" | xargs rm -rf
+	# -find . -name core | xargs rm -f
 
-distclean: clean
+clean: clean_outside_build
+	$(foreach t,$(TARGETS),$(MAKE) -C $(BUILDDIR)/$(t) clean;)
+	find $(BUILDDIR) -name "clangv.*" | xargs rm -rf
+	find $(BUILDDIR) -name "eqcheck.*" | xargs rm -rf
+
+distclean: clean_outside_build
 	rm -rf config-host.mak $(BUILDDIR)
 
 .PHONY: all clean distclean $(TARGETS) ack-compiler specmount specbuild specclean umount
