@@ -1,1 +1,1 @@
---eqgen-args="--max-stack-push-delta 2147483664" --enable-query-decomposition
+--max-stack-push-delta 2147483664 --enable-query-decomposition
