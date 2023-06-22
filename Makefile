@@ -127,7 +127,7 @@ clean_outside_build:
 	find . -name *.cg.ll | xargs rm -f
 	find . -name "*.etfg" | xargs rm -f
 	find . -name *.tmp | xargs rm -f
-	find . -name *.log | xargs rm -f
+	find . -name '*[^.][^s].log' | xargs rm -f
 	find . -name cscope.out | xargs rm -f
 	# -find . -name core | xargs rm -f
 
