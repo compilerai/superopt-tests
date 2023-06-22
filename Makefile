@@ -113,9 +113,9 @@ identify_durables::
 
 regression: $(BUILD_MAKEFILES) $(TARGETS)
 	$(foreach t,$(TARGETS), if make -C $(BUILDDIR)/$(t) clean; then :; else echo "ERROR: 'make clean' failed for target" $(BUILDDIR)/$(t); exit 1; fi;)
-	$(foreach t,$(TARGETS), if make -C $(BUILDDIR)/$(t) test; then :; else echo "ERROR: 'make test' failed for target" $(BUILDDIR)/$(t); exit 1; fi;)
+	$(foreach t,$(TARGETS), if make -C $(BUILDDIR)/$(t) test_i386; then :; else echo "ERROR: 'make test' failed for target" $(BUILDDIR)/$(t); exit 1; fi;)
 	true > $(BUILDDIR)/$@
-	$(foreach t,$(TARGETS), if [ -f $(BUILDDIR)/$(t)/test ]; then cat $(BUILDDIR)/$(t)/test >> $(BUILDDIR)/$@; else echo "ERROR:" $(BUILDDIR)/$(t)/test "does not exist for target" $(t); exit 1; fi;)
+	$(foreach t,$(TARGETS), if [ -f $(BUILDDIR)/$(t)/test_i386 ]; then cat $(BUILDDIR)/$(t)/test_i386 >> $(BUILDDIR)/$@; else echo "ERROR:" $(BUILDDIR)/$(t)/test_i386 "does not exist for target" $(t); exit 1; fi;)
 	clear
 	parallel --load "33%" < $(BUILDDIR)/$@ | tee $(BUILDDIR)/$@.out
 
