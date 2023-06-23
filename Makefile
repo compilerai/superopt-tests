@@ -119,9 +119,6 @@ regression: $(BUILD_MAKEFILES) $(TARGETS)
 	clear
 	parallel --load "33%" < $(BUILDDIR)/$@ | tee $(BUILDDIR)/$@.out
 
-clean:
-	$(foreach t,$(TARGETS),$(MAKE) -C $(BUILDDIR)/$(t) clean;)
-
 clean_outside_build:
 	find . -name *.bc | xargs rm -f
 	find . -name *.cg.ll | xargs rm -f
