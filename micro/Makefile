@@ -17,6 +17,7 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary \
          load_store_elim_simple \
          loop_hoisting \
          nested_loops \
+         nested_loops_simple \
          sum1d \
          non_linear_invariant_casting \
          non_linear_invariant_shl \
