@@ -27,8 +27,6 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary \
          #ddec arg_passing fpadd  fcall100 fcall100_with_memaccess \
          #fpext : TOO SLOW
 
-EXTRA_FLAGS :=
-
 UNROLL8_GCC := $(PROGS) \
                # load_store_elim_conditional not passing in GCC!
 EXPECTED_FAILS_GCC := non_linear_invariant_casting  \
