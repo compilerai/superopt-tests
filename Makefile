@@ -135,5 +135,6 @@ clean: clean_outside_build
 
 distclean: clean_outside_build
 	rm -rf config-host.mak $(BUILDDIR)
+	git clean -df
 
 .PHONY: all clean distclean $(TARGETS) ack-compiler specmount specbuild specclean umount
