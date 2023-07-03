@@ -165,7 +165,7 @@ eqtest: eqtest_i386 eqtest_x64 eqtest_srcdst eqtest_ll
 .DEFAULT_GOAL := all
 
 clean:
-	rm -f *.o *.tmp eqtest* test_i386
+	rm -f *.o *.tmp eqtest* test_i386 $(ALL_PROGS)
 
 BENCH_NAME := $(shell basename $(VPATH))
 BENCH_RUN_LOGS_DIR := $(addprefix logs_, $(BENCH_NAME))
