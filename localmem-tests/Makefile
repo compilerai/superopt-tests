@@ -14,6 +14,7 @@ UNROLL1_PROGS := \
                  alloca_conditional           		 \
                  alloca_simple                		 \
                  rodata                            \
+                 vla_simple                   		 \
                  vla_conditional_use          		 \
                  vla_2_inside_loop            		 \
                  vla_simple_loop              		 \
