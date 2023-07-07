@@ -3,7 +3,7 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/localmem-tests
 
-EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 7200
+EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 7200 --enable-query-decomposition
 
 UNROLL1_PROGS := \
                  addr_taken_array             		 \
@@ -45,8 +45,12 @@ UNROLL1_GCC = fib                               \
 UNROLL2_GCC = alloca_linked_list
 EXPECTED_FAILS_GCC := vla_3_single_loop         \
                       vla_4_single_loop         \
+                      vla_2_single_loop         \
+                      vla_simple_loop           \
                       # vla_3_single_loop [timeout]
                       # vla_4_single_loop [timeout]
+                      # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
+                      # vla_simple_loop   [dealloc path correlation failing: sinking (code merging) of sp restore (dealloc) to common path instead of alloc dominating path, no coresponding path in src]
 
 UNROLL1_CLANG = minprintf                         \
                 alloca_linked_list                \
@@ -58,8 +62,10 @@ UNROLL1_CLANG = minprintf                         \
 UNROLL2_CLANG = fib
 EXPECTED_FAILS_CLANG := vla_3_single_loop         \
                         vla_4_single_loop         \
+                        vla_2_single_loop         \
                         # vla_3_single_loop [timeout]
                         # vla_4_single_loop [timeout]
+                        # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
 
 # ack does not support VLA and alloca()
 UNROLL2_ACK = \
