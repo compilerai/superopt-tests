@@ -1,6 +1,6 @@
-=PC: L3%1%spver
+=PC: L3%1%spvEnd
 =local.=Lentry%1%d=
-1 : input.dst.sp=L3%1%spver=sp.L3%1%spver : BV:32
+1 : input.dst.sp=L3%1%spvEnd=sp.L3%1%spvEnd : BV:32
 2 : 12 : BV:32
 3 : bvadd(1, 2) : BV:32
 =done
