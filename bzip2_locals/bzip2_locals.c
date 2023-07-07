@@ -4019,7 +4019,8 @@ void *myMalloc ( Int32 n )
          "%s: `malloc' failed on request for %d bytes.\n",
          progName, n
       );
-      exit ( 1 );
+      //exit ( 1 );
+      MYmyexit ( 1 );
    }
    return p;
 }
@@ -4081,7 +4082,8 @@ IntNative main ( IntNative argc, Char *argv[] )
                 "\tof 4, 2 and 1 bytes to run properly, and they don't.\n"
                 "\tProbably you can fix this by defining them correctly,\n"
                 "\tand recompiling.  Bye!\n" );
-      exit(1);
+      //exit(1);
+      MYmyexit(1);
    }
 
 
@@ -4180,12 +4182,14 @@ IntNative main ( IntNative argc, Char *argv[] )
                case 'L': license();            break;
                case 'v': verbosity++; break;
                case 'h': usage ( progName );
-                         exit ( 1 );
+                         //exit ( 1 );
+                         MYmyexit ( 1 );
                          break;
                default:  fprintf ( stderr, "%s: Bad flag `%s'\n",
                                    progName, aa->name );
                          usage ( progName );
-                         exit ( 1 );
+                         //exit ( 1 );
+                         MYmyexit ( 1 );
                          break;
          }
 
@@ -4202,12 +4206,13 @@ IntNative main ( IntNative argc, Char *argv[] )
       if (ISFLAG("--repetitive-fast"))   workFactor = 5;             else
       if (ISFLAG("--repetitive-best"))   workFactor = 150;           else
       if (ISFLAG("--verbose"))           verbosity++;                else
-      if (ISFLAG("--help"))              { usage ( progName ); exit ( 1 ); }
+      if (ISFLAG("--help"))              { usage ( progName ); /*exit ( 1 );*/MYmyexit( 1 ); }
          else
          if (strncmp ( aa->name, "--", 2) == 0) {
             fprintf ( stderr, "%s: Bad flag `%s'\n", progName, aa->name );
             usage ( progName );
-            exit ( 1 );
+            //exit ( 1 );
+            MYmyexit ( 1 );
          }
    }
 
@@ -4216,19 +4221,22 @@ IntNative main ( IntNative argc, Char *argv[] )
    if (opMode == OM_Z && srcMode == SM_F2O && numFileNames > 1) {
       fprintf ( stderr, "%s: I won't compress multiple files to stdout.\n",
                 progName );
-      exit ( 1 );
+      //exit ( 1 );
+      MYmyexit ( 1 );
    }
 
    if (srcMode == SM_F2O && numFileNames == 0) {
       fprintf ( stderr, "%s: -c expects at least one filename.\n",
                 progName );
-      exit ( 1 );
+      //exit ( 1 );
+      MYmyexit ( 1 );
    }
 
    if (opMode == OM_TEST && srcMode == SM_F2O) {
       fprintf ( stderr, "%s: -c and -t cannot be used together.\n",
                 progName );
-      exit ( 1 );
+      //exit ( 1 );
+      MYmyexit ( 1 );
    }
 
    if (opMode != OM_Z) blockSize100k = 0;
@@ -4269,7 +4277,8 @@ IntNative main ( IntNative argc, Char *argv[] )
            "You can use the `bzip2recover' program to *attempt* to recover\n"
            "data from undamaged sections of corrupted files.\n\n"
          );
-         exit(2);
+         //exit(2);
+         MYmyexit(2);
       }
    }
    return 0;
@@ -4382,7 +4391,8 @@ int spec_init () {
 	spec_fd[i].buf = (unsigned char *)malloc(limit+FUDGE_BUF);
 	if (spec_fd[i].buf == NULL) {
 	    printf ("spec_init: Error mallocing memory!\n");
-	    exit(1);
+	    //exit(1);
+	    MYmyexit(1);
 	}
 	for (j = 0; j < limit; j+=1024) {
 	    spec_fd[i].buf[j] = 0;
@@ -4430,7 +4440,8 @@ int spec_load (int num, char *filename, int size) {
     fd = open(filename, O_RDONLY|O_BINARY);
     if (fd < 0) {
 	fprintf(stderr, "Can't open file %s: %s\n", filename, strerror(errno));
-	exit (1);
+	//exit (1);
+	MYmyexit (1);
     }
     spec_fd[num].pos = spec_fd[num].len = 0;
     for (i = 0 ; i < size; i+= rc) {
@@ -4438,7 +4449,8 @@ int spec_load (int num, char *filename, int size) {
 	if (rc == 0) break;
 	if (rc < 0) {
 	    fprintf(stderr, "Error reading from %s: %s\n", filename, strerror(errno));
-	    exit (1);
+	    //exit (1);
+	    MYmyexit (1);
 	}
 	spec_fd[num].len += rc;
     }
@@ -4458,7 +4470,8 @@ int spec_read (int fd, unsigned char *buf, int size) {
     debug3(4,"spec_read: %d, %p, %d = ", fd, (void *)buf, size);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_read: fd=%d, > MAX_SPEC_FD!\n", fd);
-	exit (1);
+	//exit (1);
+	MYmyexit (1);
     }
     if (spec_fd[fd].pos >= spec_fd[fd].len) {
 	debug(4,"EOF\n");
@@ -4479,7 +4492,8 @@ int spec_getc (int fd) {
     debug1(4,"spec_getc: %d = ", fd);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_read: fd=%d, > MAX_SPEC_FD!\n", fd);
-	exit (1);
+	//exit (1);
+	MYmyexit (1);
     }
     if (spec_fd[fd].pos >= spec_fd[fd].len) {
 	debug(4,"EOF\n");
@@ -4494,15 +4508,18 @@ int spec_ungetc (unsigned char ch, int fd) {
     debug1(4,"spec_ungetc: %d = ", fd);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_read: fd=%d, > MAX_SPEC_FD!\n", fd);
-	exit (1);
+	//exit (1);
+	MYmyexit (1);
     }
     if (spec_fd[fd].pos <= 0) {
 	fprintf(stderr, "spec_ungetc: pos %d <= 0\n", spec_fd[fd].pos);
-	exit (1);
+	//exit (1);
+	MYmyexit (1);
     }
     if (spec_fd[fd].buf[--spec_fd[fd].pos] != ch) {
 	fprintf(stderr, "spec_ungetc: can't unget something that wasn't what was in the buffer!\n");
-	exit (1);
+	//exit (1);
+	MYmyexit (1);
     }
     debug1(4,"%d\n", rc);
     return ch;
@@ -4521,7 +4538,8 @@ int spec_write(int fd, unsigned char *buf, int size) {
     debug3(4,"spec_write: %d, %p, %d = ", fd, (void *)buf, size);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_write: fd=%d, > MAX_SPEC_FD!\n", fd);
-	exit (1);
+	//exit (1);
+	MYmyexit (1);
     }
     memcpy(&(spec_fd[fd].buf[spec_fd[fd].pos]), buf, size); 
     spec_fd[fd].len += size;
@@ -4533,7 +4551,8 @@ int spec_putc(unsigned char ch, int fd) {
     debug2(4,"spec_putc: %d, %d = ", ch, fd);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_write: fd=%d, > MAX_SPEC_FD!\n", fd);
-	exit (1);
+	//exit (1);
+	MYmyexit (1);
     }
     spec_fd[fd].buf[spec_fd[fd].pos++] = ch;
     spec_fd[fd].len ++;
@@ -4569,7 +4588,8 @@ int main (int argc, char *argv[]) {
     validate_array = (unsigned char *)malloc(input_size*MB/1024);
     if (validate_array == NULL) {
 	printf ("main: Error mallocing memory!\n");
-	exit (1);
+	//exit (1);
+	MYmyexit (1);
     }
     /* Save off one byte every ~1k for validation */
     for (i = 0; i*VALIDATE_SKIP < input_size*MB; i++) {
@@ -4626,7 +4646,8 @@ int main (int argc, char *argv[]) {
 	for (i = 0; i*VALIDATE_SKIP < input_size*MB; i++) {
 	    if (validate_array[i] != spec_fd[0].buf[i*VALIDATE_SKIP]) {
 		printf ("Tested %dMB buffer: Miscompared!!\n", input_size);
-		exit (1);
+		//exit (1);
+		MYmyexit (1);
 	    }
 	}
 	debug_time();
