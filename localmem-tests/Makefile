@@ -10,6 +10,7 @@ UNROLL1_PROGS := \
                  addr_taken_array_in_loop     		 \
                  addr_taken_conditional       		 \
                  addr_taken_simple            		 \
+                 addr_taken_after_exit        		 \
                  variadic_with_loop           		 \
                  alloca_conditional           		 \
                  alloca_simple                		 \
