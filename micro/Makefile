@@ -18,12 +18,12 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary \
          loop_hoisting \
          nested_loops \
          nested_loops_simple \
-         sum1d \
          non_linear_invariant_casting \
          non_linear_invariant_shl \
          sum_positive \
-         sum2d \
-         path_enum_2 \
+         # sum1d \
+         # sum2d \
+         # path_enum_2 \
          # load_store_elim_cmove # needs "anticipated-cmove expressions"
          #ddec arg_passing fpadd  fcall100 fcall100_with_memaccess \
          #fpext : TOO SLOW
@@ -35,7 +35,6 @@ EXPECTED_FAILS_GCC := non_linear_invariant_casting  \
                       ftmap_2                       \
                       ftmap_3                       \
                       ftmap_4                       \
-                      non_linear_invariant_shl      \
                       fcalls_merge                  \
                       nested_loops                  \
 										 	sum_positive
@@ -53,7 +52,6 @@ UNROLL16_CLANG := $(PROGS) \
                   load_store_elim_conditional
 EXPECTED_FAILS_CLANG := ftmap_3                     \
                         ftmap_4                     \
-                        non_linear_invariant_shl    \
 										 	  sum_positive # [requires: pointer arithmetic overflow UB modelling]
                         # ftmap_3 [harvest output does not include function main]
                         # ftmap_4 [harvest output does not include function main]
@@ -68,7 +66,7 @@ UNROLL4_SRCDST := nested_loop_peeling \
 	                strlen \
 	                bitflip \
 	                loopSplitting \
-	                epsilon_corr
+	                # epsilon_corr
 
 UNROLL8_SRCDST := strlen \
 

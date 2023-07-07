@@ -165,7 +165,7 @@ eqtest: eqtest_i386 eqtest_x64 eqtest_srcdst eqtest_ll
 .DEFAULT_GOAL := all
 
 clean:
-	rm -f *.o *.tmp eqtest* test_i386
+	rm -f *.o *.tmp eqtest* test_i386 $(ALL_PROGS)
 
 BENCH_NAME := $(shell basename $(VPATH))
 BENCH_RUN_LOGS_DIR := $(addprefix logs_, $(BENCH_NAME))
@@ -173,12 +173,17 @@ ARCHIVE_PREFIX := last_eqrun
 ARCHIVE_LAST := $(ARCHIVE_PREFIX)
 ARCHIVE_FNAME := $(shell sh $(SUPEROPT_PROJECT_DIR)/superopt/utils/next_avail_fname.sh $(ARCHIVE_PREFIX))
 
-.PHONY: archive_run
-archive_run:
+.PHONY: collect_logs
+collect_logs:
 	# python3 $(SUPEROPT_PROJECT_DIR)/superopt/utils/eq_read_log.py '$(BENCH_RUN_LOGS_DIR)/*.log' > $(ARCHIVE_FNAME)
 	# apack $(ARCHIVE_FNAME).zip $(BENCH_RUN_LOGS_DIR)/*.log $(BENCH_RUN_LOGS_DIR)/*.proof
 	find -path './eqcheck*/submit*/stdout' -exec python3 $(SUPEROPT_PROJECT_DIR)/superopt/utils/eq_read_log.py  {} \; > $(ARCHIVE_FNAME)
-	find . -type f -path "./eqcheck*" ! -name "*.xml" -print0 | apack -0 $(ARCHIVE_FNAME).zip
 	ln -sf $(ARCHIVE_FNAME) $(ARCHIVE_LAST)
+
+.PHONY: archive_run
+archive_run: collect_logs
+	# python3 $(SUPEROPT_PROJECT_DIR)/superopt/utils/eq_read_log.py '$(BENCH_RUN_LOGS_DIR)/*.log' > $(ARCHIVE_FNAME)
+	# apack $(ARCHIVE_FNAME).zip $(BENCH_RUN_LOGS_DIR)/*.log $(BENCH_RUN_LOGS_DIR)/*.proof
+	find . -type f -path "./eqcheck*" ! -name "*.xml" -print0 | apack -0 $(ARCHIVE_FNAME).zip
 
 .PHONY: all clean

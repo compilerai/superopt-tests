@@ -1,9 +1,9 @@
-=PC: L6%1%spver
+=PC: L6%1%spvEnd
 =local.=Lentry%1%d=
-1 : input.dst.sp=L6%1%spver=sp.L6%1%spver : BV:32
+1 : input.dst.sp=L6%1%spvEnd=sp.L6%1%spvEnd : BV:32
 2 : 13 : BV:32
 3 : bvadd(1, 2) : BV:32
-=PC: L18%1%spver
+=PC: L18%1%spvEnd
 =local.=Lentry%6%d=
-1 : input.dst.sp=L18%1%spver=sp.L18%1%spver : BV:32
+1 : input.dst.sp=L18%1%spvEnd=sp.L18%1%spvEnd : BV:32
 =done

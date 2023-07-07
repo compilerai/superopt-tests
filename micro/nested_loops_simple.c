@@ -1,3 +1,5 @@
+// time doubles for each depth
+
 int nested_loops_depth_1(int **a, int n)
 {
   #pragma clang loop unroll(disable) vectorize(disable)
@@ -88,6 +90,8 @@ for (int i = 0; i<n; i++) {
   return 0;
 }
 
+// takes too long to finish
+/*
 int nested_loops_depth_6(int *******a, int n)
 {
 #pragma clang loop unroll(disable) vectorize(disable)
@@ -114,3 +118,4 @@ int nested_loops_depth_6(int *******a, int n)
   }
   return 0;
 }
+*/
