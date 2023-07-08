@@ -3,7 +3,7 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/localmem-tests
 
-EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 7200 --enable-query-decomposition
+EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 7200 --enable-query-decomposition --disable-removal-of-stack-from-stack-nonstack-ml-in-dst
 
 UNROLL1_PROGS := \
                  addr_taken_array             		 \
@@ -59,6 +59,7 @@ UNROLL1_CLANG = minprintf                         \
                 vla_in_loop                       \
                 vla_in_loop_conditional_continue  \
                 vla_in_loop_conditional_exit      \
+                addr_taken_after_exit             \
                 $(UNROLL1_PROGS)
 UNROLL2_CLANG = fib
 EXPECTED_FAILS_CLANG := vla_3_single_loop         \
