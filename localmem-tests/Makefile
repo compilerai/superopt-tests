@@ -12,6 +12,7 @@ UNROLL1_PROGS := \
                  addr_taken_simple            		 \
                  variadic_with_loop           		 \
                  alloca_conditional           		 \
+                 alloca_conditional_simple    		 \
                  alloca_simple                		 \
                  rodata                            \
                  vla_simple                   		 \
