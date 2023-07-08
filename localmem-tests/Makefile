@@ -3,7 +3,7 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/localmem-tests
 
-EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 7200 --enable-query-decomposition
+EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 7200 --enable-query-decomposition --disable-removal-of-stack-from-stack-nonstack-ml-in-dst
 
 UNROLL1_PROGS := \
                  addr_taken_array             		 \
