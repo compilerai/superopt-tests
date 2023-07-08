@@ -12,6 +12,7 @@ void* MYmymalloc(size_t);
 void MYmyexit(int);
 
 #define SPEC_CPU2000
+//#define DEBUG_DUMP
 
 /*-----------------------------------------------------------*/
 /*--- A block-sorting, lossless compressor        bzip2.c ---*/
@@ -4598,7 +4599,7 @@ int main (int argc, char *argv[]) {
 
 
 #ifdef DEBUG_DUMP
-    fd = open ("out.uncompressed", O_RDWR|O_CREAT, 0644);
+    int fd = open ("out.uncompressed", O_RDWR|O_CREAT, 0644);
     write(fd, spec_fd[0].buf, spec_fd[0].len);
     close(fd);
 #endif
