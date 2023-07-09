@@ -14,7 +14,7 @@ BUILDDIR=$(CURDIR)/build
 #SOUNDNESS_TARGETS := #dietlibc # soundness
 MICRO_TARGETS := micro #ctests demo
 VECTORIZATION_TARGETS := TSVC_prior_work TSVC_new LORE_mem_write LORE_no_mem_write
-LOCALS_TARGETS := localmem-tests bzip2_locals #TSVC_prior_work_locals TSVC_prior_work_globals
+LOCALS_TARGETS := localmem-tests bzip2_locals TSVC_prior_work_locals TSVC_prior_work_globals
 #EQCHECK_TARGETS :=  $(LOCALS_TARGETS) $(VECTORIZATION_TARGETS) $(MICRO_TARGETS) $(MALLOC_TARGETS) $(FP_TARGETS) $(SOUNDNESS_TARGETS) #sag
 EQCHECK_TARGETS :=  $(LOCALS_TARGETS) $(VECTORIZATION_TARGETS) $(MICRO_TARGETS)
 CLANGV_TARGETS :=  $(LOCALS_TARGETS) $(VECTORIZATION_TARGETS) $(MICRO_TARGETS)
@@ -111,14 +111,25 @@ specclean::
 identify_durables::
 	python $(SUPEROPT_PROJECT_DIR)/superopt/utils/identify_durables.py --max-call-context-depth 4 $(IDENTIFY_DURABLES_FILES)
 
-regression: $(BUILD_MAKEFILES) $(TARGETS)
-	$(foreach t,$(TARGETS), if make -C $(BUILDDIR)/$(t) clean; then :; else echo "ERROR: 'make clean' failed for target" $(BUILDDIR)/$(t); exit 1; fi;)
-	$(foreach t,$(TARGETS), if make -C $(BUILDDIR)/$(t) test_i386; then :; else echo "ERROR: 'make test_i386' failed for target" $(BUILDDIR)/$(t); exit 1; fi;)
-	true > $(BUILDDIR)/$@
-	$(foreach t,$(TARGETS), if [ -f $(BUILDDIR)/$(t)/test_i386 ]; then cat $(BUILDDIR)/$(t)/test_i386 >> $(BUILDDIR)/$@; else echo "ERROR:" $(BUILDDIR)/$(t)/test_i386 "does not exist for target" $(t); exit 1; fi;)
-	clear
-	parallel --load "33%" < $(BUILDDIR)/$@ | tee $(BUILDDIR)/$@.out
+$(BUILDDIR)/regression_%.helper::
+	@$(foreach t,$(RTARGETS), if $(MAKE) -C $(BUILDDIR)/$(t) all test_i386; then :; else echo "ERROR: 'make test_i386' failed for target" $(BUILDDIR)/$(t); exit 1; fi;)
+	@true > $@
+	@$(foreach t,$(RTARGETS), if [ -f $(BUILDDIR)/$(t)/test_i386 ]; then cat $(BUILDDIR)/$(t)/test_i386 >> $@; else echo "ERROR:" $(BUILDDIR)/$(t)/test_i386 "does not exist for target" $(t); rm $@; exit 1; fi;)
 
+REGRESSION_PAPER_REQS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_globals bzip2_locals
+regression_paper:: $(REGRESSION_PAPER_REQS)
+$(BUILDDIR)/regression_paper.helper:: RTARGETS=$(REGRESSION_PAPER_REQS)
+
+regression_i386:: $(EQCHECK_TARGETS_i386)
+$(BUILDDIR)/regression_i386.helper:: RTARGETS=$(EQCHECK_TARGETS_i386)
+
+.PHONY: regression_paper regression_i386
+regression_paper regression_i386:: regression_%: $(BUILDDIR)/regression_%.helper
+	# clear
+	parallel --load "33%" < $^ | tee $@
+	mv $^ $^.finished
+
+.PHONY: clean_outside_build
 clean_outside_build:
 	find . -name *.bc | xargs rm -f
 	find . -name *.cg.ll | xargs rm -f
