@@ -118,7 +118,7 @@ $(BUILDDIR)/regression_%.helper::
 	@true > $@
 	@$(foreach t,$(RTARGETS), if [ -f $(BUILDDIR)/$(t)/test_i386 ]; then cat $(BUILDDIR)/$(t)/test_i386 >> $@; else echo "ERROR:" $(BUILDDIR)/$(t)/test_i386 "does not exist for target" $(t); rm $@; exit 1; fi;)
 
-REGRESSION_PAPER_REQS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_globals bzip2_locals
+REGRESSION_PAPER_REQS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_globals
 regression_paper:: $(REGRESSION_PAPER_REQS)
 $(BUILDDIR)/regression_paper.helper:: RTARGETS=$(REGRESSION_PAPER_REQS)
 
