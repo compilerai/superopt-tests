@@ -10,6 +10,7 @@ UNROLL64_ICC := # s000 s112 s122 s1251 s127 s1281 s1351 s173 s2244 s251 s452 s45
 
 EXPECTED_FAILS_CLANG := s1221
                         # s1221 [query-timeout]
+                        # s162 [dst ml safety check fails]
 # compiler flags
 GCC_EQCHECKER_FLAGS_EXTRA= $(VEC_FLAGS)
 CLANG_EQCHECKER_FLAGS_EXTRA= $(VEC_FLAGS)
