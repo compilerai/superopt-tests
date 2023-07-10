@@ -8,6 +8,9 @@
 #endif
 #include <string.h>
 
+void *MYmymemcpy(void *dest, const void *src, size_t n);
+void *MYmymemset(void *s, int c, size_t n);
+void* MYmymalloc(size_t);
 void* MYmymalloc(size_t);
 void MYmyexit(int);
 
@@ -4387,7 +4390,7 @@ int spec_init () {
     /* Allocate some large chunks of memory, we can tune this later */
     for (i = 0; i < MAX_SPEC_FD; i++) {
 	int limit = spec_fd[i].limit;
-	memset(&spec_fd[i], 0, sizeof(*spec_fd));
+	MYmymemset(&spec_fd[i], 0, sizeof(*spec_fd));
 	spec_fd[i].limit = limit;
 	spec_fd[i].buf = (unsigned char *)malloc(limit+FUDGE_BUF);
 	if (spec_fd[i].buf == NULL) {
@@ -4424,7 +4427,7 @@ int spec_init () {
 //     debug(4,"Filling input file\n");
 //     /* Now populate the input "file" with random chunks */
 //     for (i = 0 ; i < spec_fd[fd].limit; i+= RANDOM_CHUNK_SIZE) {
-// 	memcpy(spec_fd[fd].buf + i, random_text[(int)(ran()*RANDOM_CHUNKS)],
+// 	MYmymemcpy(spec_fd[fd].buf + i, random_text[(int)(ran()*RANDOM_CHUNKS)],
 // 		RANDOM_CHUNK_SIZE);
 //     }
 //     /* TODO-REMOVE: Pretend we only did 1M */
@@ -4460,7 +4463,7 @@ int spec_load (int num, char *filename, int size) {
 	int tmp = size - spec_fd[num].len;
 	if (tmp > spec_fd[num].len) tmp = spec_fd[num].len;
 	debug1(3,"Duplicating %d bytes\n", tmp);
-	memcpy(spec_fd[num].buf+spec_fd[num].len, spec_fd[num].buf, tmp);
+	MYmymemcpy(spec_fd[num].buf+spec_fd[num].len, spec_fd[num].buf, tmp);
 	spec_fd[num].len += tmp;
     }
     return 0;
@@ -4483,7 +4486,7 @@ int spec_read (int fd, unsigned char *buf, int size) {
     } else {
 	rc = size;
     }
-    memcpy(buf, &(spec_fd[fd].buf[spec_fd[fd].pos]), rc);
+    MYmymemcpy(buf, &(spec_fd[fd].buf[spec_fd[fd].pos]), rc);
     spec_fd[fd].pos += rc;
     debug1(4,"%d\n", rc);
     return rc;
@@ -4530,7 +4533,7 @@ int spec_rewind(int fd) {
     return 0;
 }
 int spec_reset(int fd) {
-    memset(spec_fd[fd].buf, 0, spec_fd[fd].len);
+    MYmymemset(spec_fd[fd].buf, 0, spec_fd[fd].len);
     spec_fd[fd].pos = spec_fd[fd].len = 0;
     return 0;
 }
@@ -4542,7 +4545,7 @@ int spec_write(int fd, unsigned char *buf, int size) {
 	//exit (1);
 	MYmyexit (1);
     }
-    memcpy(&(spec_fd[fd].buf[spec_fd[fd].pos]), buf, size); 
+    MYmymemcpy(&(spec_fd[fd].buf[spec_fd[fd].pos]), buf, size); 
     spec_fd[fd].len += size;
     spec_fd[fd].pos += size;
     debug1(4,"%d\n", size);
