@@ -16,11 +16,11 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary \
          rodata_simple \
          load_store_elim_simple \
          loop_hoisting \
-         nested_loops \
          nested_loops_simple \
          non_linear_invariant_casting \
          non_linear_invariant_shl \
          sum_positive \
+         # nested_loops \
          # sum1d \
          # sum2d \
          # path_enum_2 \
