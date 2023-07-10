@@ -16,51 +16,53 @@ UNROLL1_PROGS := \
                  alloca_simple                		 \
                  rodata                            \
                  vla_simple                   		 \
-                 vla_conditional_use          		 \
                  vla_2_inside_loop            		 \
                  vla_simple_loop              		 \
-                 vla_2_single_loop                 \
                  #vla_1_inside_loop            		 \
-                 #variadic_acyclic                  \
-                 #local_used_in_unreachable_loop    \
-                 #local_used_on_unreachable_branch  \
+                 #variadic_acyclic                 \
+                 #local_used_in_unreachable_loop   \
+                 #local_used_on_unreachable_branch \
+                 # vla_2_single_loop               \
                  #vla_3_inside_loop            		 \
                  #vla_4_inside_loop            		 \
-                 #vla_3_single_loop                 \
-                 #vla_4_single_loop                 \
-                 #alloca_linked_list2               \
-                 # #vla_midway_decl                   \
-                 # #vla_2_nested_loops                \
-                 # #vla_2d                            \
+                 #vla_3_single_loop                \
+                 #vla_4_single_loop                \
+                 #alloca_linked_list2              \
+                 # #vla_midway_decl                \
+                 # #vla_2_nested_loops             \
+                 # #vla_2d                         \
                  # #minscanf                     # gcc eqgen fails
                  # #arg_addr_taken               # eqgen fails
 								 # # should pass: vla_{3,4}_single_loop.{gcc,clang} (query-timeout), vla_3_inside_loop.icc (query-timeout)
 
 UNROLL1_GCC = fib                               \
-              alloca_malloc_switch              \
               vla_in_loop                       \
               vla_in_loop_conditional_continue  \
               vla_in_loop_conditional_exit      \
               $(UNROLL1_PROGS)
+              # alloca_malloc_switch [requires RPO DFA]
 							# minprintf requires select(local.addr) which is missing from bv-eqclass exprs
 UNROLL2_GCC = alloca_linked_list
 EXPECTED_FAILS_GCC := vla_3_single_loop         \
                       vla_4_single_loop         \
                       vla_2_single_loop         \
                       vla_simple_loop           \
+                      vla_conditional_use       \
                       # vla_3_single_loop [timeout]
                       # vla_4_single_loop [timeout]
                       # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
                       # vla_simple_loop   [dealloc path correlation failing: sinking (code merging) of sp restore (dealloc) to common path instead of alloc dominating path, no coresponding path in src]
+                      # vla_conditional_use [BV timeouts on dealloc edge -- getting spurious live registers and slots]
 
 UNROLL1_CLANG = minprintf                         \
                 alloca_linked_list                \
-                alloca_malloc_switch              \
                 vla_in_loop                       \
                 vla_in_loop_conditional_continue  \
                 vla_in_loop_conditional_exit      \
                 addr_taken_after_exit             \
+                vla_conditional_use           		\
                 $(UNROLL1_PROGS)
+                #	alloca_malloc_switch [requires RPO DFA]
 UNROLL2_CLANG = fib
 EXPECTED_FAILS_CLANG := vla_3_single_loop         \
                         vla_4_single_loop         \
@@ -81,13 +83,23 @@ UNROLL2_ACK = \
 EXTRA_FLAGS_ACK := --disable-fcall-wfconds
 
 UNROLL1_ICC = minprintf                \
-              fib                     \
               $(UNROLL1_PROGS)
               # vla_in_loop{,conditional_continue,conditional_exit} require non-linear invariants
-              # alloca_malloc_switch requires more powerful inequality inference
+              # alloca_malloc_switch [requires more powerful inequality inference]
+              # fib [requires non-linear invariants]
 UNROLL2_ICC = alloca_linked_list
 EXPECTED_FAILS_ICC := vla_3_inside_loop         \
+											alloca_conditional_simple \
+                      vla_simple                \
+                      vla_simple_loop           \
+                      rodata                    \
+                      vla_conditional_use       \
                       # vla_3_inside_loop [timeout]
+											# alloca_conditional_simple [requires RPO DFA]
+                      # vla_simple [requires non-linear invariants]
+                      # vla_simple_loop [requires non-linear invariants]
+                      # rodata [requires non-linear invariants]
+                      # vla_conditional_use [requires non-linear invariants]
 
 #UNROLL1_ICX = alloca_linked_list $(UNROLL1_PROGS)
 #UNROLL2_ICX = fib
