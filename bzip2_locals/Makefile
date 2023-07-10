@@ -20,7 +20,7 @@ EXPECTED_FAILS_CLANG := bzip2_locals \
 
 UNROLL2_CLANG = $(UNROLL2)
 
-EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 28800 --max-address-space-size-gb 32 -j 10
+EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 28800 --max-address-space-size-gb 32
 
 # compiler flags
 GCC_EQCHECKER_FLAGS_EXTRA= $(GCC_EQCHECKER_NOUNROLL_FLAGS)
