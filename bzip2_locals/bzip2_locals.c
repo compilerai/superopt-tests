@@ -15,7 +15,7 @@ void* MYmymalloc(size_t);
 void MYmyexit(int);
 
 #define SPEC_CPU2000
-//#define DEBUG_DUMP
+#define DEBUG_DUMP
 
 /*-----------------------------------------------------------*/
 /*--- A block-sorting, lossless compressor        bzip2.c ---*/
@@ -4320,7 +4320,7 @@ int spec_write(int fd, unsigned char *buf, int size);
 int spec_putc(unsigned char ch, int fd);
 int debug_time();
 
-#define DEBUG
+// #define DEBUG
 
 #ifdef DEBUG
 int dbglvl=4;
