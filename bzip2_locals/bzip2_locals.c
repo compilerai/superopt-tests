@@ -367,12 +367,12 @@ int debug_time();
 #define IntNative int
 
 
-/*--
-   change to 1, or compile with -DDEBUG=1 to debug
---*/
-#ifndef DEBUG
-#define DEBUG 0
-#endif
+// /*--
+//    change to 1, or compile with -DDEBUG=1 to debug
+// --*/
+// #ifndef DEBUG
+// #define DEBUG 0
+// #endif
 
 
 /*---------------------------------------------------*/
