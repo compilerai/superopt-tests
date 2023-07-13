@@ -127,7 +127,8 @@ $(BUILDDIR)/regression_i386.helper:: RTARGETS=$(EQCHECK_TARGETS_i386)
 
 .PHONY: regression_paper regression_i386
 regression_paper regression_i386:: regression_%: $(BUILDDIR)/regression_%.helper
-	# clear
+	# cat $^ > $@
+	clear
 	parallel --load "33%" < $^ | tee $@
 	mv $^ $^.finished
 

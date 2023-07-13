@@ -62,12 +62,12 @@ UNROLL1_SRCDST := inequiv_1                                \
                   ifswitch                                 \
                   ptr_arith_ub                             \
 
-UNROLL4_SRCDST := nested_loop_peeling \
-	                nested_loop_unrolling \
-	                strlen \
-	                bitflip \
-	                loopSplitting \
-	                # epsilon_corr
+UNROLL4_SRCDST := nested_loop_peeling                      \
+                  nested_loop_unrolling                    \
+                  strlen                                   \
+                  bitflip                                  \
+                  loopSplitting                            \
+                  # epsilon_corr
 
 UNROLL8_SRCDST := strlen \
 
