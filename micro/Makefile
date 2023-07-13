@@ -56,10 +56,11 @@ EXPECTED_FAILS_CLANG := ftmap_3                     \
                         # ftmap_3 [harvest output does not include function main]
                         # ftmap_4 [harvest output does not include function main]
 
-UNROLL1_SRCDST := inequiv_1 \
-	                inequiv_2 \
-	                nestedLoop \
-	                ifswitch
+UNROLL1_SRCDST := inequiv_1                                \
+                  inequiv_2                                \
+                  nestedLoop                               \
+                  ifswitch                                 \
+                  ptr_arith_ub                             \
 
 UNROLL4_SRCDST := nested_loop_peeling \
 	                nested_loop_unrolling \
@@ -70,7 +71,10 @@ UNROLL4_SRCDST := nested_loop_peeling \
 
 UNROLL8_SRCDST := strlen \
 
-EXPECTED_FAILS_SRCDST := inequiv_1 inequiv_2
+EXPECTED_FAILS_SRCDST := inequiv_1                         \
+                         inequiv_2                         \
+                         ptr_arith_ub                      \
+                         # ptr_arith_ub [requires: pointer arithmetic overflow UB modeling]
 
 # compiler flags
 ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
