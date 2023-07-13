@@ -1,4 +1,4 @@
-int vla_simple_loop(unsigned n)
+int vla_single_loop(unsigned n)
 {
   if (n == 0)
     return 0;

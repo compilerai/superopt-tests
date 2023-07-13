@@ -18,8 +18,8 @@ int alloca_malloc_switch(char* s, int fd)
     a = MYmymalloc(n);
     if (!a) return 0;
   }
+#pragma clang loop vectorize(disable) unroll(disable)
   for (int i = 0; i < n; ++i) {
-    MYmyDBG(); // XXX
     a[i] = s[i] ^ 1;
   }
   int ret = write(fd, a, n);
