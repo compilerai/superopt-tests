@@ -11,11 +11,10 @@
 void *MYmymemcpy(void *dest, const void *src, size_t n);
 void *MYmymemset(void *s, int c, size_t n);
 void* MYmymalloc(size_t);
-void* MYmymalloc(size_t);
 void MYmyexit(int);
 
 #define SPEC_CPU2000
-#define DEBUG_DUMP
+// #define DEBUG_DUMP
 
 /*-----------------------------------------------------------*/
 /*--- A block-sorting, lossless compressor        bzip2.c ---*/
