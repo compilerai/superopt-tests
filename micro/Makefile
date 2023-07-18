@@ -61,6 +61,7 @@ UNROLL1_SRCDST := inequiv_1                                \
                   nestedLoop                               \
                   ifswitch                                 \
                   ptr_arith_ub                             \
+                  path_enum_loop_body                      \
 
 UNROLL4_SRCDST := nested_loop_peeling                      \
                   nested_loop_unrolling                    \
