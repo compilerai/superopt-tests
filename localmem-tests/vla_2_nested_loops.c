@@ -12,15 +12,11 @@ int vla_2_nested_loops(int* a, unsigned n)
     vv[0] = a[0];
 #pragma clang loop vectorize(disable) unroll(disable)
     for (unsigned j = 1; j <= i; ++j) {
-      if (a[j] < 0)
-        goto end;
       vv[j] = a[j]+vv[j-1];
     }
     v[i] = vv[i];
   }
   return bar(v);
-end:
-  return 0;
 }
 
 /*
