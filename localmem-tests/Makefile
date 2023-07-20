@@ -52,7 +52,6 @@ UNROLL1_PROGS :=                                                               \
                  #                                                             \
                  # vla_3_single_loop  [timeout?]                               \
                  # vla_4_single_loop  [timeout?]                               \
-                 # vla_4_in_loop      [timeout?]                               \
 
 UNROLL1_GCC := fib                                                             \
                $(UNROLL1_PROGS)                                                \
@@ -64,15 +63,24 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       vla_2_single_loop                                        \
                       vla_single_loop                                          \
                       vla_conditional_use                                      \
+                      vla_2_nested_loops                                       \
+                      vla_2d                                                   \
                       minprintf                                                \
+                      minscanf                                                 \
                       alloca_malloc_switch                                     \
+                      alloca_conditional_simple                                \
+                      alloca_unreal                                            \
                       # vla_3_single_loop [timeout]
                       # vla_4_single_loop [timeout]
                       # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
                       # vla_single_loop   [dealloc path correlation failing: sinking (code merging) of sp restore (dealloc) to common path instead of alloc dominating path, no coresponding path in src]
                       # vla_conditional_use [BV timeouts on dealloc edge -- getting spurious live registers and slots]
-                      # minprintf requires select(local.addr) which is missing from bv-eqclass exprs
-                      #  alloca_malloc_switch [requires RPO DFA]
+                      # vla_2_nested_loops [some bitwise computation is happening -- local-mem-eq is failing]
+                      # minprintf,minscanf [requires select(local.addr) which is missing from bv-eqclass exprs]
+                      # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                      # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                      # alloca_unreal [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                      # vla_2d [mem-eq query timeout]
 
 UNROLL1_CLANG := alloca_linked_list                                            \
                  $(UNROLL1_PROGS)                                              \
@@ -82,11 +90,21 @@ UNROLL2_CLANG := fib
 EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         vla_4_single_loop                                      \
                         vla_2_single_loop                                      \
+                        vla_4_in_loop                                          \
+                        vla_2d                                                 \
+                        vla_2_nested_loops                                     \
                         alloca_malloc_switch                                   \
+                        alloca_conditional_simple                              \
+                        alloca_unreal                                          \
                         # vla_3_single_loop [timeout]
                         # vla_4_single_loop [timeout]
                         # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
-                        #  alloca_malloc_switch [requires RPO DFA]
+                        # vla_4_in_loop [query timeout => timeout]
+                        # vla_2d [non-linear invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
+                        # vla_2_nested_loops [timeout]
+                        # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                        # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                        # alloca_unreal [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
 
 # ack does not support VLA and alloca()
 UNROLL2_ACK = addr_taken_simple                                                \
@@ -103,22 +121,38 @@ UNROLL1_ICC = $(UNROLL1_PROGS)                                                 \
 
 UNROLL2_ICC = alloca_linked_list
 
-EXPECTED_FAILS_ICC := vla_3_in_loop                                            \
-                      alloca_conditional_simple                                \
-                      vla_simple                                               \
+EXPECTED_FAILS_ICC := vla_simple                                               \
                       vla_single_loop                                          \
-                      rodata                                                   \
+                      vla_midway_decl                                          \
+                      vla_2_single_loop                                        \
+                      vla_3_single_loop                                        \
+                      vla_4_single_loop                                        \
+                      vla_3_in_loop                                            \
                       vla_conditional_use                                      \
+                      vla_in_loop                                              \
                       vla_in_loop_conditional_continue                         \
+                      vla_in_loop_conditional_exit                             \
+                      vla_4_in_loop                                            \
+                      vla_2d                                                   \
+                      rodata                                                   \
+                      alloca_conditional_simple                                \
                       alloca_malloc_switch                                     \
-                      # vla_3_in_loop [timeout]
-                      # alloca_conditional_simple [requires RPO DFA]
+                      alloca_unreal                                            \
                       # vla_simple [requires non-linear invariants]
-                      # vla_simple_loop [requires non-linear invariants]
+                      # vla{,_2,}_single_loop [requires non-linear invariants]
+                      # vla_midway_decl [multiple allocs]
+                      # vla{_3,_4}_single_loop [timeout]
+                      # vla_3_in_loop [sometimes timeout]
                       # rodata [requires non-linear invariants]
                       # vla_conditional_use [requires non-linear invariants]
+                      # vla_in_loop [requires non-linear invariants?]
                       # vla_in_loop_conditional_{continue,exit} [requires non-linear invariants]
+                      # vla_4_in_loop [query timeout => timeout]
+                      # vla_2d [non-linear invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
+                      # vla_2_nested_loops [safety check failure?]
+                      # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_malloc_switch [requires more powerful inequality inference and RPO DFA]
+                      # alloca_unreal [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
 
 #UNROLL1_ICX = alloca_linked_list $(UNROLL1_PROGS)
 #UNROLL2_ICX = fib
