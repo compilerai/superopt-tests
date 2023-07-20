@@ -2,7 +2,6 @@
 
 int MYmystrlen(char* s);
 char* MYmymalloc(int n);
-void MYmyDBG();
 void MYmyfree(char* a);
 int write(int fd, char* a, int n);
 

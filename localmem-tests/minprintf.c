@@ -1,8 +1,8 @@
 #include <stdarg.h>
 
 void MYmyDBG(char* p);
-void MYmyprint_char(char p);
-void MYmyprint_int(int p);
+void print_char(char p);
+void print_int(int p);
 
 /* minprintf: minimal printf with variable argument list */
 void minprintf(char *fmt, ...)
@@ -16,17 +16,17 @@ void minprintf(char *fmt, ...)
   for (p = fmt; *p; p++) {
     MYmyDBG(p); // required
     if (*p != '%') {
-      MYmyprint_char(*p);
+      print_char(*p);
       continue;
     }
     switch (*++p) {
       case 'd':
         ival = va_arg(ap, int);
-        MYmyprint_int(ival);
+        print_int(ival);
         break;
       case 's':
         for (sval = va_arg(ap, char *); *sval; sval++)
-          MYmyprint_char(*sval);
+          print_char(*sval);
         break;
       default:
         break;
