@@ -21,7 +21,7 @@ void w_deref_arg(struct ptr_pair* pp)
   pp->p2 = &x;
 }
 
-int ftmap_2_main(int n, char* a[])
+int ftmap_2_main()
 {
   int l;
   struct ptr_pair pp = { .p1 = &l, .p2 = &y };
@@ -38,5 +38,5 @@ int ftmap_2_main(int n, char* a[])
 
 int main(int n, char* argv[])
 {
-  return ftmap_2_main(n, argv);
+  return ftmap_2_main();
 }

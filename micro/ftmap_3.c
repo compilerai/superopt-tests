@@ -12,7 +12,7 @@ void nop(int **p)
   ;
 }
 
-int ftmap_3_main(int n, char* a[])
+int ftmap_3_main()
 {
   int l = 11;
   int* l_p = &l;
@@ -26,5 +26,5 @@ int ftmap_3_main(int n, char* a[])
 
 int main(int n, char* argv[])
 {
-  return ftmap_3_main(n, argv);
+  return ftmap_3_main();
 }

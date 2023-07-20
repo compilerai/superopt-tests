@@ -7,7 +7,7 @@ int* get_global_sym()
   return &g_x;
 }
 
-int ftmap_4_main(int n, char* a[])
+int ftmap_4_main()
 {
   int* p = 0;
   g_x = 10;
@@ -20,5 +20,5 @@ int ftmap_4_main(int n, char* a[])
 
 int main(int n, char* argv[])
 {
-  return ftmap_4_main(n, argv);
+  return ftmap_4_main();
 }
