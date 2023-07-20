@@ -1,0 +1,6 @@
+=PC: L2%1%spvEnd
+=local.=Lentry%1%d=
+1 : input.dst.sp=L2%1%spvEnd=sp.L2%1%spvEnd : BV:32
+2 : 24 : BV:32
+3 : bvadd(1, 2) : BV:32
+=done
