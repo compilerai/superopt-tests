@@ -12,6 +12,7 @@ UNROLL1_PROGS :=                                                               \
                  addr_taken_simple                                             \
                  addr_taken_conditional                                        \
                  addr_taken_array                                              \
+                 addr_taken_array_3                                            \
                  addr_taken_array_in_loop                                      \
                                                                                \
                  variadic_acyclic                                              \
