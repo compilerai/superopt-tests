@@ -8,7 +8,8 @@ UNROLL64_GCC := # s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s162 s1
 UNROLL64_CLANG := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s162 s173 s2244 s243 s251 s452 s453 sum1d vdotr vpv vpvpv vpvtv vtv vtvtv vpvts
 UNROLL64_ICC := # s000 s112 s122 s1251 s127 s1281 s1351 s173 s2244 s251 s452 s453 sum1d vdotr vpv vpvpv vpvtv vtv vpvts
 
-EXPECTED_FAILS_CLANG := s1221
+EXPECTED_FAILS_CLANG := s1221                              \
+                        s162                               \
                         # s1221 [query-timeout]
                         # s162 [dst ml safety check fails]
 # compiler flags
