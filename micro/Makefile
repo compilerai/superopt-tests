@@ -37,7 +37,6 @@ EXPECTED_FAILS_GCC := non_linear_invariant_casting  \
                       ftmap_4                       \
                       fcalls_merge                  \
                       nested_loops                  \
-										 	sum_positive
                       # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
                       # ftmap_1 [eqgen fails because of incorrect disassembly]
                       # ftmap_2 [harvest output does not include function main]
@@ -45,14 +44,12 @@ EXPECTED_FAILS_GCC := non_linear_invariant_casting  \
                       # ftmap_4 [harvest output does not include function main]
                       # fcalls_merge [calls to bar() are sinked and merged]
                       # nested_loops [requires invariant (m > 0) in due to unswitching of inner loop condition]
-											# sum_positive [requires: pointer arithmetic overflow UB modelling]
 											# sum2d [requires: pointer arithmetic overflow UB modelling]
 
 UNROLL16_CLANG := $(PROGS) \
                   load_store_elim_conditional
 EXPECTED_FAILS_CLANG := ftmap_3                     \
                         ftmap_4                     \
-										 	  sum_positive # [requires: pointer arithmetic overflow UB modelling]
                         # ftmap_3 [harvest output does not include function main]
                         # ftmap_4 [harvest output does not include function main]
 
