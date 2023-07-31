@@ -93,6 +93,7 @@ EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         vla_4_in_loop                                          \
                         vla_2d                                                 \
                         vla_2_nested_loops                                     \
+                        variadic_acyclic                                       \
                         alloca_malloc_switch                                   \
                         alloca_conditional_simple                              \
                         alloca_unreal                                          \
@@ -102,6 +103,7 @@ EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         # vla_4_in_loop [query timeout => timeout]
                         # vla_2d [non-linear invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
                         # vla_2_nested_loops [timeout]
+                        # variadic_acyclic [push insn is used for allocation -- we correlate local before write and thus get divergence on path where the local is not written-to before dealloc]
                         # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                         # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                         # alloca_unreal [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
