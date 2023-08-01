@@ -136,6 +136,7 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       vla_in_loop_conditional_exit                             \
                       vla_4_in_loop                                            \
                       vla_2d                                                   \
+                      vla_2_nested_loops                                       \
                       rodata                                                   \
                       alloca_conditional_simple                                \
                       alloca_malloc_switch                                     \
@@ -151,7 +152,7 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       # vla_in_loop_conditional_{continue,exit} [requires non-linear invariants]
                       # vla_4_in_loop [query timeout => timeout]
                       # vla_2d [non-linear invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
-                      # vla_2_nested_loops [safety check failure?]
+                      # vla_2_nested_loops [loop peeling leading multiple stack allocations for inner VLA alloc]
                       # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_malloc_switch [requires more powerful inequality inference and RPO DFA]
                       # alloca_unreal [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
