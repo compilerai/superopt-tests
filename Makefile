@@ -134,9 +134,7 @@ regression_paper regression_i386:: regression_%: $(BUILDDIR)/regression_%.helper
 
 .PHONY: clean_outside_build
 clean_outside_build:
-	find . -name *.bc | xargs rm -f
 	find . -name *.cg.ll | xargs rm -f
-	find . -name "*.etfg" | xargs rm -f
 	find . -name *.tmp | xargs rm -f
 	find . -name '*[^.][^s].log' | xargs rm -f
 	find . -name cscope.out | xargs rm -f
@@ -144,6 +142,8 @@ clean_outside_build:
 
 clean: clean_outside_build
 	$(foreach t,$(TARGETS),$(MAKE) -C $(BUILDDIR)/$(t) clean;)
+	find $(BUILDDIR) -name *.bc | xargs rm -f
+	find $(BUILDDIR) -name "*.etfg" | xargs rm -f
 	find $(BUILDDIR) -name "clangv.*" | xargs rm -rf
 	find $(BUILDDIR) -name "eqcheck.*" | xargs rm -rf
 
