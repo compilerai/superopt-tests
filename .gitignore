@@ -16,3 +16,5 @@ tsvc/scripts/src-tfg.dot
 *.c.etfg
 *.ll.etfg
 regression_paper
+regression_i386
+runtimes_cmp
