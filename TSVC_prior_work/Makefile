@@ -17,12 +17,13 @@ UNROLL16_ICC := s000 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s173 s176 s2244
 EXPECTED_FAILS_ICC := vtvtv     \
                       s1251     \
                       s3251     \
-                      vtv       \
+                      vdotr     \
                       s176      \
                       # vtvtv [query timeout]
                       # s1251 [query timeout]
                       # s3251 [query timeout]
-                      # vtv [query timeout]
+                      # vtv [sometimes query timeout?]
+                      # vdotr [query timeout]
                       # s176 [???]
 
 # compiler flags
