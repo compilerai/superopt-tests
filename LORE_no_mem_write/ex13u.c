@@ -10,8 +10,7 @@ __attribute__((aligned(16))) TYPE a[LEN],b[LEN],c[LEN],d[LEN],e[LEN],
 TYPE x,y;
 
 //loop 3D (2-sum MW) imperfect 
-void ex13()
-//void example14() 
+void ex13u()
 {
   int k,j,i=0;
   int len = LEN2/2;

@@ -11,7 +11,7 @@ TYPE x,y;
 
 //3-way branch 1D loop
 //MW
-int ex107()
+int ex107u()
 {
 
     #pragma GCC unroll 2
