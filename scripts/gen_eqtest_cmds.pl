@@ -52,7 +52,7 @@ my $extraflagsstr = join('',@extraflags);
 
 my @expectedfails_tmp = split('@', $expectedfailsarg);
 shift(@expectedfails_tmp);
-my $expectedfails;
+my $expectedfails = "";
 if (scalar @expectedfails_tmp gt 0) {
   if (scalar @expectedfails_tmp gt 1) { die "expectedfails formatted illegally"; }
   $expectedfails = $expectedfails_tmp[0];
@@ -91,8 +91,6 @@ foreach my $prog (keys %unroll) {
   my $prog_extraflagsstr = $extraflagsstr;
 
   if ($type eq "eqcheck") {
-    my $compiler_suffix = ".eqchecker.$opt_level.$dst_arch.s";
-    my $tmpdir = "$PWD/eqcheck.$prog.$compiler$compiler_suffix";
     if (-f "$VPATH/$prog.$compiler.pclsprels") {
       $prog_extraflagsstr = $prog_extraflagsstr . " --pc-local-sprel-assumes $VPATH/$prog.$compiler.pclsprels";
     }
@@ -104,10 +102,13 @@ foreach my $prog (keys %unroll) {
     }
 
     if ($compiler eq "srcdst") {
+      my $tmpdir = "$PWD/eqcheck.$prog.$compiler";
       my $src_pathname = identify_filetype_extension("$VPATH/$prog\_src");
       my $dst_pathname = identify_filetype_extension("$VPATH/$prog\_dst");
       print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='$compiler' -expect-fails='$expectedfails' -tmpdir $tmpdir $src_pathname -assembly $dst_pathname.UNROLL$u\n";
     } else {
+      my $compiler_suffix = ".eqchecker.$opt_level.$dst_arch.s";
+      my $tmpdir = "$PWD/eqcheck.$prog.$compiler$compiler_suffix";
       my $compile_log_str = "";
       if ($compiler =~ /^clang/) {
         $compile_log_str = "-compile_log $PWD/$prog.$compiler$compiler_suffix.log"
