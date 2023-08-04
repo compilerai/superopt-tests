@@ -33,9 +33,3 @@ void ftmap_2_main()
   w_deref_arg(&pp);       // R:        W: pp
   // M[&pp] ~~> { &y, &x-heap, &l }
 }
-
-int main(int n, char* argv[])
-{
-  ftmap_2_main();
-  return 0;
-}

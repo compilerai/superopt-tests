@@ -1,5 +1,5 @@
 void
-foo(int* src, int n, int* dst)
+ptr_arith_ub(int* src, int n, int* dst)
 {
   if (n < 0)
     return;

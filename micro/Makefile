@@ -31,27 +31,26 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary \
 UNROLL8_GCC := $(PROGS) \
                # load_store_elim_conditional not passing in GCC!
 EXPECTED_FAILS_GCC := non_linear_invariant_casting  \
-                      ftmap_1                       \
-                      ftmap_2                       \
-                      ftmap_3                       \
-                      ftmap_4                       \
-                      fcalls_merge                  \
-                      nested_loops                  \
+                      ftmap_1_main                  \
+                      ftmap_2_main                  \
+                      ftmap_3_main                  \
+                      ftmap_4_main                  \
+                      fcalls_sink_merge             \
                       # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
-                      # ftmap_1 [eqgen fails because of incorrect disassembly]
-                      # ftmap_2 [harvest output does not include function main]
-                      # ftmap_3 [harvest output does not include function main]
-                      # ftmap_4 [harvest output does not include function main]
-                      # fcalls_merge [calls to bar() are sinked and merged]
+                      # ftmap_1_main [sp is not aligned by 16 at callsite; the callee is in same translation unit]
+                      # ftmap_2_main [pclsprels missing]
+                      # ftmap_3_main [nop fcall inlined]
+                      # ftmap_4_main [sp is not aligned by 16 at callsite; the callee is in same translation unit]
+                      # fcalls_sink_merge [calls to bar() are sinked and merged]
                       # nested_loops [requires invariant (m > 0) in due to unswitching of inner loop condition]
 											# sum2d [requires: pointer arithmetic overflow UB modelling]
 
 UNROLL16_CLANG := $(PROGS) \
                   load_store_elim_conditional
-EXPECTED_FAILS_CLANG := ftmap_3                     \
-                        ftmap_4                     \
-                        # ftmap_3 [harvest output does not include function main]
-                        # ftmap_4 [harvest output does not include function main]
+EXPECTED_FAILS_CLANG := ftmap_3_main                \
+                        ftmap_4_main                \
+                        # ftmap_3 [nop fcall inlined]
+                        # ftmap_4 [get_global_sym call inlined]
 
 UNROLL1_SRCDST := inequiv_1                                \
                   inequiv_2                                \

@@ -23,8 +23,3 @@ int ftmap_3_main()
 
   return 0;
 }
-
-int main(int n, char* argv[])
-{
-  return ftmap_3_main();
-}

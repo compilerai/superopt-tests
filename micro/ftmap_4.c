@@ -17,8 +17,3 @@ int ftmap_4_main()
   *p = 20;
   return *p + g_x;
 }
-
-int main(int n, char* argv[])
-{
-  return ftmap_4_main();
-}
