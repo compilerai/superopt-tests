@@ -52,11 +52,10 @@ my $extraflagsstr = join('',@extraflags);
 
 my @expectedfails_tmp = split('@', $expectedfailsarg);
 shift(@expectedfails_tmp);
-my %expectedfails = ();
+my $expectedfails;
 if (scalar @expectedfails_tmp gt 0) {
   if (scalar @expectedfails_tmp gt 1) { die "expectedfails formatted illegally"; }
-  my @expectedfails_ls = split(' ',$expectedfails_tmp[0]);
-  for (@expectedfails_ls) { $expectedfails{$_} = 1 }
+  $expectedfails = $expectedfails_tmp[0];
 }
 
 my %unroll;
@@ -90,10 +89,6 @@ open(OUT, '>', $filename) or die $!;
 foreach my $prog (keys %unroll) {
   my $u = $unroll{$prog};
   my $prog_extraflagsstr = $extraflagsstr;
-  my $prog_expectfailstr = '';
-  if ($expectedfails{$prog}) {
-    $prog_expectfailstr = "-expect-fail";
-  }
 
   if ($type eq "eqcheck") {
     my $compiler_suffix = ".eqchecker.$opt_level.$dst_arch.s";
