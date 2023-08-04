@@ -22,14 +22,14 @@ my $benchmark = basename($VPATH);
 my $PWD = getcwd;
 my $num_processes_per_file = 10;
   
-my ($dst_arch, $compiler, $compiler_suffix, $extraflagsarg, $expectedfailsarg);
+my ($dst_arch, $compiler, $extraflagsarg, $expectedfailsarg);
 my ($opt_level);
 my $cur_index;
 
 if ($type eq "eqcheck") {
   $dst_arch = $ARGV[4];
   $compiler = convert_PP_to_plusplus($ARGV[5]);
-  $compiler_suffix = convert_PP_to_plusplus($ARGV[6]);
+  $opt_level = convert_PP_to_plusplus($ARGV[6]);
   
   $extraflagsarg = $ARGV[7];
   
@@ -96,6 +96,7 @@ foreach my $prog (keys %unroll) {
   }
 
   if ($type eq "eqcheck") {
+    my $compiler_suffix = ".eqchecker.$opt_level.$dst_arch.s";
     my $tmpdir = "$PWD/eqcheck.$prog.$compiler$compiler_suffix";
     if (-f "$VPATH/$prog.$compiler.pclsprels") {
       $prog_extraflagsstr = $prog_extraflagsstr . " --pc-local-sprel-assumes $VPATH/$prog.$compiler.pclsprels";
@@ -110,8 +111,7 @@ foreach my $prog (keys %unroll) {
     if ($compiler eq "srcdst") {
       my $src_pathname = identify_filetype_extension("$VPATH/$prog\_src");
       my $dst_pathname = identify_filetype_extension("$VPATH/$prog\_dst");
-      #print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -logdir 'logs_$benchmark' -extra_flags='$prog_extraflagsstr' $prog_expectfailstr -tmpdir $tmpdir $src_pathname $dst_pathname.UNROLL$u\n";
-      print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' $prog_expectfailstr -tmpdir $tmpdir $src_pathname -assembly $dst_pathname.UNROLL$u\n";
+      print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='$compiler' -expect-fails='$expectedfails' -tmpdir $tmpdir $src_pathname -assembly $dst_pathname.UNROLL$u\n";
     } else {
       my $compile_log_str = "";
       if ($compiler =~ /^clang/) {
@@ -119,15 +119,14 @@ foreach my $prog (keys %unroll) {
       }
       my $src_pathname = identify_filetype_extension("$VPATH/$prog");
       if ($compiler ne "ack" || -f "$PWD/$prog.$compiler$compiler_suffix") { # skip missing binaries for 'ack' which does not support VLA/alloca()
-        #print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -logdir 'logs_$benchmark' -extra_flags='$prog_extraflagsstr' $prog_expectfailstr  -tmpdir $tmpdir $src_pathname $PWD/$prog.$compiler$compiler_suffix.UNROLL$u $compile_log_str\n";
-        print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' $prog_expectfailstr  -tmpdir $tmpdir $src_pathname -assembly $PWD/$prog.$compiler$compiler_suffix.UNROLL$u $compile_log_str\n";
+        print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='$compiler' -opt_level $opt_level -expect-fails='$expectedfails'  -tmpdir $tmpdir $src_pathname -assembly $PWD/$prog.$compiler$compiler_suffix.UNROLL$u $compile_log_str\n";
       } else {
       }
     }
   } elsif ($type eq "clangv") {
     my $src_pathname = identify_filetype_extension("$VPATH/$prog");
     my $tmpdir = "$PWD/clangv.$prog.$opt_level";
-    print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' $prog_expectfailstr -tmpdir $tmpdir -unroll $u -opt_level $opt_level $src_pathname\n";
+    print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='clangv' -expect-fails='$expectedfails' -tmpdir $tmpdir -unroll $u -opt_level $opt_level $src_pathname\n";
   } else {
     die "not-reached";
   }
