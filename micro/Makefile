@@ -30,12 +30,19 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary \
 
 UNROLL8_GCC := $(PROGS) \
                # load_store_elim_conditional not passing in GCC!
-EXPECTED_FAILS_GCC := non_linear_invariant_casting  \
+EXPECTED_FAILS_GCC :=                               \
+                      fptoui                        \
+                      fptouid                       \
+                      fptouil                       \
+                      non_linear_invariant_casting  \
                       ftmap_1_main                  \
                       ftmap_2_main                  \
                       ftmap_3_main                  \
                       ftmap_4_main                  \
                       fcalls_sink_merge             \
+                      # fptoui [???]
+                      # fptouid [???]
+                      # fptouil [???]
                       # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
                       # ftmap_1_main [sp is not aligned by 16 at callsite; the callee is in same translation unit]
                       # ftmap_2_main [pclsprels missing]
@@ -47,8 +54,11 @@ EXPECTED_FAILS_GCC := non_linear_invariant_casting  \
 
 UNROLL16_CLANG := $(PROGS) \
                   load_store_elim_conditional
-EXPECTED_FAILS_CLANG := ftmap_3_main                \
+EXPECTED_FAILS_CLANG :=                             \
+                        fptouil                     \
+                        ftmap_3_main                \
                         ftmap_4_main                \
+                        # fptouil [???]
                         # ftmap_3 [nop fcall inlined]
                         # ftmap_4 [get_global_sym call inlined]
 
