@@ -96,7 +96,7 @@ all: $(ALL_PROGS)
 ack-progs: $(ACK_EQCHECKER_PROGS)
 
 eqtest_%.helper:: $(ALL_PROGS) $(SRCDIR)/Makefile.template $(SRCDIR)/scripts/gen_eqtest_cmds.pl $(VPATH)/Makefile $(EQFLAGS_FILES)
-	perl $(SRCDIR)/scripts/gen_eqtest_cmds.pl eqcheck $@ $(SUPEROPT_PROJECT_DIR) $(VPATH) $(ARCH) $(shell echo $(CUR_COMPILER) | tr A-Z a-z) $(ARCH_OPT_SUFFIX) "extraflags@$(EXTRA_FLAGS) $(EXTRA_FLAGS_$(CUR_COMPILER))" "expectedfails@$(EXPECTED_FAILS_$(CUR_COMPILER))" $(PROGS_UNROLL_CUR_COMPILER)
+	perl $(SRCDIR)/scripts/gen_eqtest_cmds.pl eqcheck $@ $(SUPEROPT_PROJECT_DIR) $(VPATH) $(ARCH) $(shell echo $(CUR_COMPILER) | tr A-Z a-z) $(OPT_LEVEL) "extraflags@$(EXTRA_FLAGS) $(EXTRA_FLAGS_$(CUR_COMPILER))" "expectedfails@$(EXPECTED_FAILS_$(CUR_COMPILER))" $(PROGS_UNROLL_CUR_COMPILER)
 
 eqtest_%_gcc.helper:: CUR_COMPILER=GCC
 eqtest_%_gPP.helper:: CUR_COMPILER=GPP
@@ -111,44 +111,44 @@ eqtest_%_icx.helper:: CUR_COMPILER=ICX
 eqtest_%_icpx.helper:: CUR_COMPILER=ICPX
 
 eqtest_%_ack.helper:: CUR_COMPILER=ACK
-eqtest_%_ack.helper:: ARCH_OPT_SUFFIX=.O2.i386
+eqtest_%_ack.helper:: OPT_LEVEL=O2
 
 eqtest_%_ack.O1.helper:: CUR_COMPILER=ACK
-eqtest_%_ack.O1.helper:: ARCH_OPT_SUFFIX=.O1.i386
+eqtest_%_ack.O1.helper:: OPT_LEVEL=O1
 
 eqtest_i386_O0:: ARCH=i386
-eqtest_i386_O0:: ARCH_OPT_SUFFIX=.eqchecker.O0.i386.s
+eqtest_i386_O0:: OPT_LEVEL=O0
 
 eqtest_i386_O1:: ARCH=i386
-eqtest_i386_O1:: ARCH_OPT_SUFFIX=.eqchecker.O1.i386.s
+eqtest_i386_O1:: OPT_LEVEL=O1
 
 eqtest_i386_O2:: ARCH=i386
-eqtest_i386_O2:: ARCH_OPT_SUFFIX=.eqchecker.O2.i386.s
+eqtest_i386_O2:: OPT_LEVEL=O2
 
 eqtest_i386_O3:: ARCH=i386
-eqtest_i386_O3:: ARCH_OPT_SUFFIX=.eqchecker.O3.i386.s
+eqtest_i386_O3:: OPT_LEVEL=O3
 
 eqtest_x64_O0:: ARCH=x64
-eqtest_x64_O0:: ARCH_OPT_SUFFIX=.eqchecker.O0.x64.s
+eqtest_x64_O0:: OPT_LEVEL=O0
 
 eqtest_x64_O1:: ARCH=x64
-eqtest_x64_O1:: ARCH_OPT_SUFFIX=.eqchecker.O1.x64.s
+eqtest_x64_O1:: OPT_LEVEL=O1
 
 eqtest_x64_O2:: ARCH=x64
-eqtest_x64_O2:: ARCH_OPT_SUFFIX=.eqchecker.O2.x64.s
+eqtest_x64_O2:: OPT_LEVEL=O2
 
 eqtest_x64_O3:: ARCH=x64
-eqtest_x64_O3:: ARCH_OPT_SUFFIX=.eqchecker.O3.x64.s
+eqtest_x64_O3:: OPT_LEVEL=O3
 
 # use .c/.ll files directly
 eqtest_srcdst.helper:: CUR_COMPILER=SRCDST
 eqtest_srcdst.helper:: ARCH=i386 #use i386 build for src-dst checks
-eqtest_srcdst.helper:: ARCH_OPT_SUFFIX=notused
+eqtest_srcdst.helper:: OPT_LEVEL=notused
 
 # XXX not required?
 eqtest_ll.helper:: CUR_COMPILER=LL
 eqtest_ll.helper:: ARCH=x64 #we use the x64 build for llvm-to-llvm checks
-eqtest_ll.helper:: ARCH_OPT_SUFFIX=.ll
+eqtest_ll.helper:: OPT_LEVEL=ll
 
 
 clangv_O1:: OPT_LEVEL=O1
@@ -194,5 +194,6 @@ archive_run: collect_logs
 	# python3 $(SUPEROPT_PROJECT_DIR)/superopt/utils/eq_read_log.py '$(BENCH_RUN_LOGS_DIR)/*.log' > $(ARCHIVE_FNAME)
 	# apack $(ARCHIVE_FNAME).zip $(BENCH_RUN_LOGS_DIR)/*.log $(BENCH_RUN_LOGS_DIR)/*.proof
 	find . -type f -path "./eqcheck*" ! -name "*.xml" -print0 | apack -0 $(ARCHIVE_FNAME).zip
+	ln -sf $(ARCHIVE_FNAME).zip $(ARCHIVE_LAST).zip
 
 .PHONY: all clean

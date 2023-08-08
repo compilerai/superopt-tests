@@ -10,7 +10,7 @@ __attribute__((aligned(16))) TYPE a[LEN],b[LEN],c[LEN],d[LEN],e[LEN],
 TYPE x,y;
 
 //MW-3d
-TYPE ex106(){
+TYPE ex106u(){
 	for (int i = 0; i < LEN3; i++)
 	  for (int j = 0; j < LEN3; j++)
       #pragma GCC unroll 2

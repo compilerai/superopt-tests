@@ -1,0 +1,16 @@
+=PC: L3%1%spvEnd
+=local.=Lentry%1%d=
+1 : input.dst.sp=L3%1%spvEnd=sp.L3%1%spvEnd : BV:32
+2 : 16 : BV:32
+3 : bvadd(1, 2) : BV:32
+=PC: L3%1%spvEnd
+=local.=Lentry%2%d=
+1 : input.dst.sp=L3%1%spvEnd=sp.L3%1%spvEnd : BV:32
+2 : 272 : BV:32
+3 : bvadd(1, 2) : BV:32
+=PC: L3%1%spvEnd
+=local.=Lentry%3%d=
+1 : input.dst.sp=L3%1%spvEnd=sp.L3%1%spvEnd : BV:32
+2 : 1296 : BV:32
+3 : bvadd(1, 2) : BV:32
+=done

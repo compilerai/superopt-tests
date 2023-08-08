@@ -1,5 +1,4 @@
-void MYmyDBG();
-int MYmybar(int*,int*,int*,int*);
+int bar(int*,int*,int*,int*);
 
 int vla_4_single_loop(int *a, unsigned n)
 {
@@ -17,5 +16,5 @@ int vla_4_single_loop(int *a, unsigned n)
     x[i] = a[i]^a[i];
     y[i] = a[i]-x[i];
   }
-  return MYmybar(v,w,x,y);
+  return bar(v,w,x,y);
 }

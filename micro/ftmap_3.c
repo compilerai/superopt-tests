@@ -12,7 +12,7 @@ void nop(int **p)
   ;
 }
 
-int ftmap_3_main(int n, char* a[])
+int ftmap_3_main()
 {
   int l = 11;
   int* l_p = &l;
@@ -22,9 +22,4 @@ int ftmap_3_main(int n, char* a[])
   w_deref_deref_arg(&l_p);  // R: l_p,l  W: l
 
   return 0;
-}
-
-int main(int n, char* argv[])
-{
-  return ftmap_3_main(n, argv);
 }

@@ -48,6 +48,8 @@ int match_char(char tc);
 //	return 1;
 //}
 
+void DBG();
+
 int minscanf(char* fmt, ...)
 {
 	va_list ap;
@@ -56,11 +58,11 @@ int minscanf(char* fmt, ...)
 
 	va_start(ap, fmt);
 	for (p = fmt; *p; ++p) {
-    MYmyDBG();
+    DBG();
 		if (*p != '%') {
 			if (!MYmy_isblank(*p)) { // blanks are ignored
 			  if (!match_char(*p))
-			    goto end;
+			    break;
 			}
 			continue;
 		}
