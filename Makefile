@@ -140,10 +140,13 @@ clean_outside_build:
 	find . -name cscope.out | xargs rm -f
 	# -find . -name core | xargs rm -f
 
-clean: clean_outside_build
+clean: clean_outside_build logs_clean
 	$(foreach t,$(TARGETS),$(MAKE) -C $(BUILDDIR)/$(t) clean;)
 	find $(BUILDDIR) -name *.bc | xargs rm -f
 	find $(BUILDDIR) -name "*.etfg" | xargs rm -f
+
+.PHONY: logs_clean
+logs_clean:
 	find $(BUILDDIR) -name "clangv.*" | xargs rm -rf
 	find $(BUILDDIR) -name "eqcheck.*" | xargs rm -rf
 
