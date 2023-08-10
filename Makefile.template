@@ -95,7 +95,7 @@ all: $(ALL_PROGS)
 
 ack-progs: $(ACK_EQCHECKER_PROGS)
 
-eqtest_%.helper:: $(ALL_PROGS) $(SRCDIR)/Makefile.template $(SRCDIR)/scripts/gen_eqtest_cmds.pl $(VPATH)/Makefile $(EQFLAGS_FILES)
+eqtest_%.helper:: $(ALL_PROGS) $(SRCDIR)/Makefile.template $(SRCDIR)/scripts/gen_eqtest_cmds.pl $(VPATH)/Makefile Makefile $(EQFLAGS_FILES)
 	perl $(SRCDIR)/scripts/gen_eqtest_cmds.pl eqcheck $@ $(SUPEROPT_PROJECT_DIR) $(VPATH) $(ARCH) $(shell echo $(CUR_COMPILER) | tr A-Z a-z) $(OPT_LEVEL) "extraflags@$(EXTRA_FLAGS) $(EXTRA_FLAGS_$(CUR_COMPILER))" "expectedfails@$(EXPECTED_FAILS_$(CUR_COMPILER))" $(PROGS_UNROLL_CUR_COMPILER)
 
 eqtest_%_gcc.helper:: CUR_COMPILER=GCC
