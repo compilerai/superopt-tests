@@ -62,7 +62,6 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       vla_4_single_loop                                        \
                       vla_2_single_loop                                        \
                       vla_single_loop                                          \
-                      vla_conditional_use                                      \
                       vla_2_nested_loops                                       \
                       vla_2d                                                   \
                       minprintf                                                \
@@ -74,13 +73,12 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       # vla_4_single_loop [timeout]
                       # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
                       # vla_single_loop   [dealloc path correlation failing: sinking (code merging) of sp restore (dealloc) to common path instead of alloc dominating path, no coresponding path in src]
-                      # vla_conditional_use [BV timeouts on dealloc edge -- getting spurious live registers and slots]
                       # vla_2_nested_loops [some bitwise computation is happening -- local-mem-eq is failing]
+                      # vla_2d [mem-eq query timeout]
                       # minprintf,minscanf [requires select(local.addr) which is missing from bv-eqclass exprs]
                       # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                      # vla_2d [mem-eq query timeout]
 
 UNROLL1_CLANG := alloca_linked_list                                            \
                  $(UNROLL1_PROGS)                                              \
@@ -114,7 +112,6 @@ UNROLL2_ACK = addr_taken_simple                                                \
               addr_taken_array_in_loop                                         \
               addr_taken_conditional                                           \
               variadic_acyclic                                                 \
-              # variadic_with_loop  requires select(local.addr) which is missing from bv-eqclass exprs
               # minprintf -- harvested assembly is incorrect; looks like switch is implemented using jump table
 EXTRA_FLAGS_ACK := --disable-fcall-wfconds
 
