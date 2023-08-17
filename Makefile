@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 
+CP := cp -p # preserve timestamps
+
 SUPEROPT_PROJECT_DIR ?= $(realpath $(CURDIR)/..)
 SUPEROPT_INSTALL_DIR ?= $(SUPEROPT_PROJECT_DIR)/usr/local
 
@@ -48,11 +50,11 @@ $(BUILDDIR)/%:
 	mkdir -p $@
 
 $(BUILD_MAKEFILES): $(BUILDDIR)/%/Makefile: %/Makefile $(BUILDDIR)/%
-	cp $< $@
+	$(CP) $< $@
 
 $(TARGETS) $(SPEC_TARGETS)::
 	mkdir -p $(BUILDDIR)/$@
-	cp $@/Makefile -t $(BUILDDIR)/$@
+	$(CP) $@/Makefile -t $(BUILDDIR)/$@
 	$(MAKE) -C $(BUILDDIR)/$@
 
 ack-progs::
