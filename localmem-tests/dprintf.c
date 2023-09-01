@@ -16,7 +16,6 @@ char* simple_ltoa(char *local, unsigned long i)
 	char *p = &local[22];
 	*--p = '\0';
 	do {
-    MYmyDBG();
 		char temp;
 		do_rem(temp, i, 10);
 		*--p = '0' + temp;
@@ -32,7 +31,6 @@ char* simple_ltoahex(char *local, unsigned long i)
 	char *p = &local[22];
 	*--p = '\0';
 	do {
-    MYmyDBG();
 		char temp = i & 0xf;
 		if (temp <= 0x09)
 			*--p = '0' + temp;
@@ -73,7 +71,6 @@ void dprintf_(int fd, const char *fmt, ...)
 	va_start(args, fmt);
 
 	while (start) {
-	  DBG(__LINE__);
 		while (*ptr && *ptr != '%') {
 			ptr++;
 		}

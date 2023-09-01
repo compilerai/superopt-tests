@@ -17,9 +17,9 @@ UNROLL64_CLANG := s1119 s116 s119 s124 s125 s1279 s131 s132 s1421 s171 s174 s252
 EXPECTED_FAILS_CLANG := s124      \
                         s171      \
                         s174      \
-                        s311      \
                         s3111     \
                         s423      \
+                        s2711     \
                         vbor      \
                         vif       \
                         # s124 [timeout]
@@ -29,6 +29,7 @@ EXPECTED_FAILS_CLANG := s124      \
                         # s311 [sometimes query-timeout]
                         # s3111 [assert-fail in simplification; exceeds max iter count of 1024]
                         # s423 [???]
+                        # s2711 [query-timeout]
                         # vbor [query-timeout]
                         # vif [timeout]
 
@@ -50,7 +51,9 @@ EXPECTED_FAILS_ICC := s114          \
                       s3111         \
                       vbor          \
                       vif           \
+                      s1161         \
                       # timeout, high-mem in most (if not all) cases
+                      # s1161 [exceeds mem limit]
 
 ICC_COMPILER_DEFINE := -Dicc_compiler
 

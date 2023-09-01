@@ -6,7 +6,6 @@ void MYmystrtol(void) { return; }
 void MYmyread(void) { return; }
 void MYmywrite(void) { return; }
 void MYmybaz(void) { return; }
-void MYmyDBG(void) { return; }
 void MYmyprint_char(void) { return; }
 void MYmyprint_int(void) { return; }
 void MYmyscanf(void) { return; }

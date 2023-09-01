@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 
+CP := cp -p # preserve timestamps
+
 SUPEROPT_PROJECT_DIR ?= $(realpath $(CURDIR)/..)
 SUPEROPT_INSTALL_DIR ?= $(SUPEROPT_PROJECT_DIR)/usr/local
 
@@ -48,11 +50,11 @@ $(BUILDDIR)/%:
 	mkdir -p $@
 
 $(BUILD_MAKEFILES): $(BUILDDIR)/%/Makefile: %/Makefile $(BUILDDIR)/%
-	cp $< $@
+	$(CP) $< $@
 
 $(TARGETS) $(SPEC_TARGETS)::
 	mkdir -p $(BUILDDIR)/$@
-	cp $@/Makefile -t $(BUILDDIR)/$@
+	$(CP) $@/Makefile -t $(BUILDDIR)/$@
 	$(MAKE) -C $(BUILDDIR)/$@
 
 ack-progs::
@@ -118,7 +120,7 @@ $(BUILDDIR)/regression_%.helper::
 	@true > $@
 	@$(foreach t,$(RTARGETS), if [ -f $(BUILDDIR)/$(t)/test_i386 ]; then cat $(BUILDDIR)/$(t)/test_i386 >> $@; else echo "ERROR:" $(BUILDDIR)/$(t)/test_i386 "does not exist for target" $(t); rm $@; exit 1; fi;)
 
-REGRESSION_PAPER_REQS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_globals
+REGRESSION_PAPER_REQS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_globals bzip2_locals
 regression_paper:: $(REGRESSION_PAPER_REQS)
 $(BUILDDIR)/regression_paper.helper:: RTARGETS=$(REGRESSION_PAPER_REQS)
 
