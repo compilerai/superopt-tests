@@ -69,6 +69,10 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       alloca_malloc_switch                                     \
                       alloca_conditional_simple                                \
                       alloca_unreal_1                                          \
+                      local_used_in_unreachable_loop                           \
+                      local_used_on_unreachable_branch                         \
+                      variadic_acyclic                                         \
+                      variadic_with_loop                                       \
                       # vla_3_single_loop [timeout]
                       # vla_4_single_loop [timeout]
                       # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
@@ -79,6 +83,10 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                      # local_used_in_unreachable_loop [incorrect CG generated -- heap-alloc-local simplification is incorrect]
+                      # local_used_on_unreachable_branch  [incorrect CG generated -- heap-alloc-local simplification is incorrect]
+                      # variadic_acyclic [incorrect CG generated -- heap-alloc-local simplification is incorrect]
+                      # variadic_with_loop [incorrect CG generated -- heap-alloc-local simplification is incorrect]
 
 UNROLL1_CLANG := alloca_linked_list                                            \
                  $(UNROLL1_PROGS)                                              \
@@ -95,16 +103,20 @@ EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         alloca_malloc_switch                                   \
                         alloca_conditional_simple                              \
                         alloca_unreal_1                                        \
+                        local_used_in_unreachable_loop                         \
+                        local_used_on_unreachable_branch                       \
                         # vla_3_single_loop [timeout]
                         # vla_4_single_loop [timeout]
                         # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
                         # vla_4_in_loop [query timeout => timeout]
                         # vla_2d [non-linear invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
                         # vla_2_nested_loops [timeout]
-                        # variadic_acyclic [push insn is used for allocation -- we correlate local before write and thus get divergence on path where the local is not written-to before dealloc]
+                        # variadic_acyclic [push insn is used for allocation -- we correlate local before write and thus get different mem on path where the local is not written-to before dealloc]
                         # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                         # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                         # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                        # local_used_in_unreachable_loop [incorrect CG generated -- heap-alloc-local simplification is incorrect]
+                        # local_used_on_unreachable_branch  [incorrect CG generated -- heap-alloc-local simplification is incorrect]
 
 # ack does not support VLA and alloca()
 UNROLL2_ACK = addr_taken_simple                                                \
@@ -140,6 +152,8 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       alloca_conditional_simple                                \
                       alloca_malloc_switch                                     \
                       alloca_unreal_1                                          \
+                      local_used_in_unreachable_loop                           \
+                      local_used_on_unreachable_branch                         \
                       # vla_simple{,_nested_1,_nested_2} [requires non-linear invariants]
                       # vla{,_2,}_single_loop [requires non-linear invariants]
                       # vla_midway_decl [multiple allocs]
@@ -151,10 +165,12 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       # vla_in_loop_conditional_{continue,exit} [requires non-linear invariants]
                       # vla_4_in_loop [query timeout => timeout]
                       # vla_2d [non-linear invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
-                      # vla_2_nested_loops [loop peeling leading multiple stack allocations for inner VLA alloc]
+                      # vla_2_nested_loops [loop peeling leading to multiple stack allocations for inner VLA alloc]
                       # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_malloc_switch [requires more powerful inequality inference and RPO DFA]
                       # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                      # local_used_in_unreachable_loop [incorrect CG generated -- heap-alloc-local simplification is incorrect]
+                      # local_used_on_unreachable_branch  [incorrect CG generated -- heap-alloc-local simplification is incorrect]
 
 #UNROLL1_ICX = alloca_linked_list $(UNROLL1_PROGS)
 #UNROLL2_ICX = fib
