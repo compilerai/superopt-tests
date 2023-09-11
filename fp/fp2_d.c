@@ -1,11 +1,11 @@
-int quadruple_lt(float a[], float b[])
+int quadruple_lt(double a[], double b[])
 {
   return (a[0] < b[0]) && (a[1] < b[1]) && (a[2] < b[2]) && (a[3] < b[3]);
 }
 
-float diff1(float a, float b)
+double diff1(double a, double b)
 {
-  float d;
+  double d;
 
   d = a - b;
 
@@ -15,9 +15,9 @@ float diff1(float a, float b)
   return d;
 }
 
-float diff1a(float a[], float b[])
+double diff1a(double a[], double b[])
 {
-  float d1;
+  double d1;
 
   d1 = a[0] - b[0];
 
@@ -27,9 +27,9 @@ float diff1a(float a[], float b[])
   return d1;
 }
 
-float diff2(float a[], float b[])
+double diff2(double a[], double b[])
 {
-  float d1, d2;
+  double d1, d2;
 
   d1 = a[0] - b[0];
   d2 = a[1] - b[1];
@@ -53,21 +53,19 @@ float diff2(float a[], float b[])
   }                    \
 }
 
-void sort2(float a[])
+void sort2(double a[])
 {
-  float t;
+  double t;
 
   SWAP(0, 1)
 }
 
-//gcc/clang O3 are passing. gcc/clang O0 both timing out for a memeq expr file
-//all cases were passing earlier but these recently started to timeout
-/*void sort3(float a[])
+/*void sort3(double a[])
 {
-  float t;
+  double t;
 
   SWAP(0, 1)
   SWAP(1, 2)
   SWAP(0, 1)
-}*/
-
+}
+*/
