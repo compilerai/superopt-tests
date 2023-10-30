@@ -54,6 +54,7 @@ UNROLL1_PROGS :=                                                               \
                  # vla_4_single_loop  [timeout?]                               \
 
 UNROLL1_GCC := fib                                                             \
+               fib_paper                                                       \
                $(UNROLL1_PROGS)                                                \
 
 UNROLL2_GCC := alloca_linked_list
@@ -91,7 +92,8 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
 UNROLL1_CLANG := alloca_linked_list                                            \
                  $(UNROLL1_PROGS)                                              \
 
-UNROLL2_CLANG := fib
+UNROLL2_CLANG := fib                                                           \
+                 fib_paper
 
 EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         vla_4_single_loop                                      \
