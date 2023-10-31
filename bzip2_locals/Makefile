@@ -4,6 +4,8 @@ include ../config.mak                        # paths
 VPATH = $(SRCDIR)/bzip2_locals
 
 UNROLL2 := bzip2_locals \
+           indexIntoF \
+           main
 
 EXPECTED_FAILS_CLANG :=                                    \
                         hbMakeCodeLengths                  \
@@ -30,5 +32,5 @@ include $(SRCDIR)/Makefile.template
 test_i386: eqtest_i386_O1
 	cat $^ > $@
 
-clangv_Od: clangv_O1-
+clangv_Od: clangv_O0 clangv_O1-
 	cat $^ > $@
