@@ -74,6 +74,7 @@ UNROLL4_SRCDST := nested_loop_peeling                      \
                   strlen                                   \
                   bitflip                                  \
                   loopSplitting                            \
+                  path_enum_can_inv                        \
                   # epsilon_corr
 
 UNROLL8_SRCDST := strlen \
@@ -81,7 +82,9 @@ UNROLL8_SRCDST := strlen \
 EXPECTED_FAILS_SRCDST := inequiv_1                         \
                          inequiv_2                         \
                          ptr_arith_ub                      \
+                         path_enum_can_inv                 \
                          # ptr_arith_ub [requires: pointer arithmetic overflow UB modeling]
+                         # path_enum_can_inv [requires: better path enumeration or better invariant inference; see path_enum_can_inv_src.c]
 
 # compiler flags
 ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
