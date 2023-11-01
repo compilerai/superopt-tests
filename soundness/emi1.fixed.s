@@ -35,7 +35,6 @@ main:
 .LVL1:
 .L2:
         testl   %ecx, %ecx
-        movl    262124(%ebp), %edx
         js      .L3
 .L5:
 .LVL2:
@@ -60,6 +59,7 @@ main:
 .L3:
         .cfi_restore_state
         .loc 1 20 0
+        movl    262124(%ebp), %edx
         testl   %edx, %edx
         je      .L5
         jmp     .L3
