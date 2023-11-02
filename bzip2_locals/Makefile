@@ -5,7 +5,8 @@ VPATH = $(SRCDIR)/bzip2_locals
 
 UNROLL2 := bzip2_locals \
            indexIntoF \
-           main
+           main \
+           sendMTFValues
 
 EXPECTED_FAILS_CLANG :=                                    \
                         hbMakeCodeLengths                  \
