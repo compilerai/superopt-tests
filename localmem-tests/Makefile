@@ -156,6 +156,7 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       alloca_unreal_1                                          \
                       local_used_in_unreachable_loop                           \
                       local_used_on_unreachable_branch                         \
+                      variadic_with_loop                                       \
                       # vla_simple{,_nested_1,_nested_2} [requires non-linear invariants]
                       # vla{,_2,}_single_loop [requires non-linear invariants]
                       # vla_midway_decl [multiple allocs]
@@ -173,6 +174,7 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # local_used_in_unreachable_loop [incorrect CG generated -- heap-alloc-local simplification is incorrect]
                       # local_used_on_unreachable_branch  [incorrect CG generated -- heap-alloc-local simplification is incorrect]
+                      # variadic_with_loop [incorrect CG generated -- heap-alloc-local simplification is incorrect]
 
 #UNROLL1_ICX = alloca_linked_list $(UNROLL1_PROGS)
 #UNROLL2_ICX = fib
