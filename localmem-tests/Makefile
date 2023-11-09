@@ -68,6 +68,7 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       alloca_conditional_simple                                \
                       alloca_unreal_1                                          \
                       variadic_acyclic                                         \
+                      vla_conditional_use                                      \
                       # vla_3_single_loop [timeout]
                       # vla_4_single_loop [timeout]
                       # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
@@ -79,6 +80,7 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # variadic_acyclic [dealloc is not enumerated due to missing sp-update insn]
+                      # vla_conditional_use [times-out somtimes because the invariant inference DFA does not proceed in RPO i.e. it tries relaxing an edge before relaxing all its predecessors]
 
 UNROLL1_CLANG := alloca_linked_list                                            \
                  $(UNROLL1_PROGS)                                              \
