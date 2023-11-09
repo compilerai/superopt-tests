@@ -44,9 +44,6 @@ UNROLL1_PROGS :=                                                               \
                  minscanf                                                      \
                  rodata                                                        \
                                                                                \
-                 local_used_in_unreachable_loop                                \
-                 local_used_on_unreachable_branch                              \
-                                                                               \
                  # fib                [u2]                                     \
                  # alloca_linked_list [u2]                                     \
                  #                                                             \
@@ -70,10 +67,7 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       alloca_malloc_switch                                     \
                       alloca_conditional_simple                                \
                       alloca_unreal_1                                          \
-                      local_used_in_unreachable_loop                           \
-                      local_used_on_unreachable_branch                         \
                       variadic_acyclic                                         \
-                      variadic_with_loop                                       \
                       # vla_3_single_loop [timeout]
                       # vla_4_single_loop [timeout]
                       # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
@@ -84,10 +78,7 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                      # local_used_in_unreachable_loop [incorrect CG generated -- heap-alloc-local simplification is incorrect]
-                      # local_used_on_unreachable_branch  [incorrect CG generated -- heap-alloc-local simplification is incorrect]
-                      # variadic_acyclic [incorrect CG generated -- heap-alloc-local simplification is incorrect]
-                      # variadic_with_loop [incorrect CG generated -- heap-alloc-local simplification is incorrect]
+                      # variadic_acyclic [dealloc is not enumerated due to missing sp-update insn]
 
 UNROLL1_CLANG := alloca_linked_list                                            \
                  $(UNROLL1_PROGS)                                              \
@@ -105,8 +96,6 @@ EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         alloca_malloc_switch                                   \
                         alloca_conditional_simple                              \
                         alloca_unreal_1                                        \
-                        local_used_in_unreachable_loop                         \
-                        local_used_on_unreachable_branch                       \
                         # vla_3_single_loop [timeout]
                         # vla_4_single_loop [timeout]
                         # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
@@ -117,8 +106,6 @@ EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                         # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                         # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                        # local_used_in_unreachable_loop [incorrect CG generated -- heap-alloc-local simplification is incorrect]
-                        # local_used_on_unreachable_branch  [incorrect CG generated -- heap-alloc-local simplification is incorrect]
 
 # ack does not support VLA and alloca()
 UNROLL2_ACK = addr_taken_simple                                                \
@@ -154,8 +141,6 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       alloca_conditional_simple                                \
                       alloca_malloc_switch                                     \
                       alloca_unreal_1                                          \
-                      local_used_in_unreachable_loop                           \
-                      local_used_on_unreachable_branch                         \
                       variadic_with_loop                                       \
                       # vla_simple{,_nested_1,_nested_2} [requires non-linear invariants]
                       # vla{,_2,}_single_loop [requires non-linear invariants]
@@ -172,8 +157,6 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_malloc_switch [requires more powerful inequality inference and RPO DFA]
                       # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                      # local_used_in_unreachable_loop [incorrect CG generated -- heap-alloc-local simplification is incorrect]
-                      # local_used_on_unreachable_branch  [incorrect CG generated -- heap-alloc-local simplification is incorrect]
                       # variadic_with_loop [incorrect CG generated -- heap-alloc-local simplification is incorrect]
 
 #UNROLL1_ICX = alloca_linked_list $(UNROLL1_PROGS)
