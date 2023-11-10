@@ -4688,14 +4688,16 @@ void spec_uncompress(int in, int out, int lev) {
 #error You must have SPEC_BZIP defined!
 #endif
 
-int debug_time () {
 #ifdef TIMING_OUTPUT
+int debug_time () {
     static int last = 0;
     struct timeval tv;
     gettimeofday(&tv,NULL);
     debug2(2, "Time: %10d, %10d\n", tv.tv_sec, tv.tv_sec-last);
     last = tv.tv_sec;
-#endif
     return 0;
 }
+#else
+int debug_time();
+#endif
 #endif

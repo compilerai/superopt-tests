@@ -1,5 +1,5 @@
 #https://godbolt.org/z/377ce8Pv1
-        .file   "example.c"
+        .file   "emi9f.c"
         .text
 .Ltext0:
         .section        .text.unlikely,"ax",@progbits
@@ -14,7 +14,7 @@
         .type   main, @function
 main:
 .LFB0:
-        .file 1 "/app/example.c"
+        .file 1 "emi9f.c"
         .loc 1 7 0
         .cfi_startproc
         subl    $16, %esp
@@ -335,7 +335,7 @@ main:
 .LASF0:
         .string "sizetype"
 .LASF2:
-        .string "/app/example.c"
+        .string "emi9f.c"
 .LASF3:
         .string "main"
         .ident  "GCC: (GCC-Explorer-Build) 4.9.2"
