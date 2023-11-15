@@ -57,6 +57,9 @@ UNROLL1_GCC := fib                                                             \
 UNROLL2_GCC := alloca_linked_list
 
 EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
+                      vla_2_in_loop                                            \
+                      vla_3_in_loop                                            \
+                      vla_4_in_loop                                            \
                       vla_4_single_loop                                        \
                       vla_2_single_loop                                        \
                       vla_single_loop                                          \
@@ -66,10 +69,14 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       minscanf                                                 \
                       alloca_malloc_switch                                     \
                       alloca_conditional_simple                                \
+                      alloca_conditional                                       \
                       alloca_unreal_1                                          \
                       variadic_acyclic                                         \
                       vla_conditional_use                                      \
                       # vla_3_single_loop [timeout]
+                      # vla_2_in_loop [requires invariant (i < n) on loop body PCs / suffixpath]
+                      # vla_3_in_loop [requires invariant (i < n) on loop body PCs / suffixpath]
+                      # vla_4_in_loop [requires invariant (i < n) on loop body PCs / suffixpath]
                       # vla_4_single_loop [timeout]
                       # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
                       # vla_single_loop   [dealloc path correlation failing: sinking (code merging) of sp restore (dealloc) to common path instead of alloc dominating path, no coresponding path in src]
@@ -78,6 +85,7 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       # minprintf,minscanf [requires select(local.addr) which is missing from bv-eqclass exprs]
                       # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                      # alloca_conditional [requires invariant (i < n) on loop body PCs / suffixpath]
                       # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # variadic_acyclic [dealloc is not enumerated due to missing sp-update insn]
                       # vla_conditional_use [times-out somtimes because the invariant inference DFA does not proceed in RPO i.e. it tries relaxing an edge before relaxing all its predecessors]
@@ -91,6 +99,7 @@ UNROLL2_CLANG := fib                                                           \
 EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         vla_4_single_loop                                      \
                         vla_2_single_loop                                      \
+                        vla_2_in_loop                                          \
                         vla_4_in_loop                                          \
                         vla_2d                                                 \
                         vla_2_nested_loops                                     \
@@ -101,6 +110,7 @@ EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         # vla_3_single_loop [timeout]
                         # vla_4_single_loop [timeout]
                         # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
+                        # vla_2_in_loop [requires invariant (i < n) on loop body PCs / suffixpath]
                         # vla_4_in_loop [query timeout => timeout]
                         # vla_2d [non-linear invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
                         # vla_2_nested_loops [timeout]
