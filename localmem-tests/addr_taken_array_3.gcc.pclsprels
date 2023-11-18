@@ -1,16 +1,28 @@
 =PC: L3%1%spvEnd
+=local-addr-guesses begin
 =local.=Lentry%1%d=
+=stack-addr:
 1 : input.dst.sp=L3%1%spvEnd=sp.L3%1%spvEnd : BV:32
 2 : 16 : BV:32
 3 : bvadd(1, 2) : BV:32
+=stack-addr end
+=local-addr-guesses end
 =PC: L3%1%spvEnd
+=local-addr-guesses begin
 =local.=Lentry%2%d=
+=stack-addr:
 1 : input.dst.sp=L3%1%spvEnd=sp.L3%1%spvEnd : BV:32
 2 : 272 : BV:32
 3 : bvadd(1, 2) : BV:32
+=stack-addr end
+=local-addr-guesses end
 =PC: L3%1%spvEnd
+=local-addr-guesses begin
 =local.=Lentry%3%d=
+=stack-addr:
 1 : input.dst.sp=L3%1%spvEnd=sp.L3%1%spvEnd : BV:32
 2 : 1296 : BV:32
 3 : bvadd(1, 2) : BV:32
+=stack-addr end
+=local-addr-guesses end
 =done
