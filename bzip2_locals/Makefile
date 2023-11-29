@@ -4,6 +4,9 @@ include ../config.mak                        # paths
 VPATH = $(SRCDIR)/bzip2_locals
 
 UNROLL2 := bzip2_locals \
+           indexIntoF \
+           main \
+           sendMTFValues
 
 EXPECTED_FAILS_CLANG :=                                    \
                         hbMakeCodeLengths                  \
@@ -18,7 +21,7 @@ EXPECTED_FAILS_CLANG :=                                    \
 
 UNROLL2_CLANG = $(UNROLL2)
 
-EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 28800 --max-address-space-size-gb 32
+EXTRA_FLAGS := --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32 --disable-removal-of-stack-from-stack-nonstack-ml-in-dst --enable-query-decomposition
 
 # compiler flags
 GCC_EQCHECKER_FLAGS_EXTRA= $(GCC_EQCHECKER_NOUNROLL_FLAGS)
@@ -30,5 +33,5 @@ include $(SRCDIR)/Makefile.template
 test_i386: eqtest_i386_O1
 	cat $^ > $@
 
-clangv_Od: clangv_O1-
+clangv_Od: clangv_O0 clangv_O1-
 	cat $^ > $@

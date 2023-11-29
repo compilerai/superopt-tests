@@ -53,3 +53,9 @@ float sqradd(float a, float b)
 
   return r;
 }
+
+int cmpself(float a)
+{
+  //for FP, the below comparison is not trivial due to special value NaN which will give false
+  return a == a;
+}

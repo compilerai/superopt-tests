@@ -6,8 +6,7 @@ int vla_in_loop_conditional_exit(int n)
   int i = 1;
   while (i < n) {
     char t[i];
-    int r = init(t, i);
-    if (r < 0)
+    if (init(t, i) < 0)
       break;
     ret += t[i-1];
     ++i;

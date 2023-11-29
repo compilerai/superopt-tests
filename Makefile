@@ -16,7 +16,7 @@ BUILDDIR=$(CURDIR)/build
 #SOUNDNESS_TARGETS := #dietlibc # soundness
 MICRO_TARGETS := micro #ctests demo
 VECTORIZATION_TARGETS := TSVC_prior_work TSVC_new LORE_mem_write LORE_no_mem_write
-LOCALS_TARGETS := localmem-tests bzip2_locals
+LOCALS_TARGETS := localmem-tests bzip2_locals bzip2_modified
 LOCALS_GLOBALS_TARGETS := TSVC_prior_work_locals TSVC_prior_work_globals
 #EQCHECK_TARGETS :=  $(LOCALS_TARGETS) $(VECTORIZATION_TARGETS) $(MICRO_TARGETS) $(MALLOC_TARGETS) $(FP_TARGETS) $(SOUNDNESS_TARGETS) #sag
 EQCHECK_TARGETS :=  $(LOCALS_TARGETS) $(LOCALS_GLOBALS_TARGETS) $(VECTORIZATION_TARGETS) $(MICRO_TARGETS)
@@ -69,9 +69,11 @@ test_i386: ARCH=i386
 eqtest_x64: ARCH=x64
 eqtest_i386: ARCH=i386
 eqtest_ll: ARCH=ll
+eqtest_id32: ARCH=id32
+eqtest_id64: ARCH=id64
 eqtest_srcdst: ARCH=srcdst
 
-eqtest_x64 eqtest_i386 eqtest_ll eqtest_srcdst test_i386: %: $(BUILD_MAKEFILES)
+eqtest_x64 eqtest_i386 eqtest_ll eqtest_srcdst eqtest_id32 eqtest_id64 test_i386: %: $(BUILD_MAKEFILES)
 	$(foreach t,$(EQCHECK_TARGETS_$(ARCH)),$(MAKE) -C $(BUILDDIR)/$(t) $@ || exit;)
 	true > $(BUILDDIR)/$@
 	$(foreach t,$(EQCHECK_TARGETS_$(ARCH)), [[ -f $(BUILDDIR)/$(t)/$@ ]] && cat $(BUILDDIR)/$(t)/$@ >> $(BUILDDIR)/$@ || exit;)
@@ -146,6 +148,11 @@ clean: clean_outside_build logs_clean
 	$(foreach t,$(TARGETS),$(MAKE) -C $(BUILDDIR)/$(t) clean;)
 	find $(BUILDDIR) -name *.bc | xargs rm -f
 	find $(BUILDDIR) -name "*.etfg" | xargs rm -f
+
+.PHONY: logs_clean
+logs_clean:
+	find $(BUILDDIR) -name "clangv.*" | xargs rm -rf
+	find $(BUILDDIR) -name "eqcheck.*" | xargs rm -rf
 
 .PHONY: logs_clean
 logs_clean:

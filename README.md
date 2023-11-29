@@ -22,14 +22,14 @@ make bzip2
 ## Running tests
 
 ```sh
-# for all
-make eqtest
+# run regression tests
+make regression_i386
 
 # Or, for a particular test suite
-make -C build/<dirname> eqtest
+make -C build/<dirname> test_i386 && parallel --load='33%' < build/<dirname>/test_i386
 
-# For example, for running bzip2 test
-make -C build/bzip2 eqtest
+# For example, for running localmem-tests
+make -C build/localmem-tests test_i386 && parallel --load='33%' < build/localmem-tests/test_i386
 ```
 
 ## Cleaning-up

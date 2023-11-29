@@ -1,7 +1,7 @@
 #https://godbolt.org/z/8dofdnarc
 #gcc 4.9.2 -O3 -m32
 
-        .file   "example.c"
+        .file   "emi1.c"
         .text
 .Ltext0:
         .section        .text.unlikely,"ax",@progbits
@@ -16,7 +16,7 @@
         .type   main, @function
 main:
 .LFB0:
-        .file 1 "/app/example.c"
+        .file 1 "emi1.c"
         .loc 1 11 0
         .cfi_startproc
 .LVL0:
@@ -350,7 +350,7 @@ main:
 .LASF0:
         .string "sizetype"
 .LASF3:
-        .string "/app/example.c"
+        .string "emi1.c"
 .LASF1:
         .string "short unsigned int"
 .LASF4:

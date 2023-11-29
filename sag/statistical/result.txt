@@ -1,0 +1,71 @@
+eq32 --unroll-factor 16 src/approximateEntropy.c  obj/approximateEntropy.o 
+-------------------------------------------------------------------------------
+
+MSG>1:15 : Harvesting object code to obtain harvested assembly...</MSG>
+ /home/compilerai/superopt-project/usr/local/bin/harvest32 -functions_only -live_callee_save -allow_unsupported -no_canonicalize_imms -no_eliminate_unreachable_bbls -no_eliminate_duplicates -f ALL -o /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/approximateEntropy.o.harvest -l /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/approximateEntropy.o.harvest.log /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/approximateEntropy.o
+Could not find usedef_tab entry for '.i0: popl %es #,%esp,%ss
+'.
+Could not find usedef_tab entry for '.i0: popl %es #,%esp,%ss
+'.
+harvest32: ../../include/cmn/cmn_usedef.h:50: void src_insn_get_usedef(const i386_insn_t *, regset_t *, regset_t *, memset_t *, memset_t *): Assertion `matched.size() > 0' failed.
+Aborted (core dumped)
+non-zero exit status (134) of command, exiting:
+/home/compilerai/superopt-project/usr/local/bin/harvest32  -functions_only -live_callee_save -allow_unsupported -no_canonicalize_imms -no_eliminate_unreachable_bbls -no_eliminate_duplicates -f ALL -o /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/approximateEntropy.o.harvest -l /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/approximateEntropy.o.harvest.log /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/approximateEntropy.o
+command: /home/compilerai/superopt-project/usr/local/bin/harvest32  -functions_only -live_callee_save -allow_unsupported -no_canonicalize_imms -no_eliminate_unreachable_bbls -no_eliminate_duplicates -f ALL -o /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/approximateEntropy.o.harvest -l /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/approximateEntropy.o.harvest.log /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/approximateEntropy.o.
+<ERR>Harvesting assembly code from object file failed. Aborting.</ERR>
+
+
+
+
+
+
+eq32 --unroll-factor 16 src/blockFrequency.c  obj/blockFrequency.o 
+------------------------------------------------------------------------
+
+
+<MSG>0:13 : Harvesting object code to obtain harvested assembly...</MSG>
+ /home/compilerai/superopt-project/usr/local/bin/harvest32 -functions_only -live_callee_save -allow_unsupported -no_canonicalize_imms -no_eliminate_unreachable_bbls -no_eliminate_duplicates -f ALL -o /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/blockFrequency.o.harvest -l /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/blockFrequency.o.harvest.log /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/blockFrequency.o
+Could not find usedef_tab entry for '.i0: popl %es #,%esp,%ss
+'.
+Could not find usedef_tab entry for '.i0: popl %es #,%esp,%ss
+'.
+harvest32: ../../include/cmn/cmn_usedef.h:50: void src_insn_get_usedef(const i386_insn_t *, regset_t *, regset_t *, memset_t *, memset_t *): Assertion `matched.size() > 0' failed.
+Aborted (core dumped)
+non-zero exit status (134) of command, exiting:
+/home/compilerai/superopt-project/usr/local/bin/harvest32  -functions_only -live_callee_save -allow_unsupported -no_canonicalize_imms -no_eliminate_unreachable_bbls -no_eliminate_duplicates -f ALL -o /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/blockFrequency.o.harvest -l /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/blockFrequency.o.harvest.log /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/blockFrequency.o
+command: /home/compilerai/superopt-project/usr/local/bin/harvest32  -functions_only -live_callee_save -allow_unsupported -no_canonicalize_imms -no_eliminate_unreachable_bbls -no_eliminate_duplicates -f ALL -o /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/blockFrequency.o.harvest -l /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/blockFrequency.o.harvest.log /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/blockFrequency.o.
+<ERR>Harvesting assembly code from object file failed. Aborting.</ERR>
+
+
+
+
+
+eq32 --unroll-factor 64 src/assess.c obj/assess.o 
+------------------------------------------------------------
+
+
+Stack dump:
+0.	Program arguments: /home/compilerai/superopt-project/usr/local/bin/llvm2tfg --xml-output-format text-color -f ALL --call-context-depth 0 --always-use-call-context-any /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/src/assess.c.bc -o assess.c.etfg 
+Aborted (core dumped)
+non-zero exit status (134) of command, exiting:
+/home/compilerai/superopt-project/usr/local/bin/llvm2tfg   --xml-output-format text-color -f ALL --call-context-depth 0 --always-use-call-context-any /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/src/assess.c.bc -o assess.c.etfg
+command: /home/compilerai/superopt-project/usr/local/bin/llvm2tfg   --xml-output-format text-color -f ALL --call-context-depth 0 --always-use-call-context-any /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/src/assess.c.bc -o assess.c.etfg.
+<ERR>Symbolic execution of unoptimized LLVM IR bitcode failed. Aborting.</ERR>
+
+
+
+
+eq32 --unroll-factor 64 src/cusum.c obj/cusum.o 
+--------------------------------------------------
+
+
+harvest32: ../../include/cmn/cmn_usedef.h:50: void src_insn_get_usedef(const i386_insn_t *, regset_t *, regset_t *, memset_t *, memset_t *): Assertion `matched.size() > 0' failed.
+Aborted (core dumped)
+non-zero exit status (134) of command, exiting:
+/home/compilerai/superopt-project/usr/local/bin/harvest32  -functions_only -live_callee_save -allow_unsupported -no_canonicalize_imms -no_eliminate_unreachable_bbls -no_eliminate_duplicates -f ALL -o /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/cusum.o.harvest -l /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/cusum.o.harvest.log /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/cusum.o
+command: /home/compilerai/superopt-project/usr/local/bin/harvest32  -functions_only -live_callee_save -allow_unsupported -no_canonicalize_imms -no_eliminate_unreachable_bbls -no_eliminate_duplicates -f ALL -o /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/cusum.o.harvest -l /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/cusum.o.harvest.log /home/compilerai/ubuntu/Downloads/NIST-Statistical-Test-Suite-master/sts/obj/cusum.o.
+<ERR>Harvesting assembly code from object file failed. Aborting.</ERR>
+
+
+
+

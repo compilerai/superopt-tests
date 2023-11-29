@@ -1,3 +1,4 @@
+//taken from https://gcc.gnu.org/bugzilla/show_bug.cgi?id=323
 const double test(double x, double y)
 {
   const double y2 = x + 1.0;

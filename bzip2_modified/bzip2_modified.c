@@ -7,8 +7,6 @@
 #include <sys/time.h>
 #endif
 #include <string.h>
-//#include "eqchecker_helper.h"
-
 
 #define SPEC_CPU2000
 
