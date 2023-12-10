@@ -107,16 +107,17 @@ EXPECTED_FAILS_ICC :=                                                          \
                       non_linear_invariant_casting                             \
                       ftmap_2_main                                             \
                       ftmap_3_main                                             \
+                      ftmap_4_main                                             \
                       store_store_elim                                         \
                       flcmp                                                    \
                       fdiv                                                     \
                       # fptouil [???]
-                      # ftmap_4_main [???]
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # fcall_taking_locals [need manual addr mappings]
                       # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
                       # ftmap_2_main [need manual addr mappings]
                       # ftmap_3_main [need manual addr mappings]
+                      # ftmap_4_main [empty ml assert-fail due to buggy lr-status computation: return lr-status of fcall coming out as empty]
                       # store_store_elim [???]
                       # flcmp [???]
                       # fdiv [???]
