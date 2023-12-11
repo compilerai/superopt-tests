@@ -153,7 +153,6 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       alloca_conditional_simple                                \
                       alloca_malloc_switch                                     \
                       alloca_unreal_1                                          \
-                      variadic_with_loop                                       \
                       # vla_simple{,_nested_1,_nested_2} [requires non-linear invariants]
                       # vla{,_2,}_single_loop [requires non-linear invariants]
                       # vla_midway_decl [multiple allocs]
@@ -169,7 +168,6 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_malloc_switch [requires more powerful inequality inference and RPO DFA]
                       # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                      # variadic_with_loop [incorrect CG generated -- heap-alloc-local simplification is incorrect]
 
 #UNROLL1_ICX = alloca_linked_list $(UNROLL1_PROGS)
 #UNROLL2_ICX = fib
