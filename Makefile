@@ -69,9 +69,11 @@ test_i386: ARCH=i386
 eqtest_x64: ARCH=x64
 eqtest_i386: ARCH=i386
 eqtest_ll: ARCH=ll
+eqtest_id32: ARCH=id32
+eqtest_id64: ARCH=id64
 eqtest_srcdst: ARCH=srcdst
 
-eqtest_x64 eqtest_i386 eqtest_ll eqtest_srcdst test_i386: %: $(BUILD_MAKEFILES)
+eqtest_x64 eqtest_i386 eqtest_ll eqtest_srcdst eqtest_id32 eqtest_id64 test_i386: %: $(BUILD_MAKEFILES)
 	$(foreach t,$(EQCHECK_TARGETS_$(ARCH)),$(MAKE) -C $(BUILDDIR)/$(t) $@ || exit;)
 	true > $(BUILDDIR)/$@
 	$(foreach t,$(EQCHECK_TARGETS_$(ARCH)), [[ -f $(BUILDDIR)/$(t)/$@ ]] && cat $(BUILDDIR)/$(t)/$@ >> $(BUILDDIR)/$@ || exit;)
@@ -136,9 +138,7 @@ regression_paper regression_i386:: regression_%: $(BUILDDIR)/regression_%.helper
 
 .PHONY: clean_outside_build
 clean_outside_build:
-	find . -name *.bc | xargs rm -f
 	find . -name *.cg.ll | xargs rm -f
-	find . -name "*.etfg" | xargs rm -f
 	find . -name *.tmp | xargs rm -f
 	find . -name '*[^.][^s].log' | xargs rm -f
 	find . -name cscope.out | xargs rm -f
@@ -146,6 +146,11 @@ clean_outside_build:
 
 clean: clean_outside_build logs_clean
 	$(foreach t,$(TARGETS),$(MAKE) -C $(BUILDDIR)/$(t) clean;)
+	find $(BUILDDIR) -name *.bc | xargs rm -f
+	find $(BUILDDIR) -name "*.etfg" | xargs rm -f
+
+.PHONY: logs_clean
+logs_clean:
 	find $(BUILDDIR) -name "clangv.*" | xargs rm -rf
 	find $(BUILDDIR) -name "eqcheck.*" | xargs rm -rf
 

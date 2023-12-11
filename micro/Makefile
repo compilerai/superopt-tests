@@ -7,6 +7,10 @@ EXTRA_FLAGS := --global-timeout 1200 --max-address-space-size-gb 16 --disable-ds
 
 PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          fcall10 fcall10_with_memaccess                                        \
+         fcall25 fcall25_with_memaccess \
+         fcall50 fcall50_with_memaccess \
+         fcall100 fcall100_with_memaccess \
+         fcall200 \
          fcall_taking_locals                                                   \
          fcalls_merge                                                          \
          ftmap_1                                                               \
