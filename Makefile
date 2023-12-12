@@ -120,15 +120,15 @@ $(BUILDDIR)/regression_%.helper::
 	@true > $@
 	@$(foreach t,$(RTARGETS), if [ -f $(BUILDDIR)/$(t)/test_i386 ]; then cat $(BUILDDIR)/$(t)/test_i386 >> $@; else echo "ERROR:" $(BUILDDIR)/$(t)/test_i386 "does not exist for target" $(t); rm $@; exit 1; fi;)
 
-REGRESSION_PAPER_REQS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_globals bzip2_locals
-regression_paper:: $(REGRESSION_PAPER_REQS)
-$(BUILDDIR)/regression_paper.helper:: RTARGETS=$(REGRESSION_PAPER_REQS)
+REGRESSION_LOCAL_PAPER_REQS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_globals bzip2_locals
+regression_local_paper:: $(REGRESSION_LOCAL_PAPER_REQS)
+$(BUILDDIR)/regression_local_paper.helper:: RTARGETS=$(REGRESSION_LOCAL_PAPER_REQS)
 
 regression_i386:: $(EQCHECK_TARGETS_i386)
 $(BUILDDIR)/regression_i386.helper:: RTARGETS=$(EQCHECK_TARGETS_i386)
 
-.PHONY: regression_paper regression_i386
-regression_paper regression_i386:: regression_%: $(BUILDDIR)/regression_%.helper
+.PHONY: regression_local_paper regression_i386
+regression_local_paper regression_i386:: regression_%: $(BUILDDIR)/regression_%.helper
 	# cat $^ > $@
 	clear
 	parallel --load "33%" < $^ | tee $@
