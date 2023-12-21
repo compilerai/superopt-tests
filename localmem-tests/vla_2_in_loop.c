@@ -1,6 +1,6 @@
 int foo(int*, int*, unsigned);
 
-int vla_2_in_loop(int *a, unsigned n)
+int vla_2_in_loop(unsigned n)
 {
   int ret = 0;
   for (unsigned i = 1; i < n; ++i) {

@@ -1,6 +1,6 @@
 int foo(int*, int*, int*, unsigned);
 
-int vla_3_in_loop(int *a, unsigned n)
+int vla_3_in_loop(unsigned n)
 {
   int ret = 0;
 #pragma clang loop vectorize(disable) unroll(disable)
