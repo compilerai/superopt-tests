@@ -65,7 +65,6 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       minprintf                                                \
                       minscanf                                                 \
                       alloca_malloc_switch                                     \
-                      alloca_conditional_simple                                \
                       alloca_unreal_1                                          \
                       vla_conditional_use                                      \
                       # vla_3_single_loop [timeout]
@@ -76,7 +75,6 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       # vla_2d [mem-eq query timeout]
                       # minprintf,minscanf [requires select(local.addr) which is missing from bv-eqclass exprs]
                       # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                      # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # vla_conditional_use [times-out somtimes because the invariant inference DFA does not proceed in RPO i.e. it tries relaxing an edge before relaxing all its predecessors]
 
@@ -94,7 +92,6 @@ EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         vla_2_nested_loops                                     \
                         variadic_acyclic                                       \
                         alloca_malloc_switch                                   \
-                        alloca_conditional_simple                              \
                         alloca_unreal_1                                        \
                         # vla_3_single_loop [timeout]
                         # vla_4_single_loop [timeout]
@@ -104,7 +101,6 @@ EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         # vla_2_nested_loops [timeout]
                         # variadic_acyclic [push insn is used for allocation -- we correlate local before write and thus get different mem on path where the local is not written-to before dealloc]
                         # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                        # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                         # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
 
 # ack does not support VLA and alloca()
@@ -153,7 +149,7 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       # vla_4_in_loop [query timeout => timeout]
                       # vla_2d [non-affine invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
                       # vla_2_nested_loops [loop peeling leading to multiple stack allocations for inner VLA alloc]
-                      # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                      # alloca_conditional_simple [fails sp-below-isp wfcond after fcall -- requires RPO DFA for more precise spvr]
                       # alloca_malloc_switch [requires more powerful inequality inference and RPO DFA]
                       # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
 
