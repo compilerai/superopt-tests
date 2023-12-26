@@ -65,19 +65,6 @@ clangv_O2: OPT_LEVEL=O2
 clangv_O3: OPT_LEVEL=O3
 clangv_Od: OPT_LEVEL=Od
 clangv_O1-: OPT_LEVEL=O1-
-test_i386: ARCH=i386
-eqtest_x64: ARCH=x64
-eqtest_i386: ARCH=i386
-eqtest_ll: ARCH=ll
-eqtest_id32: ARCH=id32
-eqtest_id64: ARCH=id64
-eqtest_srcdst: ARCH=srcdst
-
-eqtest_x64 eqtest_i386 eqtest_ll eqtest_srcdst eqtest_id32 eqtest_id64 test_i386: %: $(BUILD_MAKEFILES)
-	$(foreach t,$(EQCHECK_TARGETS_$(ARCH)),$(MAKE) -C $(BUILDDIR)/$(t) $@ || exit;)
-	true > $(BUILDDIR)/$@
-	$(foreach t,$(EQCHECK_TARGETS_$(ARCH)), [[ -f $(BUILDDIR)/$(t)/$@ ]] && cat $(BUILDDIR)/$(t)/$@ >> $(BUILDDIR)/$@ || exit;)
-	parallel --load "33%" < $(BUILDDIR)/$@
 
 clangv_O1 clangv_O2 clangv_O3 clangv_Od clangv_O1-: %: $(BUILD_MAKEFILES)
 	$(foreach t,$(CLANGV_TARGETS_$(OPT_LEVEL)),$(MAKE) -C $(BUILDDIR)/$(t) $@ || exit;)
@@ -126,11 +113,11 @@ REGRESSION_PAPER_REQS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_g
 regression_paper:: $(REGRESSION_PAPER_REQS)
 $(BUILDDIR)/regression_paper.helper:: RTARGETS=$(REGRESSION_PAPER_REQS)
 
-regression_i386:: $(EQCHECK_TARGETS_i386)
-$(BUILDDIR)/regression_i386.helper:: RTARGETS=$(EQCHECK_TARGETS_i386)
+test_i386:: $(EQCHECK_TARGETS_i386)
+$(BUILDDIR)/test_i386.helper:: RTARGETS=$(EQCHECK_TARGETS_i386)
 
-.PHONY: regression_paper regression_i386
-regression_paper regression_i386:: regression_%: $(BUILDDIR)/regression_%.helper
+.PHONY: regression_paper test_i386
+regression_paper test_i386:: regression_%: $(BUILDDIR)/regression_%.helper
 	# cat $^ > $@
 	clear
 	parallel --load "33%" < $^ | tee $@
