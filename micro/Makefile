@@ -3,7 +3,7 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/micro
 
-EXTRA_FLAGS := --global-timeout 1200 --max-address-space-size-gb 16 --disable-dst-to-src-submap
+EXTRA_FLAGS := --global-timeout 1200 --max-address-space-size-gb 16 #--disable-dst-to-src-submap
 
 PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          fcall10 fcall10_with_memaccess                                        \
