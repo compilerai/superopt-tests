@@ -69,26 +69,20 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       minprintf                                                \
                       minscanf                                                 \
                       alloca_malloc_switch                                     \
-                      alloca_conditional_simple                                \
                       alloca_conditional                                       \
-                      alloca_unreal_1                                          \
-                      variadic_acyclic                                         \
                       vla_conditional_use                                      \
                       # vla_3_single_loop [timeout]
                       # vla_2_in_loop [requires invariant (i < n) on loop body PCs / suffixpath]
                       # vla_3_in_loop [requires invariant (i < n) on loop body PCs / suffixpath]
                       # vla_4_in_loop [requires invariant (i < n) on loop body PCs / suffixpath]
                       # vla_4_single_loop [timeout]
-                      # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
+                      # vla_2_single_loop [missing non-affine invariant relating sp decrement offset value 'eax' with n]
                       # vla_single_loop   [dealloc path correlation failing: sinking (code merging) of sp restore (dealloc) to common path instead of alloc dominating path, no coresponding path in src]
                       # vla_2_nested_loops [some bitwise computation is happening -- local-mem-eq is failing]
                       # vla_2d [mem-eq query timeout]
                       # minprintf,minscanf [requires select(local.addr) which is missing from bv-eqclass exprs]
                       # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                      # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_conditional [requires invariant (i < n) on loop body PCs / suffixpath]
-                      # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                      # variadic_acyclic [dealloc is not enumerated due to missing sp-update insn]
                       # vla_conditional_use [times-out somtimes because the invariant inference DFA does not proceed in RPO i.e. it tries relaxing an edge before relaxing all its predecessors]
 
 UNROLL1_CLANG := alloca_linked_list                                            \
@@ -107,18 +101,15 @@ EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         variadic_acyclic                                       \
                         alloca_malloc_switch                                   \
                         alloca_conditional_simple                              \
-                        alloca_unreal_1                                        \
                         # vla_3_single_loop [timeout]
                         # vla_4_single_loop [timeout]
-                        # vla_2_single_loop [missing non-linear invariant relating sp decrement offset value 'eax' with n]
+                        # vla_2_single_loop [missing non-affine invariant relating sp decrement offset value 'eax' with n]
                         # vla_2_in_loop [requires invariant (i < n) on loop body PCs / suffixpath]
                         # vla_4_in_loop [query timeout => timeout]
-                        # vla_2d [non-linear invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
+                        # vla_2d [non-affine invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
                         # vla_2_nested_loops [timeout]
                         # variadic_acyclic [push insn is used for allocation -- we correlate local before write and thus get different mem on path where the local is not written-to before dealloc]
                         # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                        # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                        # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
 
 # ack does not support VLA and alloca()
 UNROLL2_ACK = addr_taken_simple                                                \
@@ -130,7 +121,7 @@ UNROLL2_ACK = addr_taken_simple                                                \
 EXTRA_FLAGS_ACK := --disable-fcall-wfconds
 
 UNROLL1_ICC = $(UNROLL1_PROGS)                                                 \
-              # fib [requires non-linear invariants]
+              # fib [requires non-affine invariants]
 
 UNROLL2_ICC = alloca_linked_list
 
@@ -153,22 +144,20 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       rodata                                                   \
                       alloca_conditional_simple                                \
                       alloca_malloc_switch                                     \
-                      alloca_unreal_1                                          \
-                      # vla_simple{,_nested_1,_nested_2} [requires non-linear invariants]
-                      # vla{,_2,}_single_loop [requires non-linear invariants]
+                      # vla_simple{,_nested_1,_nested_2} [requires non-affine invariants]
+                      # vla{,_2,}_single_loop [requires non-affine invariants]
                       # vla_midway_decl [multiple allocs]
                       # vla{_3,_4}_single_loop [timeout]
                       # vla_3_in_loop [sometimes timeout]
-                      # rodata [requires non-linear invariants]
-                      # vla_conditional_use [requires non-linear invariants]
-                      # vla_in_loop [requires non-linear invariants?]
-                      # vla_in_loop_conditional_{continue,exit} [requires non-linear invariants]
+                      # rodata [requires non-affine invariants]
+                      # vla_conditional_use [requires non-affine invariants]
+                      # vla_in_loop [requires non-affine invariants?]
+                      # vla_in_loop_conditional_{continue,exit} [requires non-affine invariants]
                       # vla_4_in_loop [query timeout => timeout]
-                      # vla_2d [non-linear invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
+                      # vla_2d [non-affine invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
                       # vla_2_nested_loops [loop peeling leading to multiple stack allocations for inner VLA alloc]
                       # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_malloc_switch [requires more powerful inequality inference and RPO DFA]
-                      # alloca_unreal_1 [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
 
 #UNROLL1_ICX = alloca_linked_list $(UNROLL1_PROGS)
 #UNROLL2_ICX = fib
