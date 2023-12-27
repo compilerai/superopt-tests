@@ -57,7 +57,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # ftmap_2_main [pclsprels missing]
                       # ftmap_3_main [nop fcall inlined]
                       # ftmap_4_main [sp is not aligned by 16 at callsite; the callee is in same translation unit]
-                      # fcalls_sink_merge [calls to bar() are sinked and merged]
+                      # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # nested_loops [requires invariant (m > 0) in due to unswitching of inner loop condition]
 											# sum2d [requires: pointer arithmetic overflow UB modelling]
                       # local_used_in_unreachable_loop [no sp-update insn -- no alloc/dealloc enumerated]
@@ -100,6 +100,31 @@ EXPECTED_FAILS_SRCDST := inequiv_1                         \
                          path_enum_can_inv                 \
                          # ptr_arith_ub [requires: pointer arithmetic overflow UB modeling]
                          # path_enum_can_inv [requires: better path enumeration or better invariant inference; see path_enum_can_inv_src.c]
+
+UNROLL1_ICC = $(PROGS)
+
+EXPECTED_FAILS_ICC :=                                                          \
+                      fptouil                                                  \
+                      ftmap_4_main                                             \
+                      fcalls_sink_merge                                        \
+                      fcall_taking_locals                                      \
+                      non_linear_invariant_casting                             \
+                      ftmap_2_main                                             \
+                      ftmap_3_main                                             \
+                      ftmap_4_main                                             \
+                      store_store_elim                                         \
+                      flcmp                                                    \
+                      fdiv                                                     \
+                      # fptouil [???]
+                      # fcalls_sink_merge [calls to bar() are sunk and merged]
+                      # fcall_taking_locals [need manual addr mappings]
+                      # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
+                      # ftmap_2_main [need manual addr mappings]
+                      # ftmap_3_main [need manual addr mappings]
+                      # ftmap_4_main [empty ml assert-fail due to buggy lr-status computation: return lr-status of fcall coming out as empty]
+                      # store_store_elim [???]
+                      # flcmp [???]
+                      # fdiv [???]
 
 # compiler flags
 ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
