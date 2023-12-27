@@ -113,11 +113,22 @@ REGRESSION_PAPER_REQS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_g
 regression_paper:: $(REGRESSION_PAPER_REQS)
 $(BUILDDIR)/regression_paper.helper:: RTARGETS=$(REGRESSION_PAPER_REQS)
 
+.PHONY: regression_paper test_i386
+regression_paper:: regression_%: $(BUILDDIR)/regression_%.helper
+	# cat $^ > $@
+	clear
+	parallel --load "33%" < $^ | tee $@
+	mv $^ $^.finished
+
+
+$(BUILDDIR)/test_i386.helper::
+	@$(foreach t,$(RTARGETS), if $(MAKE) -C $(BUILDDIR)/$(t) all test_i386; then :; else echo "ERROR: 'make test_i386' failed for target" $(BUILDDIR)/$(t); exit 1; fi;)
+	@true > $@
+	@$(foreach t,$(RTARGETS), if [ -f $(BUILDDIR)/$(t)/test_i386 ]; then cat $(BUILDDIR)/$(t)/test_i386 >> $@; else echo "ERROR:" $(BUILDDIR)/$(t)/test_i386 "does not exist for target" $(t); rm $@; exit 1; fi;)
+
 test_i386:: $(EQCHECK_TARGETS_i386)
 $(BUILDDIR)/test_i386.helper:: RTARGETS=$(EQCHECK_TARGETS_i386)
-
-.PHONY: regression_paper test_i386
-regression_paper test_i386:: regression_%: $(BUILDDIR)/regression_%.helper
+test_i386 :: %: $(BUILDDIR)/%.helper
 	# cat $^ > $@
 	clear
 	parallel --load "33%" < $^ | tee $@
@@ -135,11 +146,6 @@ clean: clean_outside_build logs_clean
 	$(foreach t,$(TARGETS),$(MAKE) -C $(BUILDDIR)/$(t) clean;)
 	find $(BUILDDIR) -name *.bc | xargs rm -f
 	find $(BUILDDIR) -name "*.etfg" | xargs rm -f
-
-.PHONY: logs_clean
-logs_clean:
-	find $(BUILDDIR) -name "clangv.*" | xargs rm -rf
-	find $(BUILDDIR) -name "eqcheck.*" | xargs rm -rf
 
 .PHONY: logs_clean
 logs_clean:
