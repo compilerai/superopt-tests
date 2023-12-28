@@ -20,6 +20,7 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          non_linear_invariant_casting                                          \
          non_linear_invariant_shl                                              \
          sum_positive                                                          \
+         idiv                                                                  \
                                                                                \
          local_used_in_unreachable_loop                                        \
          local_used_on_unreachable_branch                                      \
