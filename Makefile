@@ -37,18 +37,17 @@ $(BUILDDIR)/oopsla24_cmds:: $(OOPSLA24_TARGETS)
 	@true > $@
 	@$(foreach t,$^, if [ -f $(BUILDDIR)/$(t)/cmds ]; then cat $(BUILDDIR)/$(t)/cmds >> $@; else echo "ERROR:" $(BUILDDIR)/$(t)/cmds "does not exist for target" $(t); rm $@; exit 1; fi;)
 
-.PHONY: run_oopsla24_cmds
-run_oopsla24_cmds: $(BUILDDIR)/oopsla24_cmds
+oopsla24_cmds.finished: $(BUILDDIR)/oopsla24_cmds
 	clear
 	parallel --load "33%" < $^ | tee $@
-	# mv $^ $^.finished
+	mv $^ $@
 
 .PHONY: collect_oopsla24_csvs
-collect_oopsla24_csvs:
+collect_oopsla24_csvs: oopsla24_cmds.finished
 	@$(foreach t,$(OOPSLA24_TARGETS), if $(MAKE) -C $(BUILDDIR)/$(t) collect_csv; then :; else echo "ERROR: 'make collect_csv' failed for target" $(BUILDDIR)/$(t); exit 1; fi; mv $(BUILDDIR)/$(t)/*.csv .;)
 
 .PHONY: oopsla24_results
-oopsla24_results:
+oopsla24_results: collect_oopsla24_csvs
 	$(MAKE) run_oopsla24_cmds
 	$(MAKE) collect_oopsla24_csvs
 
