@@ -28,3 +28,8 @@ cmds_slow_run: eqtest_slow_i386_O3
 
 cmds: cmds_normal_run cmds_slow_run
 	cat $^ > $@
+
+.PHONY: collect_csv
+collect_csv: csv_eqcheck_normal_clang_O3 csv_eqcheck_slow_clang_O3
+	mv csv_eqcheck_normal_clang_O3.csv tsvc_l.csv
+	mv csv_eqcheck_slow_clang_O3.csv tsvc_l_s.csv

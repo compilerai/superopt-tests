@@ -17,3 +17,7 @@ include $(SRCDIR)/Makefile.template
 
 cmds: clangv_O1-
 	cat $^ > $@
+
+.PHONY: collect_csv
+collect_csv: csv_eqcheck_clangv
+	mv csv_eqcheck_clangv.csv bzip2_modified_O1-.csv

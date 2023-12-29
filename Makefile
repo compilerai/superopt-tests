@@ -7,16 +7,9 @@ SUPEROPT_INSTALL_DIR ?= $(SUPEROPT_PROJECT_DIR)/usr/local
 
 BUILDDIR=$(CURDIR)/build
 
-# add new dirs' targets here
-SOUNDNESS_TARGETS := soundness #dietlibc
-MICRO_TARGETS := micro #ctests demo
-VECTORIZATION_TARGETS := TSVC_prior_work TSVC_new LORE_mem_write LORE_no_mem_write
-LOCALS_TARGETS := localmem-tests bzip2_locals bzip2_modified
-LOCALS_GLOBALS_TARGETS := TSVC_prior_work_locals TSVC_prior_work_globals
-EQCHECK_TARGETS :=  $(LOCALS_TARGETS) $(LOCALS_GLOBALS_TARGETS) $(VECTORIZATION_TARGETS) $(MICRO_TARGETS) $(SOUNDNESS_TARGETS)
+OOPSLA24_TARGETS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_globals bzip2_locals bzip2_modified
 
-EQCHECK_TARGETS_i386 := $(EQCHECK_TARGETS)
-TARGETS := $(EQCHECK_TARGETS_i386)
+TARGETS := $(OOPSLA24_TARGETS)
 
 MAKEFILES := $(addsuffix /Makefile,$(TARGETS))
 BUILD_MAKEFILES := $(addprefix $(BUILDDIR)/,$(MAKEFILES))
@@ -34,21 +27,30 @@ $(BUILDDIR)/%:
 $(BUILD_MAKEFILES): $(BUILDDIR)/%/Makefile: %/Makefile $(BUILDDIR)/%
 	$(CP) $< $@
 
-$(TARGETS) $(SPEC_TARGETS)::
+$(TARGETS)::
 	mkdir -p $(BUILDDIR)/$@
 	$(CP) $@/Makefile -t $(BUILDDIR)/$@
 	$(MAKE) -C $(BUILDDIR)/$@
 
-$(BUILDDIR)/oopsla24_results.helper:: localmem-tests TSVC_prior_work_locals TSVC_prior_work_globals bzip2_locals bzip2_modified soundness
+$(BUILDDIR)/oopsla24_cmds:: $(OOPSLA24_TARGETS)
 	@$(foreach t,$^, if $(MAKE) -C $(BUILDDIR)/$(t) all cmds; then :; else echo "ERROR: 'make cmds' failed for target" $(BUILDDIR)/$(t); exit 1; fi;)
 	@true > $@
 	@$(foreach t,$^, if [ -f $(BUILDDIR)/$(t)/cmds ]; then cat $(BUILDDIR)/$(t)/cmds >> $@; else echo "ERROR:" $(BUILDDIR)/$(t)/cmds "does not exist for target" $(t); rm $@; exit 1; fi;)
 
-.PHONY: oopsla24_results
-oopsla24_results: $(BUILDDIR)/oopsla24_results.helper
+.PHONY: run_oopsla24_cmds
+run_oopsla24_cmds: $(BUILDDIR)/oopsla24_cmds
 	clear
 	parallel --load "33%" < $^ | tee $@
-	mv $^ $^.finished
+	# mv $^ $^.finished
+
+.PHONY: collect_oopsla24_csvs
+collect_oopsla24_csvs:
+	@$(foreach t,$(OOPSLA24_TARGETS), if $(MAKE) -C $(BUILDDIR)/$(t) collect_csv; then :; else echo "ERROR: 'make collect_csv' failed for target" $(BUILDDIR)/$(t); exit 1; fi; mv $(BUILDDIR)/$(t)/*.csv .;)
+
+.PHONY: oopsla24_results
+oopsla24_results:
+	$(MAKE) run_oopsla24_cmds
+	$(MAKE) collect_oopsla24_csvs
 
 .PHONY: clean_outside_build
 clean_outside_build:

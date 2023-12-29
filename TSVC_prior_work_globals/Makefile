@@ -21,3 +21,7 @@ include $(SRCDIR)/Makefile.template
 
 cmds: eqtest_i386_O3
 	cat $^ > $@
+
+.PHONY: collect_csv
+collect_csv: csv_eqcheck_normal_clang_O3
+	mv csv_eqcheck_normal_clang_O3.csv tsvc_g.csv
