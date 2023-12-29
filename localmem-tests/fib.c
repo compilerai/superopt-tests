@@ -1,4 +1,4 @@
-extern void printa(int*,int);
+void MYmyprintf(const char* fmt,...);
 
 unsigned fib(int n, int m)
 {
@@ -8,6 +8,6 @@ unsigned fib(int n, int m)
   for (int i = 2; i <= m; ++i) {
     v[i] = v[i-1]+v[i-2];
   }
-  printa(v, m);
+  MYmyprintf("fib(%d) = %d", m, v[m]);
   return v[m];
 }

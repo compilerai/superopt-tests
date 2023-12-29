@@ -15,8 +15,5 @@ CLANG_EQCHECKER_FLAGS_EXTRA= $(CLANG_EQCHECKER_NOUNROLL_FLAGS)
 
 include $(SRCDIR)/Makefile.template
 
-test_i386: clangv_O1-
-	cat $^ > $@
-
-clangv_Od: clangv_O1-
+cmds: clangv_O1-
 	cat $^ > $@
