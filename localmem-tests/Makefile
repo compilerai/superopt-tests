@@ -51,10 +51,10 @@ ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
 C_STD = gnu11
 include $(SRCDIR)/Makefile.template
 
-cmds_normal_run:: eqtest_i386_O3
+cmds_normal_run: eqtest_i386_O3
 	cat $^ > $@
 
-cmds_slow_run:: eqtest_slow_i386_O3
+cmds_slow_run: eqtest_slow_i386_O3
 	cat $^ > $@
 
 cmds: cmds_normal_run cmds_slow_run
