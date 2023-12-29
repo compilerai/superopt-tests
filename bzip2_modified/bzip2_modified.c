@@ -1201,9 +1201,13 @@ void hbCreateDecodeTables ( Int32 *limit,
      SET_LL4(i, n >> 16);                 \
    }
 
-#define GET_LL(i) \
-   (((UInt32)ll16[i]) | (GET_LL4(i) << 16))
+// #define GET_LL(i) \
+//    (((UInt32)ll16[i]) | (GET_LL4(i) << 16))
 
+UInt32 GET_LL(Int32 i)
+{
+  return (((UInt32)ll16[i]) | (GET_LL4(i) << 16));
+}
 
 /*---------------------------------------------*/
 /*--
@@ -1671,9 +1675,41 @@ transmitBlockData(Int32 nGroups, Int32 nSelectors)
     fprintf ( stderr, "codes %d\n", bytesOut-nBytes );
 }
 
+void initrfreq(Int32 nGroups, Int32 alphaSize)
+{
+  Int32 t, v;
+  for (t = 0; t < nGroups; t++) {
+    DBG(__LINE__);
+    for (v = 0; v < alphaSize; v++) {
+      DBG(__LINE__); // prevents vectorization?
+      rfreq[t][v] = 0;
+    }
+  }
+}
+
+void incrfreq(Int32 gs, Int32 ge, Int32 bt)
+{
+  Int32 i;
+  for (i = gs; i <= ge; i++) {
+    DBG(__LINE__); // easy anchor, vectorization does not happen because szptr may alias with rfreq?
+    rfreq[bt][ szptr[i] ]++;
+  }
+}
+
+void dumpPassStatus(Int32 iter, Int32 totc, Int32 nGroups, Int32* fave)
+{
+  Int32 t;
+  fprintf ( stderr,
+      "      pass %d: size is %d, grp uses are [",
+      iter+1, totc/8 );
+  for (t = 0; t < nGroups; t++)
+    fprintf ( stderr, "%d ", fave[t] );
+  fprintf ( stderr, "] \n" );
+}
+
 void sendMTFValues ( void )
 {
-   Int32 v, t, i, j, gs, ge, totc, bt, bc, iter;
+   Int32 v, t, gs, ge, totc, bt, bc, iter;
    Int32 nSelectors, alphaSize;
    Int32 nGroups;
 
@@ -1723,13 +1759,7 @@ void sendMTFValues ( void )
        DBG(__LINE__); // prevents vectorization?
        fave[t] = 0;
      }
-     for (t = 0; t < nGroups; t++) {
-       DBG(__LINE__);
-       for (v = 0; v < alphaSize; v++) {
-         DBG(__LINE__); // prevents vectorization?
-         rfreq[t][v] = 0;
-       }
-     }
+     initrfreq(nGroups, alphaSize);
      nSelectors = 0;
      totc = 0;
      gs = 0;
@@ -1764,19 +1794,11 @@ void sendMTFValues ( void )
        /*--
          Increment the symbol frequencies for the selected table.
          --*/
-       for (i = gs; i <= ge; i++) {
-         DBG(__LINE__); // easy anchor, vectorization does not happen because szptr may alias with rfreq?
-         rfreq[bt][ szptr[i] ]++;
-       }
+       incrfreq(gs, ge, bt);
        gs = ge+1;
      }
      if (verbosity >= 3) {
-       fprintf ( stderr,
-           "      pass %d: size is %d, grp uses are [",
-           iter+1, totc/8 );
-       for (t = 0; t < nGroups; t++)
-         fprintf ( stderr, "%d ", fave[t] );
-       fprintf ( stderr, "] \n" );
+       dumpPassStatus(iter, totc, nGroups, fave);
      }
 
      /*--
@@ -2323,6 +2345,10 @@ typedef
 --*/
 #define QSORT_STACK_SIZE 1000
 
+Int32 MED(Int32 i, Int32 d, Int32 med)
+{
+  return ((Int32)block[zptr[i]+d]) - med;
+}
 
 void qSort3 ( Int32 loSt, Int32 hiSt, Int32 dSt )
 {
@@ -2358,7 +2384,7 @@ void qSort3 ( Int32 loSt, Int32 hiSt, Int32 dSt )
          while (True) {
             DBG(__LINE__);
             if (unLo > unHi) break;
-            n = ((Int32)block[zptr[unLo]+d]) - med;
+            n = MED(unLo, d, med); // ((Int32)block[zptr[unLo]+d]) - med;
             if (n == 0) { swap(zptr[unLo], zptr[ltLo]); ltLo++; unLo++; continue; };
             if (n >  0) break;
             unLo++;
@@ -2366,7 +2392,7 @@ void qSort3 ( Int32 loSt, Int32 hiSt, Int32 dSt )
          while (True) {
             DBG(__LINE__);
             if (unLo > unHi) break;
-            n = ((Int32)block[zptr[unHi]+d]) - med;
+            n = MED(unHi, d, med); //((Int32)block[zptr[unHi]+d]) - med;
             if (n == 0) { swap(zptr[unHi], zptr[gtHi]); gtHi--; unHi--; continue; };
             if (n <  0) break;
             unHi--;
@@ -2488,13 +2514,17 @@ zero:
   runningOrder[j] = vv;
 }
 
+Int32 DIV3(Int32 a)
+{
+  return a/3;
+}
+
 void calculateRunningOrder()
 {
   Int32 i;
-  Int32 vv;
   Int32 h = calculateh();
   do {
-    h = h / 3;
+    h = DIV3(h);
     for (i = h; i <= 255; i++) {
       updateRunningOrder(i, h);
     }
@@ -2557,6 +2587,11 @@ void updateQuadrantDescriptors(Int32 ss)
   }
 
   if (! ( ((bbSize-1) >> shifts) <= 65535 )) panic ( "sortIt" );
+}
+
+void updateftab(Int32 sb)
+{
+  ftab[sb] |= SETMASK;
 }
 
 void sortIt ( void )
@@ -2644,7 +2679,7 @@ void sortIt ( void )
             numQSorted += ( hi - lo + 1 );
             if (workDone > workLimit && firstAttempt) return;
           }
-          ftab[sb] |= SETMASK;
+          updateftab(sb);
         }
       }
 
@@ -2826,12 +2861,6 @@ INLINE Int32 indexIntoF ( Int32 indx, Int32 *cftab )
 }
 
 
-#define GET_SMALL(cccc)                     \
-                                            \
-      cccc = indexIntoF ( tPos, cftab );    \
-      tPos = GET_LL(tPos);
-
-
 // local array turned global -- required in both undoReversibleTransformation_{small,fast}
 Int32  cftab[257], cftabAlso[257];
 
@@ -2858,20 +2887,44 @@ void setUpcftabAlso()
 }
 
 #ifdef SPEC_CPU2000
+void runLengthDecoderInnerLoop ( int dst, Int32 ch2, UChar z, UInt32 localCrc, Int32 rNToGo)
+#else
+void runLengthDecoderInnerLoop ( FILE* dst, Int32 ch2, UChar z, UInt32 localCrc, Int32 rNToGo )
+#endif
+{
+  IntNative retVal;
+  Int32 j2;
+  if (blockRandomised)  {
+    z ^= RAND_MASK;
+  }
+  for (j2 = 0;  j2 < (Int32)z;  j2++) {
+    DBG(__LINE__);
+    if (dst) retVal = putc (ch2, dst);
+    UPDATE_CRC ( localCrc, (UChar)ch2 );
+  }
+}
+
+// #define GET_SMALL(cccc)                     \
+//                                             \
+//       cccc = indexIntoF ( tPos, cftab );    \
+//       tPos = GET_LL(tPos);
+// 
+Int32 tPos;
+
+Int32 GET_SMALL()
+{
+  Int32 cccc = indexIntoF ( tPos, cftab );
+  tPos = GET_LL(tPos);
+  return cccc;
+}
+
+
+#ifdef SPEC_CPU2000
 void runLengthDecoder ( int dst )
 #else
 void runLengthDecoder ( FILE* dst )
 #endif
 {
-  Int32 tPos;
-   /*--
-      We recreate the original by subscripting F through T^(-1).
-      The run-length-decoder below requires characters incrementally,
-      so tPos is set to a starting value, and is updated by
-      the GET_SMALL macro.
-   --*/
-   tPos   = origPtr;
-
    /*-------------------------------------------------*/
    /*--
       This is pretty much a verbatim copy of the
@@ -2894,11 +2947,20 @@ void runLengthDecoder ( FILE* dst )
   ch2      = 256;   /*-- not a char and not EOF --*/
   localCrc = getGlobalCRC();
 
+  //Int32 tPos;
+   /*--
+      We recreate the original by subscripting F through T^(-1).
+      The run-length-decoder below requires characters incrementally,
+      so tPos is set to a starting value, and is updated by
+      the GET_SMALL macro.
+   --*/
+   tPos   = origPtr;
+
   {
     RAND_DECLS;
     while ( i2 <= last ) {
       chPrev = ch2;
-      GET_SMALL(ch2);
+      ch2 = GET_SMALL();
       if (blockRandomised) {
         RAND_UPD_MASK;
         ch2 ^= (UInt32)RAND_MASK;
@@ -2915,18 +2977,12 @@ void runLengthDecoder ( FILE* dst )
       } else {
         count++;
         if (count >= 4) {
-          Int32 j2;
           UChar z;
-          GET_SMALL(z);
+          z=  GET_SMALL();
           if (blockRandomised) {
             RAND_UPD_MASK;
-            z ^= RAND_MASK;
           }
-          for (j2 = 0;  j2 < (Int32)z;  j2++) {
-            DBG(__LINE__);
-            if (dst) retVal = putc (ch2, dst);
-            UPDATE_CRC ( localCrc, (UChar)ch2 );
-          }
+          runLengthDecoderInnerLoop(dst, ch2, z, localCrc, rNToGo);
           i2++;
           count = 0;
         }
@@ -4933,11 +4989,40 @@ int spec_putc(unsigned char ch, int fd) {
     return ch;
 }
 
+unsigned char*
+alloc_and_populate_validate_array(int input_size)
+{
+  int i;
+  unsigned char* validate_array = (unsigned char *)MYmymalloc(input_size/1024);
+  if (validate_array == NULL) {
+    return NULL;
+  }
+
+  /* Save off one byte every ~1k for validation */
+  for (i = 0; i*VALIDATE_SKIP < input_size; i++) {
+    DBG(__LINE__);
+	  validate_array[i] = spec_fd[0].buf[i*VALIDATE_SKIP];
+  }
+  return validate_array;
+}
+
+void validate_buf(int input_size, unsigned char* validate_array)
+{
+	int i;
+	for (i = 0; i*VALIDATE_SKIP < input_size; i++) {
+    DBG(__LINE__);
+	  if (validate_array[i] != spec_fd[0].buf[i*VALIDATE_SKIP]) {
+		  printf ("Tested %d bytes buffer: Miscompared!!\n", input_size);
+		  MYmyexit (1);
+	  }
+	}
+}
+
 #define MB (1024*1024)
 #ifdef SPEC_CPU2000
 int main (int argc, char *argv[])
 {
-  int i, level;
+  int level;
   int input_size=64, compressed_size;
   char *input_name="input.combined";
   unsigned char *validate_array;
@@ -4960,17 +5045,11 @@ int main (int argc, char *argv[])
   spec_load(0, input_name, input_size*MB);
   debug1(3, "Input data %d bytes in length\n", spec_fd[0].len);
 
-  validate_array = (unsigned char *)MYmymalloc(input_size*MB/1024);
-  if (validate_array == NULL) {
+  validate_array = alloc_and_populate_validate_array(input_size*MB);
+	if (validate_array == NULL) {
 	  printf ("main: Error mallocing memory!\n");
 	  MYmyexit (1);
   }
-  /* Save off one byte every ~1k for validation */
-  for (i = 0; i*VALIDATE_SKIP < input_size*MB; i++) {
-    DBG(__LINE__);
-	  validate_array[i] = spec_fd[0].buf[i*VALIDATE_SKIP];
-  }
-
 
 #ifdef DEBUG_DUMP
   fd = open ("out.uncompressed", O_RDWR|O_CREAT, 0644);
@@ -5018,13 +5097,7 @@ int main (int argc, char *argv[])
 	  }
 #endif
 
-	  for (i = 0; i*VALIDATE_SKIP < input_size*MB; i++) {
-      DBG(__LINE__);
-	    if (validate_array[i] != spec_fd[0].buf[i*VALIDATE_SKIP]) {
-		    printf ("Tested %dMB buffer: Miscompared!!\n", input_size);
-		    MYmyexit (1);
-	    }
-	  }
+    validate_buf(input_size*MB, validate_array);
 	  debug_time();
 	  debug(3, "Uncompressed data compared correctly\n");
 	  spec_reset(1);
