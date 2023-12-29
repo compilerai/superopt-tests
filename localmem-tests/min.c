@@ -5,7 +5,7 @@ void print_char(char p);
 void print_int(int p);
 
 /* minprintf: minimal printf with variable argument list */
-void minprintf(char *fmt, ...)
+void min(char *fmt, ...)
 {
   va_list ap;
   char *p, *sval;
