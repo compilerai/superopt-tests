@@ -1,1 +1,0 @@
-memrchr_src.c

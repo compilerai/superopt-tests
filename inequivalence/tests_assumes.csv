@@ -1,7 +1,0 @@
-memccpy,dietlibc,freebsd,klibc,musl,netbsd,newlib_small,newlib_fast,openbsd,uClibc
-memccpy,glibc
-memcpy,dietlibc_small,dietlibc_fast,freebsd,klibc,musl,netbsd_small,netbsd_fast,netbsd_or1k,newlib_small,newlib_fast,openbsd,openbsd_m88k,uClibc,uClibc_powerpc
-memcpy,glibc
-strlen,dietlibc_small,dietlibc,freebsd,glibc,klibc,musl,netbsd,newlib,openbsd,uClibc
-swab,dietlibc,freebsd,freebsd_heimdal,glibc,musl,netbsd,netbsd_heimdal,newlib,openbsd,uClibc
-strnlen,freebsd,freebsd_heimdal,freebsd_openssh,glibc,klibc,netbsd,netbsd_heimdal,newlib,openbsd,uClibc
