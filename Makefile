@@ -48,8 +48,6 @@ collect_oopsla24_csvs: oopsla24_cmds.finished
 
 .PHONY: oopsla24_results
 oopsla24_results: collect_oopsla24_csvs
-	$(MAKE) run_oopsla24_cmds
-	$(MAKE) collect_oopsla24_csvs
 
 .PHONY: clean_outside_build
 clean_outside_build:
