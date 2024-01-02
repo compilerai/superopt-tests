@@ -6,5 +6,4 @@ config-host.mak
 regression_paper
 regression_i386
 *.csv
-oopsla24_results
-run_oopsla24_cmds
+*_cmds.finished
