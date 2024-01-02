@@ -9,7 +9,7 @@ BUILDDIR=$(CURDIR)/build
 
 OOPSLA24_TARGETS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_globals bzip2_locals bzip2_modified
 
-TARGETS := $(OOPSLA24_TARGETS)
+TARGETS := $(OOPSLA24_TARGETS) demo
 
 MAKEFILES := $(addsuffix /Makefile,$(TARGETS))
 BUILD_MAKEFILES := $(addprefix $(BUILDDIR)/,$(MAKEFILES))
