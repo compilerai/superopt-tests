@@ -32,15 +32,17 @@ $(TARGETS)::
 	$(CP) $@/Makefile -t $(BUILDDIR)/$@
 	$(MAKE) -C $(BUILDDIR)/$@
 
-$(BUILDDIR)/oopsla24_cmds:: $(OOPSLA24_TARGETS)
+$(BUILDDIR)/%_cmds::
 	@$(foreach t,$^, if $(MAKE) -C $(BUILDDIR)/$(t) all cmds; then :; else echo "ERROR: 'make cmds' failed for target" $(BUILDDIR)/$(t); exit 1; fi;)
 	@true > $@
 	@$(foreach t,$^, if [ -f $(BUILDDIR)/$(t)/cmds ]; then cat $(BUILDDIR)/$(t)/cmds >> $@; else echo "ERROR:" $(BUILDDIR)/$(t)/cmds "does not exist for target" $(t); rm $@; exit 1; fi;)
 
-oopsla24_cmds.finished: $(BUILDDIR)/oopsla24_cmds
+%.finished: $(BUILDDIR)/%
 	clear
 	parallel --load "33%" < $^ | tee $@
 	mv $^ $@
+
+$(BUILDDIR)/oopsla24_cmds:: $(OOPSLA24_TARGETS)
 
 .PHONY: collect_oopsla24_csvs
 collect_oopsla24_csvs: oopsla24_cmds.finished
@@ -48,6 +50,11 @@ collect_oopsla24_csvs: oopsla24_cmds.finished
 
 .PHONY: oopsla24_results
 oopsla24_results: collect_oopsla24_csvs
+
+$(BUILDDIR)/demo_cmds:: demo
+
+.PHONY: demo_results
+demo_results: demo_cmds.finished
 
 .PHONY: clean_outside_build
 clean_outside_build:
