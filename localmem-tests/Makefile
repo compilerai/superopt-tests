@@ -6,7 +6,6 @@ VPATH = $(SRCDIR)/localmem-tests
 EXTRA_FLAGS := --smt-query-timeout 120                                         \
                --global-timeout 7200                                           \
                --enable-query-decomposition                                    \
-               --disable-removal-of-stack-from-stack-nonstack-ml-in-dst        \
 
 UNROLL1_PROGS :=                                                               \
                  ata                                                           \

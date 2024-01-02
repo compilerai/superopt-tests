@@ -8,7 +8,6 @@ EXTRA_FLAGS :=                                                                 \
                --enable-query-decomposition                                    \
                --qd-smt-query-timeout 15                                       \
                --disable-dst-to-src-submap                                     \
-               --disable-removal-of-stack-from-stack-nonstack-ml-in-dst        \
 
 UNROLL64_CLANG := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s173 s2244 s243 s251 s452 s453 vdotr vpv vpvpv vpvtv vtv vtvtv vpvts
 

@@ -7,7 +7,6 @@ EXTRA_FLAGS :=                                                           \
                 --global-timeout 7200                                    \
                 --enable-query-decomposition                             \
                 --qd-smt-query-timeout 5                                 \
-                --disable-removal-of-stack-from-stack-nonstack-ml-in-dst \
                 --disable-dst-to-src-submap                              \
                 --no-strengthen-mae                                      \
 
