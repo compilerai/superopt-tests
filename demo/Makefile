@@ -28,11 +28,12 @@ cmds: cmds_normal_run # cmds_slow_run
 	cat $^ > $@
 
 .PHONY: collect_csv
-collect_csv: csv_eqcheck_normal_gcc_O3 csv_eqcheck_normal_clang_O3 # csv_eqcheck_normal_icc_O3 csv_eqcheck_slow_gcc_O3 csv_eqcheck_slow_clang_O3 csv_eqcheck_slow_icc_O3
+collect_csv: csv_eqcheck_normal_gcc_O3 csv_eqcheck_normal_clang_O3 # csv_eqcheck_slow_gcc_O3 csv_eqcheck_slow_clang_O3 # csv_eqcheck_normal_icc_O3 csv_eqcheck_slow_icc_O3
 	mv csv_eqcheck_normal_gcc_O3.csv demo_gcc.csv
 	mv csv_eqcheck_normal_clang_O3.csv demo_clang.csv
-	# mv csv_eqcheck_normal_icc_O3.csv demo_icc.csv
 
 	# mv csv_eqcheck_slow_gcc_O3.csv demo_gcc_s.csv
 	# mv csv_eqcheck_slow_clang_O3.csv demo_clang_s.csv
+
+	# mv csv_eqcheck_normal_icc_O3.csv demo_icc.csv
 	# mv csv_eqcheck_slow_icc_O3.csv demo_icc_s.csv
