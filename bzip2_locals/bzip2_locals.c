@@ -14,7 +14,6 @@ void* MYmymalloc(size_t);
 void MYmyexit(int);
 
 #define SPEC_CPU2000
-// #define DEBUG_DUMP
 
 /*-----------------------------------------------------------*/
 /*--- A block-sorting, lossless compressor        bzip2.c ---*/
@@ -366,12 +365,12 @@ int debug_time();
 #define IntNative int
 
 
-// /*--
-//    change to 1, or compile with -DDEBUG=1 to debug
-// --*/
-// #ifndef DEBUG
-// #define DEBUG 0
-// #endif
+/*--
+   change to 1, or compile with -DDEBUG=1 to debug
+--*/
+#ifndef DEBUG
+#define DEBUG 0
+#endif
 
 
 /*---------------------------------------------------*/
@@ -976,7 +975,6 @@ void bsPutIntVS ( Int32 numBits, UInt32 c )
 
 
 /*---------------------------------------------*/
-// 3 local arrays
 void hbMakeCodeLengths ( UChar *len, 
                          Int32 *freq,
                          Int32 alphaSize,
@@ -1247,7 +1245,6 @@ void makeMaps ( void )
 
 
 /*---------------------------------------------*/
-// 1 local array
 void generateMTFValues ( void )
 {
    UChar  yy[256];
@@ -1331,7 +1328,6 @@ void generateMTFValues ( void )
 #define LESSER_ICOST  0
 #define GREATER_ICOST 15
 
-// 4 local arrays
 void sendMTFValues ( void )
 {
    Int32 v, t, i, j, gs, ge, totc, bt, bc, iter;
@@ -1412,7 +1408,7 @@ void sendMTFValues ( void )
    /*--- 
       Iterate up to N_ITERS times to improve the tables.
    ---*/
-   nSelectors = 0; /* added to avoid undef value in llvm */
+   nSelectors = 0; /* XXX added to avoid undef value in llvm */
    for (iter = 0; iter < N_ITERS; iter++) {
 
       for (t = 0; t < nGroups; t++) fave[t] = 0;
@@ -1626,7 +1622,6 @@ void moveToFrontCodeAndSend ( void )
 
 
 /*---------------------------------------------*/
-// 2 local arrays
 void recvDecodingTables ( void )
 {
    Int32 i, j, t, nGroups, nSelectors, alphaSize;
@@ -1721,7 +1716,6 @@ void recvDecodingTables ( void )
 
 
 /*---------------------------------------------*/
-// 1 local array
 void getAndMoveToFrontDecode ( void )
 {
    UChar  yy[256];
@@ -2059,7 +2053,6 @@ typedef
 #define QSORT_STACK_SIZE 1000
 
 
-// 1 local array
 void qSort3 ( Int32 loSt, Int32 hiSt, Int32 dSt )
 {
    Int32 unLo, unHi, ltLo, gtHi, med, n, m;
@@ -2135,7 +2128,6 @@ void qSort3 ( Int32 loSt, Int32 hiSt, Int32 dSt )
 #define SETMASK (1 << 21)
 #define CLEARMASK (~(SETMASK))
 
-// 3 local arrays
 void sortIt ( void )
 {
    Int32 i, j, ss, sb;
@@ -2480,7 +2472,6 @@ INLINE Int32 indexIntoF ( Int32 indx, Int32 *cftab )
       tPos = GET_LL(tPos);
 
 
-// 2 local arrays
 #ifdef SPEC_CPU2000
 void undoReversibleTransformation_small ( int dst )
 #else
@@ -2624,7 +2615,6 @@ void undoReversibleTransformation_small ( FILE* dst )
       tPos = tt[tPos];
 
 
-// 1 local array
 #ifdef SPEC_CPU2000
 void undoReversibleTransformation_fast ( int dst )
 #else
@@ -2760,7 +2750,6 @@ void undoReversibleTransformation_fast ( FILE* dst )
 
 #define MY_EOF 257
 
-// XXX store sinking in UPDATE_CRC loop
 #ifdef SPEC_CPU2000
 INLINE Int32 getRLEpair ( int src )
 #else
@@ -3311,7 +3300,6 @@ void cleanUpAndFail ( Int32 ec )
                 progName, numFileNames, 
                           numFileNames - numFilesProcessed );
    }
-   //exit ( ec );
    MYmyexit ( ec );
 }
 
@@ -4022,7 +4010,6 @@ void *myMalloc ( Int32 n )
          "%s: `malloc' failed on request for %d bytes.\n",
          progName, n
       );
-      //exit ( 1 );
       MYmyexit ( 1 );
    }
    return p;
@@ -4085,7 +4072,6 @@ IntNative main ( IntNative argc, Char *argv[] )
                 "\tof 4, 2 and 1 bytes to run properly, and they don't.\n"
                 "\tProbably you can fix this by defining them correctly,\n"
                 "\tand recompiling.  Bye!\n" );
-      //exit(1);
       MYmyexit(1);
    }
 
@@ -4185,13 +4171,11 @@ IntNative main ( IntNative argc, Char *argv[] )
                case 'L': license();            break;
                case 'v': verbosity++; break;
                case 'h': usage ( progName );
-                         //exit ( 1 );
                          MYmyexit ( 1 );
                          break;
                default:  fprintf ( stderr, "%s: Bad flag `%s'\n",
                                    progName, aa->name );
                          usage ( progName );
-                         //exit ( 1 );
                          MYmyexit ( 1 );
                          break;
          }
@@ -4209,12 +4193,11 @@ IntNative main ( IntNative argc, Char *argv[] )
       if (ISFLAG("--repetitive-fast"))   workFactor = 5;             else
       if (ISFLAG("--repetitive-best"))   workFactor = 150;           else
       if (ISFLAG("--verbose"))           verbosity++;                else
-      if (ISFLAG("--help"))              { usage ( progName ); /*exit ( 1 );*/MYmyexit( 1 ); }
+      if (ISFLAG("--help"))              { usage ( progName ); MYmyexit( 1 ); }
          else
          if (strncmp ( aa->name, "--", 2) == 0) {
             fprintf ( stderr, "%s: Bad flag `%s'\n", progName, aa->name );
             usage ( progName );
-            //exit ( 1 );
             MYmyexit ( 1 );
          }
    }
@@ -4224,21 +4207,18 @@ IntNative main ( IntNative argc, Char *argv[] )
    if (opMode == OM_Z && srcMode == SM_F2O && numFileNames > 1) {
       fprintf ( stderr, "%s: I won't compress multiple files to stdout.\n",
                 progName );
-      //exit ( 1 );
       MYmyexit ( 1 );
    }
 
    if (srcMode == SM_F2O && numFileNames == 0) {
       fprintf ( stderr, "%s: -c expects at least one filename.\n",
                 progName );
-      //exit ( 1 );
       MYmyexit ( 1 );
    }
 
    if (opMode == OM_TEST && srcMode == SM_F2O) {
       fprintf ( stderr, "%s: -c and -t cannot be used together.\n",
                 progName );
-      //exit ( 1 );
       MYmyexit ( 1 );
    }
 
@@ -4280,7 +4260,6 @@ IntNative main ( IntNative argc, Char *argv[] )
            "You can use the `bzip2recover' program to *attempt* to recover\n"
            "data from undamaged sections of corrupted files.\n\n"
          );
-         //exit(2);
          MYmyexit(2);
       }
    }
@@ -4292,6 +4271,7 @@ IntNative main ( IntNative argc, Char *argv[] )
 /*-----------------------------------------------------------*/
 /*--- end                                         bzip2.c ---*/
 /*-----------------------------------------------------------*/
+
 
 #define SPEC_CPU2000
 #define SPEC_BZIP
@@ -4394,7 +4374,6 @@ int spec_init () {
 	spec_fd[i].buf = (unsigned char *)malloc(limit+FUDGE_BUF);
 	if (spec_fd[i].buf == NULL) {
 	    printf ("spec_init: Error mallocing memory!\n");
-	    //exit(1);
 	    MYmyexit(1);
 	}
 	for (j = 0; j < limit; j+=1024) {
@@ -4443,7 +4422,6 @@ int spec_load (int num, char *filename, int size) {
     fd = open(filename, O_RDONLY|O_BINARY);
     if (fd < 0) {
 	fprintf(stderr, "Can't open file %s: %s\n", filename, strerror(errno));
-	//exit (1);
 	MYmyexit (1);
     }
     spec_fd[num].pos = spec_fd[num].len = 0;
@@ -4452,7 +4430,6 @@ int spec_load (int num, char *filename, int size) {
 	if (rc == 0) break;
 	if (rc < 0) {
 	    fprintf(stderr, "Error reading from %s: %s\n", filename, strerror(errno));
-	    //exit (1);
 	    MYmyexit (1);
 	}
 	spec_fd[num].len += rc;
@@ -4473,7 +4450,6 @@ int spec_read (int fd, unsigned char *buf, int size) {
     debug3(4,"spec_read: %d, %p, %d = ", fd, (void *)buf, size);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_read: fd=%d, > MAX_SPEC_FD!\n", fd);
-	//exit (1);
 	MYmyexit (1);
     }
     if (spec_fd[fd].pos >= spec_fd[fd].len) {
@@ -4495,7 +4471,6 @@ int spec_getc (int fd) {
     debug1(4,"spec_getc: %d = ", fd);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_read: fd=%d, > MAX_SPEC_FD!\n", fd);
-	//exit (1);
 	MYmyexit (1);
     }
     if (spec_fd[fd].pos >= spec_fd[fd].len) {
@@ -4511,17 +4486,14 @@ int spec_ungetc (unsigned char ch, int fd) {
     debug1(4,"spec_ungetc: %d = ", fd);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_read: fd=%d, > MAX_SPEC_FD!\n", fd);
-	//exit (1);
 	MYmyexit (1);
     }
     if (spec_fd[fd].pos <= 0) {
 	fprintf(stderr, "spec_ungetc: pos %d <= 0\n", spec_fd[fd].pos);
-	//exit (1);
 	MYmyexit (1);
     }
     if (spec_fd[fd].buf[--spec_fd[fd].pos] != ch) {
 	fprintf(stderr, "spec_ungetc: can't unget something that wasn't what was in the buffer!\n");
-	//exit (1);
 	MYmyexit (1);
     }
     debug1(4,"%d\n", rc);
@@ -4541,7 +4513,6 @@ int spec_write(int fd, unsigned char *buf, int size) {
     debug3(4,"spec_write: %d, %p, %d = ", fd, (void *)buf, size);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_write: fd=%d, > MAX_SPEC_FD!\n", fd);
-	//exit (1);
 	MYmyexit (1);
     }
     MYmymemcpy(&(spec_fd[fd].buf[spec_fd[fd].pos]), buf, size); 
@@ -4554,7 +4525,6 @@ int spec_putc(unsigned char ch, int fd) {
     debug2(4,"spec_putc: %d, %d = ", ch, fd);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_write: fd=%d, > MAX_SPEC_FD!\n", fd);
-	//exit (1);
 	MYmyexit (1);
     }
     spec_fd[fd].buf[spec_fd[fd].pos++] = ch;
@@ -4591,7 +4561,6 @@ int main (int argc, char *argv[]) {
     validate_array = (unsigned char *)malloc(input_size*MB/1024);
     if (validate_array == NULL) {
 	printf ("main: Error mallocing memory!\n");
-	//exit (1);
 	MYmyexit (1);
     }
     /* Save off one byte every ~1k for validation */
@@ -4649,7 +4618,6 @@ int main (int argc, char *argv[]) {
 	for (i = 0; i*VALIDATE_SKIP < input_size*MB; i++) {
 	    if (validate_array[i] != spec_fd[0].buf[i*VALIDATE_SKIP]) {
 		printf ("Tested %dMB buffer: Miscompared!!\n", input_size);
-		//exit (1);
 		MYmyexit (1);
 	    }
 	}
@@ -4688,16 +4656,14 @@ void spec_uncompress(int in, int out, int lev) {
 #error You must have SPEC_BZIP defined!
 #endif
 
-#ifdef TIMING_OUTPUT
 int debug_time () {
+#ifdef TIMING_OUTPUT
     static int last = 0;
     struct timeval tv;
     gettimeofday(&tv,NULL);
     debug2(2, "Time: %10d, %10d\n", tv.tv_sec, tv.tv_sec-last);
     last = tv.tv_sec;
+#endif
     return 0;
 }
-#else
-int debug_time();
-#endif
 #endif
