@@ -7,9 +7,13 @@ SUPEROPT_INSTALL_DIR ?= $(SUPEROPT_PROJECT_DIR)/usr/local
 
 BUILDDIR=$(CURDIR)/build
 
-OOPSLA24_TARGETS := localmem-tests TSVC_prior_work_locals TSVC_prior_work_globals bzip2_locals bzip2_modified
+lt_targets := localmem-tests
+tsvc_targets := TSVC_prior_work_locals TSVC_prior_work_globals
+bzip2_targets := bzip2_locals
+bzip2_modified_targets := bzip2_modified
+demo_targets := demo
 
-TARGETS := $(OOPSLA24_TARGETS) demo
+TARGETS := $(lt_targets) $(tsvc_targets) $(bzip2_targets) $(bzip2_modified_targets) $(demo_targets)
 
 MAKEFILES := $(addsuffix /Makefile,$(TARGETS))
 BUILD_MAKEFILES := $(addprefix $(BUILDDIR)/,$(MAKEFILES))
@@ -20,9 +24,6 @@ export SUPEROPT_INSTALL_DIR
 # rules
 
 all: $(TARGETS)
-
-$(BUILDDIR)/%:
-	mkdir -p $@
 
 $(BUILD_MAKEFILES): $(BUILDDIR)/%/Makefile: %/Makefile $(BUILDDIR)/%
 	$(CP) $< $@
@@ -37,24 +38,28 @@ $(BUILDDIR)/%_cmds::
 	@true > $@
 	@$(foreach t,$^, if [ -f $(BUILDDIR)/$(t)/cmds ]; then cat $(BUILDDIR)/$(t)/cmds >> $@; else echo "ERROR:" $(BUILDDIR)/$(t)/cmds "does not exist for target" $(t); rm $@; exit 1; fi;)
 
-%.finished: $(BUILDDIR)/%
-	clear
-	parallel --load "33%" < $^ | tee $@
-	mv $^ $@
+%.finished: $(BUILDDIR)/%_cmds
+	@clear
+	@echo "Running the eqchecks..."
+	@parallel --load "33%" < $^ | tee $@
+	@mv $^ $@
 
-$(BUILDDIR)/oopsla24_cmds:: $(OOPSLA24_TARGETS)
+.PHONY: lt_csvs tsvc_csvs bzip2_csvs bzip2_modified_csvs demo_csvs
+lt_csvs tsvc_csvs bzip2_csvs bzip2_modified_csvs demo_csvs: %_csvs: %.finished
+	@echo "Generating CSVs..."
+	@$(foreach t,$($(subst _csvs,,$@)_targets), if $(MAKE) -C $(BUILDDIR)/$(t) collect_csv; then :; else echo "ERROR: 'make collect_csv' failed for target" $(BUILDDIR)/$(t); exit 1; fi; mv $(BUILDDIR)/$(t)/*.csv .;)
 
-.PHONY: collect_oopsla24_csvs
-collect_oopsla24_csvs: oopsla24_cmds.finished
-	@$(foreach t,$(OOPSLA24_TARGETS), if $(MAKE) -C $(BUILDDIR)/$(t) collect_csv; then :; else echo "ERROR: 'make collect_csv' failed for target" $(BUILDDIR)/$(t); exit 1; fi; mv $(BUILDDIR)/$(t)/*.csv .;)
+$(BUILDDIR)/lt_cmds:: $(lt_targets)
+$(BUILDDIR)/tsvc_cmds:: $(tsvc_targets)
+$(BUILDDIR)/bzip2_cmds:: $(bzip2_targets)
+$(BUILDDIR)/bzip2_modified_cmds:: $(bzip2_modified_targets)
+$(BUILDDIR)/demo_cmds:: $(demo_targets)
+
+.PHONY: lt_results tsvc_results bzip2_results bzip2_modified_results demo_results
+lt_results tsvc_results bzip2_results bzip2_modified_results demo_results: %_results: %_csvs
 
 .PHONY: oopsla24_results
-oopsla24_results: collect_oopsla24_csvs
-
-$(BUILDDIR)/demo_cmds:: demo
-
-.PHONY: demo_results
-demo_results: demo_cmds.finished
+oopsla24_results: lt_results tsvc_results bzip2_results
 
 .PHONY: clean_outside_build
 clean_outside_build:
