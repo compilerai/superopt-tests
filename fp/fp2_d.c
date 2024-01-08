@@ -27,7 +27,23 @@ double diff1a(double a[], double b[])
   return d1;
 }
 
-double diff2(double a[], double b[])
+double diff2(double a1, double a2, double b1, double b2)
+{
+  double d1, d2;
+
+  d1 = a1 - b1;
+  d2 = a2 - b2;
+
+  if(d1 < 0)
+    d1 = -d1;
+
+  if(d2 < 0)
+    d2 = -d2;
+
+  return d1 + d2;
+}
+
+double diff2a(double a[], double b[])
 {
   double d1, d2;
 

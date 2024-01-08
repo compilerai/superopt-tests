@@ -27,7 +27,23 @@ float diff1a(float a[], float b[])
   return d1;
 }
 
-float diff2(float a[], float b[])
+float diff2(float a1, float a2, float b1, float b2)
+{
+  float d1, d2;
+
+  d1 = a1 - b1;
+  d2 = a2 - b2;
+
+  if(d1 < 0)
+    d1 = -d1;
+
+  if(d2 < 0)
+    d2 = -d2;
+
+  return d1 + d2;
+}
+
+float diff2a(float a[], float b[])
 {
   float d1, d2;
 
