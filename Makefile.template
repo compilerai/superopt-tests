@@ -1,7 +1,6 @@
 include $(SRCDIR)/Make.conf                  # compiler paths and flags
 include $(SRCDIR)/Makefile.common  # build rules
 
-
 # enumerate files to be compiled from user declared UNROLL1_GCC, UNROLL2_CLANG, .... variables
 UNROLL_FACTORS := 1 2 4 8 16 32 64
 COMPILERS := GCC CLANG ICC ICX ACK GPP CLANGPP ICPC ICPX
@@ -39,15 +38,6 @@ EQCHECKER_X64_ICX_PROGS    := $(foreach opt,$(OPTS),$(addsuffix .icx.eqchecker.$
 EQCHECKER_I386_ACK_PROGS   := $(foreach opt,O1 O2,$(addsuffix .ack.$(opt).i386,   $(PROGS_EQCHECKER_ACK)))
 EQCHECKER_I386_CCOMP_PROGS := $(foreach opt,O0 O2,$(addsuffix .ccomp.eqchecker.$(opt).i386, $(PROGS_EQCHECKER_CCOMP)))
 
-#EQCHECKER_I386_GCC_O3_XML_FILES = $(addsuffix .gcc.i386.O3.xml, $(PROGS_EQCHECKER_GCC))
-#EQCHECKER_I386_CLANG_O3_XML_FILES = $(addsuffix .clang.i386.O3.xml, $(PROGS_EQCHECKER_CLANG))
-#EQCHECKER_I386_ICC_O3_XML_FILES = $(addsuffix .icc.i386.O3.xml, $(PROGS_EQCHECKER_ICC))
-#EQCHECKER_I386_ICX_O3_XML_FILES = $(addsuffix .icx.i386.O3.xml, $(PROGS_EQCHECKER_ICX))
-
-#EQCHECKER_X64_GCC_O3_XML_FILES = $(addsuffix .gcc.x64.O3.xml, $(PROGS_EQCHECKER_GCC))
-#EQCHECKER_X64_CLANG_O3_XML_FILES = $(addsuffix .clang.x64.O3.xml, $(PROGS_EQCHECKER_CLANG))
-#EQCHECKER_X64_ICX_O3_XML_FILES = $(addsuffix .icx.x64.O3.xml, $(PROGS_EQCHECKER_ICX))
-
 PROGS_LL_BC = $(addsuffix .bc, $(PROGS_LL))
 
 BC_PROGS = \
@@ -75,17 +65,7 @@ EQCHECKER_PROGS = \
 ACK_EQCHECKER_PROGS = \
   $(EQCHECKER_I386_ACK_PROGS) \
 
-#XML_FILES = \
-#  $(EQCHECKER_I386_GCC_O3_XML_FILES) \
-#  $(EQCHECKER_I386_CLANG_O3_XML_FILES) \
-#  $(EQCHECKER_I386_ICC_O3_XML_FILES) \
-#  $(EQCHECKER_I386_ICX_O3_XML_FILES) \
-#  $(EQCHECKER_X64_GCC_O3_XML_FILES) \
-#  $(EQCHECKER_X64_CLANG_O3_XML_FILES) \
-#  $(EQCHECKER_X64_ICC_O3_XML_FILES) \
-#  $(EQCHECKER_X64_ICX_O3_XML_FILES)
-
-ALL_PROGS = $(EQCHECKER_PROGS) $(BC_PROGS_ASM) $(PROGS_LL_BC) #$(XML_FILES)
+ALL_PROGS = $(EQCHECKER_PROGS) $(BC_PROGS_ASM) $(PROGS_LL_BC)
 
 EQFLAGS_FILES := $(wildcard $(VPATH)/*.eqflags)
 
@@ -184,16 +164,28 @@ ARCHIVE_FNAME := $(shell sh $(SUPEROPT_PROJECT_DIR)/superopt/utils/next_avail_fn
 
 .PHONY: collect_logs
 collect_logs:
-	# python3 $(SUPEROPT_PROJECT_DIR)/superopt/utils/eq_read_log.py '$(BENCH_RUN_LOGS_DIR)/*.log' > $(ARCHIVE_FNAME)
-	# apack $(ARCHIVE_FNAME).zip $(BENCH_RUN_LOGS_DIR)/*.log $(BENCH_RUN_LOGS_DIR)/*.proof
 	find -path './eqcheck*/submit*/stdout' -exec python3 $(SUPEROPT_PROJECT_DIR)/superopt/utils/eq_read_log.py  {} \; > $(ARCHIVE_FNAME)
 	ln -sf $(ARCHIVE_FNAME) $(ARCHIVE_LAST)
 
 .PHONY: archive_run
 archive_run: collect_logs
-	# python3 $(SUPEROPT_PROJECT_DIR)/superopt/utils/eq_read_log.py '$(BENCH_RUN_LOGS_DIR)/*.log' > $(ARCHIVE_FNAME)
-	# apack $(ARCHIVE_FNAME).zip $(BENCH_RUN_LOGS_DIR)/*.log $(BENCH_RUN_LOGS_DIR)/*.proof
 	find . -type f -path "./eqcheck*" ! -name "*.xml" -print0 | apack -0 $(ARCHIVE_FNAME).zip
 	ln -sf $(ARCHIVE_FNAME).zip $(ARCHIVE_LAST).zip
+
+csv_%_helper:
+	@find -path './$(CSV_MATCH_PREFIX)$(CSV_MATCH_TAIL)/submit*/stdout' | python3 ${SUPEROPT_PROJECT_DIR}/superopt/utils/gen_stats -stdin -o $(subst _helper,,$@).csv
+
+csv_%_gcc_O3_helper::   CSV_MATCH_TAIL=.gcc.eqchecker.O3*
+csv_%_clang_O1_helper:: CSV_MATCH_TAIL=.clang.eqchecker.O1*
+csv_%_clang_O2_helper:: CSV_MATCH_TAIL=.clang.eqchecker.O2*
+csv_%_clang_O3_helper:: CSV_MATCH_TAIL=.clang.eqchecker.O3*
+csv_%_icc_O3_helper::   CSV_MATCH_TAIL=.icc.eqchecker.O3*
+csv_%_clangv_helper::   CSV_MATCH_TAIL=.O1-
+
+csv_eqcheck_normal_%_helper:: CSV_MATCH_PREFIX=eqcheck.*
+# csv_eqcheck_slow_%_helper::   CSV_MATCH_PREFIX=eqcheck_slow.*
+csv_eqcheck_clangv_helper::   CSV_MATCH_PREFIX=clangv.*
+
+csv_eqcheck_normal_gcc_O3 csv_eqcheck_normal_clang_O3 csv_eqcheck_normal_icc_O3 csv_eqcheck_normal_clang_O1 csv_eqcheck_normal_clang_O2 csv_eqcheck_clangv: %: %_helper # csv_eqcheck_slow_gcc_O3 csv_eqcheck_slow_clang_O3 csv_eqcheck_slow_icc_O3 
 
 .PHONY: all clean

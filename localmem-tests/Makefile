@@ -156,7 +156,7 @@ ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
 C_STD = gnu11
 include $(SRCDIR)/Makefile.template
 
-test_i386: eqtest_i386_O3
+cmds: eqtest_i386_O3
 	cat $^ > $@
 
 clangv_Od: clangv_O1-
