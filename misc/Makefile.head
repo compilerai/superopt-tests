@@ -7,14 +7,14 @@ run_tests_$(1): run_tests_%: %.finished
 	# @echo "Generating CSVs..."
 	# @$(foreach t,$(2), if $(MAKE) -C $(BUILDDIR)/$(t) collect_csv; then :; else echo "ERROR: 'make collect_csv' failed for target" $(BUILDDIR)/$(t); exit 1; fi; mv $(BUILDDIR)/$(t)/*.csv .;)
 
-# list of files containing commands
+# list of files containing commands -- make sure there are no spaces in filepaths
 $(1).run.deps := $(BUILDDIR)/$(1)_cmds # $(BUILDDIR)/$(1)_clangv_Od
 
 $(1).finished: %.finished: $$($(1).run.deps)
 	@clear
 	@echo "Running the eqchecks..."
 	@cat $$($(1).run.deps) | parallel --load "33%" | tee $(1).finished
-	@$(foreach f,$$($(1).run.deps), mv $(f) $(f).finished) # so that we can run again
+	for f in $$($(1).run.deps); do mv $${f} $${f}.finished; done # so that we can run again
 
 # generate command files
 
