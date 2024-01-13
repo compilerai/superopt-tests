@@ -1,0 +1,34 @@
+MAKEFILES := $(addsuffix /Makefile,$(TARGETS))
+BUILD_MAKEFILES := $(addprefix $(BUILDDIR)/,$(MAKEFILES))
+
+$(BUILD_MAKEFILES): $(BUILDDIR)/%/Makefile: %/Makefile
+	mkdir -p $(BUILDDIR)/$*
+	$(CP) $< $@
+
+.PHONY: $(TARGETS)
+$(TARGETS): %: $(BUILDDIR)/%/Makefile
+	$(MAKE) -C $(BUILDDIR)/$@
+
+.PHONY: all
+all: $(TARGETS)
+
+.PHONY: clean_outside_build
+clean_outside_build:
+	find . -name *.bc | xargs rm -f
+	find . -name *.cg.ll | xargs rm -f
+	find . -name "*.etfg" | xargs rm -f
+	find . -name *.tmp | xargs rm -f
+	find . -name '*[^.][^s].log' | xargs rm -f
+	find . -name cscope.out | xargs rm -f
+	# -find . -name core | xargs rm -f
+
+.PHONY: clean
+clean:: clean_outside_build
+	$(foreach t,$(TARGETS),$(MAKE) -C $(BUILDDIR)/$(t) clean;)
+	find $(BUILDDIR) -name "clangv.*" | xargs rm -rf
+	find $(BUILDDIR) -name "eqcheck.*" | xargs rm -rf
+
+.PHONY: distclean
+distclean: clean_outside_build
+	rm -rf config-host.mak $(BUILDDIR)
+	git clean -df

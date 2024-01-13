@@ -1010,9 +1010,9 @@ DOWNHEAP(Int32 z)
 {
    Int32 zz, yy, tmp;
    zz = z; tmp = heap[zz];
-   while (True) {
-      yy = zz << 1;
-      if (yy > nHeap) break;
+   yy = zz << 1;
+   while (!(yy > nHeap)) {
+      DBG(__LINE__);
       if (yy < nHeap &&
           weight[heap[yy+1]] < weight[heap[yy]]) {
          yy++;
@@ -1020,6 +1020,7 @@ DOWNHEAP(Int32 z)
       if (weight[tmp] < weight[heap[yy]]) break;
       heap[zz] = heap[yy];
       zz = yy;
+      yy = zz << 1;
    }
    heap[zz] = tmp;
 }
@@ -1224,10 +1225,10 @@ void hbCreateDecodeTables ( Int32 *limit,
 void allocateCompressStructures ( void )
 {
    Int32 n  = 100000 * blockSize100k;
-   block    = malloc ( (n + 1 + NUM_OVERSHOOT_BYTES) * sizeof(UChar) );
-   quadrant = malloc ( (n     + NUM_OVERSHOOT_BYTES) * sizeof(Int16) );
-   zptr     = malloc ( n                             * sizeof(Int32) );
-   ftab     = malloc ( 65537                         * sizeof(Int32) );
+   block    = MYmymalloc ( (n + 1 + NUM_OVERSHOOT_BYTES) * sizeof(UChar) );
+   quadrant = MYmymalloc ( (n     + NUM_OVERSHOOT_BYTES) * sizeof(Int16) );
+   zptr     = MYmymalloc ( n                             * sizeof(Int32) );
+   ftab     = MYmymalloc ( 65537                         * sizeof(Int32) );
 
    if (block == NULL || quadrant == NULL ||
        zptr == NULL  || ftab == NULL) {
@@ -1282,8 +1283,8 @@ void setDecompressStructureSizes ( Int32 newSize100k )
    if (smallMode) {
 
       Int32 n = 100000 * newSize100k;
-      ll16    = malloc ( n * sizeof(UInt16) );
-      ll4     = malloc ( ((n+1) >> 1) * sizeof(UChar) );
+      ll16    = MYmymalloc ( n * sizeof(UInt16) );
+      ll4     = MYmymalloc ( ((n+1) >> 1) * sizeof(UChar) );
 
       if (ll4 == NULL || ll16 == NULL) {
          Int32 totalDraw
@@ -1294,8 +1295,8 @@ void setDecompressStructureSizes ( Int32 newSize100k )
    } else {
 
       Int32 n = 100000 * newSize100k;
-      ll8     = malloc ( n * sizeof(UChar) );
-      tt      = malloc ( n * sizeof(Int32) );
+      ll8     = MYmymalloc ( n * sizeof(UChar) );
+      tt      = MYmymalloc ( n * sizeof(Int32) );
 
       if (ll8 == NULL || tt == NULL) {
          Int32 totalDraw
@@ -1326,8 +1327,7 @@ void makeMaps ( void )
    }
 }
 
-
-// local array made global
+// local array made global for access across split functions
 UChar  yy[256];
 
 void inityy(Int32 n)
@@ -1428,10 +1428,14 @@ void generateMTFValues ( void )
 #define LESSER_ICOST  0
 #define GREATER_ICOST 15
 
-// local arrays made global
-Bool inUse16[16];
+// local arrays made global for access across split functions
 UInt16 cost[N_GROUPS];
-Int32  fave[N_GROUPS];
+
+Int32
+DIV(Int32 a, Int32 b)
+{
+  return a / b;
+}
 
 void
 generateInitialCodingTables(Int32 nGroups, Int32 alphaSize)
@@ -1444,7 +1448,7 @@ generateInitialCodingTables(Int32 nGroups, Int32 alphaSize)
   gs = 0;
   while (nPart > 0) {
     DBG(__LINE__); // can remove this?
-    tFreq = remF / nPart;
+    tFreq = DIV(remF, nPart);
     ge = gs-1;
     aFreq = 0;
     while (aFreq < tFreq && ge < alphaSize-1) {
@@ -1478,7 +1482,7 @@ generateInitialCodingTables(Int32 nGroups, Int32 alphaSize)
   }
 }
 
-// local array made global
+// local array made global for access across split functions
 UChar pos[N_GROUPS];
 
 void
@@ -1568,7 +1572,7 @@ transmitMappingTable()
   Int32 i, j;
   Int32 nBytes;
 
-  //Bool inUse16[16];
+  Bool inUse16[16];
   for (i = 0; i < 16; i++) {
     inUse16[i] = False;
     for (j = 0; j < 16; j++) {
@@ -1647,8 +1651,7 @@ transmitBlockData(Int32 nGroups, Int32 nSelectors)
   nBytes = bytesOut;
   selCtr = 0;
   gs = 0;
-  while (True) {
-    if (gs >= nMTF) break;
+  while (!(gs >= nMTF)) {
     ge = gs + G_SIZE - 1;
     if (ge >= nMTF) ge = nMTF-1;
     for (i = gs; i <= ge; i++) {
@@ -1686,7 +1689,7 @@ void sendMTFValues ( void )
 
 
    //UInt16 cost[N_GROUPS];
-   //Int32  fave[N_GROUPS];
+   Int32  fave[N_GROUPS];
 
    if (verbosity >= 3)
       fprintf ( stderr,
@@ -1851,12 +1854,10 @@ void createHuffmanDecodeTables(Int32 nGroups, Int32 alphaSize)
   }
 }
 
-// local array made global
-UChar pos[N_GROUPS];
-
 void initpos(Int32 nGroups)
 {
   UChar v;;
+  UChar pos[N_GROUPS];
   for (v = 0; v < nGroups; v++) {
     //DBG(__LINE__); // required to prevent vectorization with RODATA load
     pos[v] = v;
@@ -1868,7 +1869,7 @@ void recvDecodingTables ( void )
 {
    Int32 i, j, t, nGroups, nSelectors, alphaSize;
    Int32 minLen, maxLen;
-   //Bool inUse16[16];
+   Bool inUse16[16];
 
    /*--- Receive the mapping table ---*/
    for (i = 0; i < 16; i++) {
@@ -2323,13 +2324,11 @@ typedef
 #define QSORT_STACK_SIZE 1000
 
 
-// XXX local array turned global
-StackElem stack[QSORT_STACK_SIZE];
 void qSort3 ( Int32 loSt, Int32 hiSt, Int32 dSt )
 {
    Int32 unLo, unHi, ltLo, gtHi, med, n, m;
    Int32 sp, lo, hi, d;
-   //StackElem stack[QSORT_STACK_SIZE];
+   StackElem stack[QSORT_STACK_SIZE];
 
    sp = 0;
    push ( loSt, hiSt, dSt );
@@ -2404,9 +2403,8 @@ void qSort3 ( Int32 loSt, Int32 hiSt, Int32 dSt )
 #define SETMASK (1 << 21)
 #define CLEARMASK (~(SETMASK))
 
-// local arrays made global
+// local arrays made global for access across split functions
 Int32 runningOrder[256];
-Int32 copy[256];
 Bool bigDone[256];
 
 void initrunningOrder()
@@ -2474,25 +2472,31 @@ Int32 calculateh()
   return h;
 }
 
+void
+updateRunningOrder(Int32 i, Int32 h)
+{
+  Int32 vv, j;
+  vv = runningOrder[i];
+  j = i;
+  while ( BIGFREQ(runningOrder[j-h]) > BIGFREQ(vv) ) {
+    DBG(__LINE__);
+    runningOrder[j] = runningOrder[j-h];
+    j = j - h;
+    if (j <= (h - 1)) goto zero;
+  }
+zero:
+  runningOrder[j] = vv;
+}
+
 void calculateRunningOrder()
 {
-  Int32 i, j;
+  Int32 i;
   Int32 vv;
   Int32 h = calculateh();
   do {
     h = h / 3;
     for (i = h; i <= 255; i++) {
-      DBG(__LINE__);
-      vv = runningOrder[i];
-      j = i;
-      while ( BIGFREQ(runningOrder[j-h]) > BIGFREQ(vv) ) {
-        DBG(__LINE__);
-        runningOrder[j] = runningOrder[j-h];
-        j = j - h;
-        if (j <= (h - 1)) goto zero;
-      }
-zero:
-      runningOrder[j] = vv;
+      updateRunningOrder(i, h);
     }
   } while (h != 1);
 }
@@ -2512,6 +2516,7 @@ void setupOvershootArea()
 void synthesisSortedOrderforSmallBuckets(Int32 ss)
 {
   Int32 j;
+  Int32 copy[256];
 
   for (j = 0; j <= 255; j++) {
     copy[j] = ftab[(j << 8) + ss] & CLEARMASK;
@@ -2827,7 +2832,7 @@ INLINE Int32 indexIntoF ( Int32 indx, Int32 *cftab )
       tPos = GET_LL(tPos);
 
 
-// XXX local array turned global -- required in both undoReversibleTransformation_{small,fast}
+// local array turned global -- required in both undoReversibleTransformation_{small,fast}
 Int32  cftab[257], cftabAlso[257];
 
 void setUpcftab()
@@ -2853,13 +2858,94 @@ void setUpcftabAlso()
 }
 
 #ifdef SPEC_CPU2000
+void runLengthDecoder ( int dst )
+#else
+void runLengthDecoder ( FILE* dst )
+#endif
+{
+  Int32 tPos;
+   /*--
+      We recreate the original by subscripting F through T^(-1).
+      The run-length-decoder below requires characters incrementally,
+      so tPos is set to a starting value, and is updated by
+      the GET_SMALL macro.
+   --*/
+   tPos   = origPtr;
+
+   /*-------------------------------------------------*/
+   /*--
+      This is pretty much a verbatim copy of the
+      run-length decoder present in the distribution
+      bzip-0.21; it has to be here to avoid creating
+      block[] as an intermediary structure.  As in 0.21,
+      this code derives from some sent to me by
+      Christian von Roques.
+
+      It allows dst==NULL, so as to support the test (-t)
+      option without slowing down the fast decompression
+      code.
+   --*/
+  IntNative retVal;
+  Int32     i2, count, chPrev, ch2;
+  UInt32    localCrc;
+
+  count    = 0;
+  i2       = 0;
+  ch2      = 256;   /*-- not a char and not EOF --*/
+  localCrc = getGlobalCRC();
+
+  {
+    RAND_DECLS;
+    while ( i2 <= last ) {
+      chPrev = ch2;
+      GET_SMALL(ch2);
+      if (blockRandomised) {
+        RAND_UPD_MASK;
+        ch2 ^= (UInt32)RAND_MASK;
+      }
+      i2++;
+
+      if (dst)
+        retVal = putc ( ch2, dst );
+
+      UPDATE_CRC ( localCrc, (UChar)ch2 );
+
+      if (ch2 != chPrev) {
+        count = 1;
+      } else {
+        count++;
+        if (count >= 4) {
+          Int32 j2;
+          UChar z;
+          GET_SMALL(z);
+          if (blockRandomised) {
+            RAND_UPD_MASK;
+            z ^= RAND_MASK;
+          }
+          for (j2 = 0;  j2 < (Int32)z;  j2++) {
+            DBG(__LINE__);
+            if (dst) retVal = putc (ch2, dst);
+            UPDATE_CRC ( localCrc, (UChar)ch2 );
+          }
+          i2++;
+          count = 0;
+        }
+      }
+    }
+  }
+
+  setGlobalCRC ( localCrc );
+   /*-- end of the in-line run-length-decoder. --*/
+}
+
+#ifdef SPEC_CPU2000
 void undoReversibleTransformation_small ( int dst )
 #else
 void undoReversibleTransformation_small ( FILE* dst )
 #endif
 {
    //Int32  cftab[257], cftabAlso[257];
-   Int32  i, j, tmp, tPos;
+   Int32  i, j, tmp;
    UChar  ch;
 
    /*--
@@ -2910,80 +2996,7 @@ void undoReversibleTransformation_small ( FILE* dst )
    }
       while (i != origPtr);
 
-   /*--
-      We recreate the original by subscripting F through T^(-1).
-      The run-length-decoder below requires characters incrementally,
-      so tPos is set to a starting value, and is updated by
-      the GET_SMALL macro.
-   --*/
-   tPos   = origPtr;
-
-   /*-------------------------------------------------*/
-   /*--
-      This is pretty much a verbatim copy of the
-      run-length decoder present in the distribution
-      bzip-0.21; it has to be here to avoid creating
-      block[] as an intermediary structure.  As in 0.21,
-      this code derives from some sent to me by
-      Christian von Roques.
-
-      It allows dst==NULL, so as to support the test (-t)
-      option without slowing down the fast decompression
-      code.
-   --*/
-   {
-      IntNative retVal;
-      Int32     i2, count, chPrev, ch2;
-      UInt32    localCrc;
-
-      count    = 0;
-      i2       = 0;
-      ch2      = 256;   /*-- not a char and not EOF --*/
-      localCrc = getGlobalCRC();
-
-      {
-         RAND_DECLS;
-         while ( i2 <= last ) {
-            chPrev = ch2;
-            GET_SMALL(ch2);
-            if (blockRandomised) {
-               RAND_UPD_MASK;
-               ch2 ^= (UInt32)RAND_MASK;
-            }
-            i2++;
-   
-            if (dst)
-               retVal = putc ( ch2, dst );
-   
-            UPDATE_CRC ( localCrc, (UChar)ch2 );
-   
-            if (ch2 != chPrev) {
-               count = 1;
-            } else {
-               count++;
-               if (count >= 4) {
-                  Int32 j2;
-                  UChar z;
-                  GET_SMALL(z);
-                  if (blockRandomised) {
-                     RAND_UPD_MASK;
-                     z ^= RAND_MASK;
-                  }
-                  for (j2 = 0;  j2 < (Int32)z;  j2++) {
-                     DBG(__LINE__);
-                     if (dst) retVal = putc (ch2, dst);
-                     UPDATE_CRC ( localCrc, (UChar)ch2 );
-                  }
-                  i2++;
-                  count = 0;
-               }
-            }
-         }
-      }
-
-      setGlobalCRC ( localCrc );
-   }
-   /*-- end of the in-line run-length-decoder. --*/
+   runLengthDecoder(dst);
 }
 #undef GET_SMALL
 
@@ -4408,11 +4421,11 @@ void *myMalloc ( Int32 n )
 {
    void* p;
 
-   p = malloc ( (size_t)n );
+   p = MYmymalloc ( (size_t)n );
    if (p == NULL) {
       fprintf (
          stderr,
-         "%s: `malloc' failed on request for %d bytes.\n",
+         "%s: `MYmymalloc' failed on request for %d bytes.\n",
          progName, n
       );
       MYmyexit ( 1 );
@@ -4757,7 +4770,7 @@ int spec_init () {
 	int limit = spec_fd[i].limit;
 	memset(&spec_fd[i], 0, sizeof(*spec_fd));
 	spec_fd[i].limit = limit;
-	spec_fd[i].buf = (unsigned char *)malloc(limit+FUDGE_BUF);
+	spec_fd[i].buf = (unsigned char *)MYmymalloc(limit+FUDGE_BUF);
 	if (spec_fd[i].buf == NULL) {
 	    printf ("spec_init: Error mallocing memory!\n");
 	    MYmyexit(1);
@@ -4947,7 +4960,7 @@ int main (int argc, char *argv[])
   spec_load(0, input_name, input_size*MB);
   debug1(3, "Input data %d bytes in length\n", spec_fd[0].len);
 
-  validate_array = (unsigned char *)malloc(input_size*MB/1024);
+  validate_array = (unsigned char *)MYmymalloc(input_size*MB/1024);
   if (validate_array == NULL) {
 	  printf ("main: Error mallocing memory!\n");
 	  MYmyexit (1);
