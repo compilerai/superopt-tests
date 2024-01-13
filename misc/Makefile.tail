@@ -22,11 +22,14 @@ clean_outside_build:
 	find . -name cscope.out | xargs rm -f
 	# -find . -name core | xargs rm -f
 
+.PHONY: logs_clean
+logs_clean:
+	find $(BUILDDIR) -name "clangv.*" | xargs rm -rf
+	find $(BUILDDIR) -name "eqcheck.*" | xargs rm -rf
+
 .PHONY: clean
 clean:: clean_outside_build
 	$(foreach t,$(TARGETS),$(MAKE) -C $(BUILDDIR)/$(t) clean;)
-	find $(BUILDDIR) -name "clangv.*" | xargs rm -rf
-	find $(BUILDDIR) -name "eqcheck.*" | xargs rm -rf
 
 .PHONY: distclean
 distclean: clean_outside_build
