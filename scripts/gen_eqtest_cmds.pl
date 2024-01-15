@@ -22,7 +22,7 @@ my $benchmark = basename($VPATH);
 my $PWD = getcwd;
 my $num_processes_per_file = 10;
   
-my ($dst_arch, $compiler, $extraflagsarg, $expectedfailsarg);
+my ($dst_arch, $compiler, $extraflagsarg, $expectedfailsarg, $ccoptsarg);
 my ($opt_level);
 my $cur_index;
 
@@ -34,14 +34,16 @@ if ($type eq "eqcheck") {
   $extraflagsarg = $ARGV[7];
   
   $expectedfailsarg = $ARGV[8];
+  $ccoptsarg = $ARGV[9];
   #print "expectedfailsarg = $expectedfailsarg\n";
-  $cur_index = 9;
+  $cur_index = 10;
 } elsif ($type eq "clangv") {
   $dst_arch = "i386";
   $opt_level = $ARGV[4];
   $extraflagsarg = $ARGV[5];
   $expectedfailsarg = $ARGV[6];
-  $cur_index = 7;
+  $ccoptsarg = $ARGV[7];
+  $cur_index = 8;
 } else {
   die "incorrect type";
 }
@@ -50,13 +52,8 @@ my @extraflags = split('@', $extraflagsarg);
 shift(@extraflags);
 my $extraflagsstr = join('',@extraflags);
 
-my @expectedfails_tmp = split('@', $expectedfailsarg);
-shift(@expectedfails_tmp);
-my $expectedfails = "";
-if (scalar @expectedfails_tmp gt 0) {
-  if (scalar @expectedfails_tmp gt 1) { die "expectedfails formatted illegally"; }
-  $expectedfails = $expectedfails_tmp[0];
-}
+my $expectedfails = get_string_arg($expectedfailsarg);
+my $ccopts = get_string_arg($ccoptsarg);
 
 my %unroll;
 
@@ -105,7 +102,7 @@ foreach my $prog (keys %unroll) {
       my $tmpdir = "$PWD/eqcheck.$prog.$compiler";
       my $src_pathname = identify_filetype_extension("$VPATH/$prog\_src");
       my $dst_pathname = identify_filetype_extension("$VPATH/$prog\_dst");
-      print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='$compiler' -expect-fails='$expectedfails' -tmpdir $tmpdir $src_pathname -assembly $dst_pathname.UNROLL$u\n";
+      print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='$compiler' -expect-fails='$expectedfails' -cc-opts '$ccopts' -tmpdir $tmpdir $src_pathname -assembly $dst_pathname.UNROLL$u\n";
     } else {
       my $compiler_suffix = ".eqchecker.$opt_level.$dst_arch.s";
       my $tmpdir = "$PWD/eqcheck.$prog.$compiler$compiler_suffix";
@@ -115,14 +112,14 @@ foreach my $prog (keys %unroll) {
       }
       my $src_pathname = identify_filetype_extension("$VPATH/$prog");
       if ($compiler ne "ack" || -f "$PWD/$prog.$compiler$compiler_suffix") { # skip missing binaries for 'ack' which does not support VLA/alloca()
-        print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='$compiler' -opt_level $opt_level -expect-fails='$expectedfails'  -tmpdir $tmpdir $src_pathname -assembly $PWD/$prog.$compiler$compiler_suffix.UNROLL$u $compile_log_str\n";
+        print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='$compiler' -opt_level $opt_level -expect-fails='$expectedfails' -cc-opts '$ccopts' -tmpdir $tmpdir $src_pathname -assembly $PWD/$prog.$compiler$compiler_suffix.UNROLL$u $compile_log_str\n";
       } else {
       }
     }
   } elsif ($type eq "clangv") {
     my $src_pathname = identify_filetype_extension("$VPATH/$prog");
     my $tmpdir = "$PWD/clangv.$prog.$opt_level";
-    print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='clangv' -expect-fails='$expectedfails' -tmpdir $tmpdir -unroll $u -opt_level $opt_level $src_pathname\n";
+    print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='clangv' -expect-fails='$expectedfails' -cc-opts '$ccopts' -tmpdir $tmpdir -unroll $u -opt_level $opt_level $src_pathname\n";
   } else {
     die "not-reached";
   }
@@ -149,4 +146,17 @@ sub convert_PP_to_plusplus
   my $in = shift;
   $in =~ s/PP/++/g;
   return $in;
+}
+
+sub get_string_arg
+{
+  my $expectedfailsarg = shift;
+  my @expectedfails_tmp = split('@', $expectedfailsarg);
+  shift(@expectedfails_tmp);
+  my $expectedfails = "";
+  if (scalar @expectedfails_tmp gt 0) {
+    if (scalar @expectedfails_tmp gt 1) { die "expectedfails/ccopts formatted illegally"; }
+    $expectedfails = $expectedfails_tmp[0];
+  }
+  return $expectedfails;
 }
