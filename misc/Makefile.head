@@ -12,7 +12,7 @@ $(1).run.deps := $(BUILDDIR)/$(1)_cmds # $(BUILDDIR)/$(1)_clangv_Od
 
 $(1).finished: %.finished: $$($(1).run.deps)
 	@clear
-	@echo "Running the eqchecks..."
+	@echo "Running the eqchecks for suite $(1)..."
 	@cat $$($(1).run.deps) | parallel --load "33%" | tee $(1).finished
 	for f in $$($(1).run.deps); do mv $${f} $${f}.finished; done # so that we can run again
 

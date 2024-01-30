@@ -1,16 +1,20 @@
-MAKEFILES := $(addsuffix /Makefile,$(TARGETS))
+# taken from https://stackoverflow.com/a/16151140
+uniq = $(if $1,$(firstword $1) $(call uniq,$(filter-out $(firstword $1),$1)))
+
+TARGETS_uniq := $(call uniq,$(TARGETS))
+MAKEFILES := $(addsuffix /Makefile,$(TARGETS_uniq))
 BUILD_MAKEFILES := $(addprefix $(BUILDDIR)/,$(MAKEFILES))
 
 $(BUILD_MAKEFILES): $(BUILDDIR)/%/Makefile: %/Makefile
 	mkdir -p $(BUILDDIR)/$*
 	$(CP) $< $@
 
-.PHONY: $(TARGETS)
-$(TARGETS): %: $(BUILDDIR)/%/Makefile
+.PHONY: $(TARGETS_uniq)
+$(TARGETS_uniq): %: $(BUILDDIR)/%/Makefile
 	$(MAKE) -C $(BUILDDIR)/$@
 
 .PHONY: all
-all: $(TARGETS)
+all: $(TARGETS_uniq)
 
 .PHONY: clean_outside_build
 clean_outside_build:
@@ -24,7 +28,7 @@ clean_outside_build:
 
 .PHONY: clean
 clean:: clean_outside_build
-	$(foreach t,$(TARGETS),$(MAKE) -C $(BUILDDIR)/$(t) clean;)
+	$(foreach t,$(TARGETS_uniq),$(MAKE) -C $(BUILDDIR)/$(t) clean;)
 	find $(BUILDDIR) -name "clangv.*" | xargs rm -rf
 	find $(BUILDDIR) -name "eqcheck.*" | xargs rm -rf
 
