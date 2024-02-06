@@ -8,13 +8,8 @@
 #endif
 #include <string.h>
 
-void *MYmymemcpy(void *dest, const void *src, size_t n);
-void *MYmymemset(void *s, int c, size_t n);
-void* MYmymalloc(size_t);
-void MYmyexit(int);
 
 #define SPEC_CPU2000
-// #define DEBUG_DUMP
 
 /*-----------------------------------------------------------*/
 /*--- A block-sorting, lossless compressor        bzip2.c ---*/
@@ -366,12 +361,12 @@ int debug_time();
 #define IntNative int
 
 
-// /*--
-//    change to 1, or compile with -DDEBUG=1 to debug
-// --*/
-// #ifndef DEBUG
-// #define DEBUG 0
-// #endif
+/*--
+   change to 1, or compile with -DDEBUG=1 to debug
+--*/
+#ifndef DEBUG
+#define DEBUG 0
+#endif
 
 
 /*---------------------------------------------------*/
@@ -976,7 +971,6 @@ void bsPutIntVS ( Int32 numBits, UInt32 c )
 
 
 /*---------------------------------------------*/
-// 3 local arrays
 void hbMakeCodeLengths ( UChar *len, 
                          Int32 *freq,
                          Int32 alphaSize,
@@ -1144,10 +1138,10 @@ void hbCreateDecodeTables ( Int32 *limit,
 void allocateCompressStructures ( void )
 {
    Int32 n  = 100000 * blockSize100k;
-   block    = MYmymalloc ( (n + 1 + NUM_OVERSHOOT_BYTES) * sizeof(UChar) );
-   quadrant = MYmymalloc ( (n     + NUM_OVERSHOOT_BYTES) * sizeof(Int16) );
-   zptr     = MYmymalloc ( n                             * sizeof(Int32) );
-   ftab     = MYmymalloc ( 65537                         * sizeof(Int32) );
+   block    = malloc ( (n + 1 + NUM_OVERSHOOT_BYTES) * sizeof(UChar) );
+   quadrant = malloc ( (n     + NUM_OVERSHOOT_BYTES) * sizeof(Int16) );
+   zptr     = malloc ( n                             * sizeof(Int32) );
+   ftab     = malloc ( 65537                         * sizeof(Int32) );
 
    if (block == NULL || quadrant == NULL ||
        zptr == NULL  || ftab == NULL) {
@@ -1202,8 +1196,8 @@ void setDecompressStructureSizes ( Int32 newSize100k )
    if (smallMode) {
 
       Int32 n = 100000 * newSize100k;
-      ll16    = MYmymalloc ( n * sizeof(UInt16) );
-      ll4     = MYmymalloc ( ((n+1) >> 1) * sizeof(UChar) );
+      ll16    = malloc ( n * sizeof(UInt16) );
+      ll4     = malloc ( ((n+1) >> 1) * sizeof(UChar) );
 
       if (ll4 == NULL || ll16 == NULL) {
          Int32 totalDraw
@@ -1214,8 +1208,8 @@ void setDecompressStructureSizes ( Int32 newSize100k )
    } else {
 
       Int32 n = 100000 * newSize100k;
-      ll8     = MYmymalloc ( n * sizeof(UChar) );
-      tt      = MYmymalloc ( n * sizeof(Int32) );
+      ll8     = malloc ( n * sizeof(UChar) );
+      tt      = malloc ( n * sizeof(Int32) );
 
       if (ll8 == NULL || tt == NULL) {
          Int32 totalDraw
@@ -1247,7 +1241,6 @@ void makeMaps ( void )
 
 
 /*---------------------------------------------*/
-// 1 local array
 void generateMTFValues ( void )
 {
    UChar  yy[256];
@@ -1331,7 +1324,6 @@ void generateMTFValues ( void )
 #define LESSER_ICOST  0
 #define GREATER_ICOST 15
 
-// 4 local arrays
 void sendMTFValues ( void )
 {
    Int32 v, t, i, j, gs, ge, totc, bt, bc, iter;
@@ -1391,12 +1383,11 @@ void sendMTFValues ( void )
             ge--;
          }
 
-         // XXX commented out float
-         // if (verbosity >= 3)
-         //    fprintf ( stderr, 
-         //              "      initial group %d, [%d .. %d], has %d syms (%4.1f%%)\n",
-         //                      nPart, gs, ge, aFreq, 
-         //                      (100.0 * (float)aFreq) / (float)nMTF );
+         if (verbosity >= 3)
+            fprintf ( stderr, 
+                      "      initial group %d, [%d .. %d], has %d syms (%4.1f%%)\n",
+                              nPart, gs, ge, aFreq, 
+                              (100.0 * (float)aFreq) / (float)nMTF );
  
          for (v = 0; v < alphaSize; v++)
             if (v >= gs && v <= ge) 
@@ -1412,7 +1403,6 @@ void sendMTFValues ( void )
    /*--- 
       Iterate up to N_ITERS times to improve the tables.
    ---*/
-   nSelectors = 0; /* added to avoid undef value in llvm */
    for (iter = 0; iter < N_ITERS; iter++) {
 
       for (t = 0; t < nGroups; t++) fave[t] = 0;
@@ -1484,8 +1474,7 @@ void sendMTFValues ( void )
                    iter+1, totc/8 );
          for (t = 0; t < nGroups; t++)
             fprintf ( stderr, "%d ", fave[t] );
-         // XXX commented out the following line to avoid rodata-map collision
-         // fprintf ( stderr, "\n" );
+         fprintf ( stderr, "\n" );
       }
 
       /*--
@@ -1626,7 +1615,6 @@ void moveToFrontCodeAndSend ( void )
 
 
 /*---------------------------------------------*/
-// 2 local arrays
 void recvDecodingTables ( void )
 {
    Int32 i, j, t, nGroups, nSelectors, alphaSize;
@@ -1721,7 +1709,6 @@ void recvDecodingTables ( void )
 
 
 /*---------------------------------------------*/
-// 1 local array
 void getAndMoveToFrontDecode ( void )
 {
    UChar  yy[256];
@@ -2059,7 +2046,6 @@ typedef
 #define QSORT_STACK_SIZE 1000
 
 
-// 1 local array
 void qSort3 ( Int32 loSt, Int32 hiSt, Int32 dSt )
 {
    Int32 unLo, unHi, ltLo, gtHi, med, n, m;
@@ -2135,7 +2121,6 @@ void qSort3 ( Int32 loSt, Int32 hiSt, Int32 dSt )
 #define SETMASK (1 << 21)
 #define CLEARMASK (~(SETMASK))
 
-// 3 local arrays
 void sortIt ( void )
 {
    Int32 i, j, ss, sb;
@@ -2420,8 +2405,7 @@ void doReversibleTransformation ( void )
 {
    Int32 i;
 
-   // XXX commented out the following line to avoid rodata-map collision
-   // if (verbosity >= 2) fprintf ( stderr, "\n" );
+   if (verbosity >= 2) fprintf ( stderr, "\n" );
 
    workLimit       = workFactor * last;
    workDone        = 0;
@@ -2430,10 +2414,9 @@ void doReversibleTransformation ( void )
 
    sortIt ();
 
-   // XXX commented out float
-   // if (verbosity >= 3)
-   //    fprintf ( stderr, "      %d work, %d block, ratio %5.2f\n",
-   //                      workDone, last, (float)workDone / (float)(last) );
+   if (verbosity >= 3)
+      fprintf ( stderr, "      %d work, %d block, ratio %5.2f\n",
+                        workDone, last, (float)workDone / (float)(last) );
 
    if (workDone > workLimit && firstAttempt) {
       if (verbosity >= 2)
@@ -2443,10 +2426,9 @@ void doReversibleTransformation ( void )
       blockRandomised = True;
       firstAttempt = False;
       sortIt();
-      // XXX commented out float
-      // if (verbosity >= 3)
-      //    fprintf ( stderr, "      %d work, %d block, ratio %f\n",
-      //                      workDone, last, (float)workDone / (float)(last) );
+      if (verbosity >= 3)
+         fprintf ( stderr, "      %d work, %d block, ratio %f\n",
+                           workDone, last, (float)workDone / (float)(last) );
    }
 
    origPtr = -1;
@@ -2480,7 +2462,6 @@ INLINE Int32 indexIntoF ( Int32 indx, Int32 *cftab )
       tPos = GET_LL(tPos);
 
 
-// 2 local arrays
 #ifdef SPEC_CPU2000
 void undoReversibleTransformation_small ( int dst )
 #else
@@ -2624,7 +2605,6 @@ void undoReversibleTransformation_small ( FILE* dst )
       tPos = tt[tPos];
 
 
-// 1 local array
 #ifdef SPEC_CPU2000
 void undoReversibleTransformation_fast ( int dst )
 #else
@@ -2760,7 +2740,6 @@ void undoReversibleTransformation_fast ( FILE* dst )
 
 #define MY_EOF 257
 
-// XXX store sinking in UPDATE_CRC loop
 #ifdef SPEC_CPU2000
 INLINE Int32 getRLEpair ( int src )
 #else
@@ -2897,8 +2876,7 @@ void compressStream ( FILE *stream, FILE *zStream )
 
    combinedCRC = 0;
 
-   // XXX commented out the following line to avoid rodata-map collision
-   // if (verbosity >= 2) fprintf ( stderr, "\n" );
+   if (verbosity >= 2) fprintf ( stderr, "\n" );
 
    while (True) {
 
@@ -2951,11 +2929,10 @@ void compressStream ( FILE *stream, FILE *zStream )
       ERROR_IF_NOT_ZERO ( ferror(zStream) );
    }
 
-   // XXX commented out the following line to avoid rodata-map collision
-   // if (verbosity >= 2 && nBlocksRandomised > 0)
-   //    fprintf ( stderr, "    %d block%s needed randomisation\n", 
-   //                      nBlocksRandomised,
-   //                      nBlocksRandomised == 1 ? "" : "s" );
+   if (verbosity >= 2 && nBlocksRandomised > 0)
+      fprintf ( stderr, "    %d block%s needed randomisation\n", 
+                        nBlocksRandomised,
+                        nBlocksRandomised == 1 ? "" : "s" );
 
    /*--
       Now another magic 48-bit number, 0x177245385090, to
@@ -2989,16 +2966,15 @@ void compressStream ( FILE *stream, FILE *zStream )
    if (bytesIn == 0) bytesIn = 1;
    if (bytesOut == 0) bytesOut = 1;
 
-   // XXX commented out float
-   // if (verbosity >= 1)
-   //    fprintf ( stderr, "%6.3f:1, %6.3f bits/byte, "
-   //                      "%5.2f%% saved, %d in, %d out.\n",
-   //              (float)bytesIn / (float)bytesOut,
-   //              (8.0 * (float)bytesOut) / (float)bytesIn,
-   //              100.0 * (1.0 - (float)bytesOut / (float)bytesIn),
-   //              bytesIn,
-   //              bytesOut
-   //            );
+   if (verbosity >= 1)
+      fprintf ( stderr, "%6.3f:1, %6.3f bits/byte, "
+                        "%5.2f%% saved, %d in, %d out.\n",
+                (float)bytesIn / (float)bytesOut,
+                (8.0 * (float)bytesOut) / (float)bytesIn,
+                100.0 * (1.0 - (float)bytesOut / (float)bytesIn),
+                bytesIn,
+                bytesOut
+              );
 }
 
 
@@ -3047,8 +3023,7 @@ Bool uncompressStream ( FILE *zStream, FILE *stream )
    setDecompressStructureSizes ( magic4 - '0' );
    computedCombinedCRC = 0;
 
-   // XXX commented out the following line to avoid rodata-map collision
-   // if (verbosity >= 2) fprintf ( stderr, "\n    " );
+   if (verbosity >= 2) fprintf ( stderr, "\n    " );
    currBlockNo = 0;
 
    while (True) {
@@ -3073,9 +3048,8 @@ Bool uncompressStream ( FILE *zStream, FILE *stream )
          blockRandomised = False;
 
       currBlockNo++;
-      // XXX commented out the following line to avoid rodata-map collision
-      // if (verbosity >= 2)
-      //    fprintf ( stderr, "[%d: huff+mtf ", currBlockNo );
+      if (verbosity >= 2)
+         fprintf ( stderr, "[%d: huff+mtf ", currBlockNo );
       getAndMoveToFrontDecode ();
       ERROR_IF_NOT_ZERO ( ferror(zStream) );
 
@@ -3101,8 +3075,7 @@ Bool uncompressStream ( FILE *zStream, FILE *stream )
       computedCombinedCRC ^= computedBlockCRC;
    };
 
-   // XXX commented out the following line to avoid rodata-map collision
-   //if (verbosity >= 2) fprintf ( stderr, "\n    " );
+   if (verbosity >= 2) fprintf ( stderr, "\n    " );
 
    storedCombinedCRC  = bsGetUInt32 ();
    if (verbosity >= 2)
@@ -3170,8 +3143,7 @@ Bool testStream ( FILE *zStream )
    setDecompressStructureSizes ( magic4 - '0' );
    computedCombinedCRC = 0;
 
-   // XXX commented out the following line to avoid rodata-map collision
-   // if (verbosity >= 2) fprintf ( stderr, "\n" );
+   if (verbosity >= 2) fprintf ( stderr, "\n" );
    currBlockNo = 0;
 
    while (True) {
@@ -3234,11 +3206,10 @@ Bool testStream ( FILE *zStream )
    };
 
    storedCombinedCRC  = bsGetUInt32 ();
-   // XXX commented out the following line to avoid rodata-map collision
-   // if (verbosity >= 2)
-   //    fprintf ( stderr,
-   //              "    combined CRCs: stored = 0x%x, computed = 0x%x\n    ",
-   //              storedCombinedCRC, computedCombinedCRC );
+   if (verbosity >= 2)
+      fprintf ( stderr,
+                "    combined CRCs: stored = 0x%x, computed = 0x%x\n    ",
+                storedCombinedCRC, computedCombinedCRC );
    if (storedCombinedCRC != computedCombinedCRC) {
       bsFinishedWithStream();
       fclose ( zStream );
@@ -3311,8 +3282,7 @@ void cleanUpAndFail ( Int32 ec )
                 progName, numFileNames, 
                           numFileNames - numFilesProcessed );
    }
-   //exit ( ec );
-   MYmyexit ( ec );
+   exit ( ec );
 }
 
 
@@ -4015,15 +3985,14 @@ void *myMalloc ( Int32 n )
 {
    void* p;
 
-   p = MYmymalloc ( (size_t)n );
+   p = malloc ( (size_t)n );
    if (p == NULL) {
       fprintf (
          stderr,
          "%s: `malloc' failed on request for %d bytes.\n",
          progName, n
       );
-      //exit ( 1 );
-      MYmyexit ( 1 );
+      exit ( 1 );
    }
    return p;
 }
@@ -4085,8 +4054,7 @@ IntNative main ( IntNative argc, Char *argv[] )
                 "\tof 4, 2 and 1 bytes to run properly, and they don't.\n"
                 "\tProbably you can fix this by defining them correctly,\n"
                 "\tand recompiling.  Bye!\n" );
-      //exit(1);
-      MYmyexit(1);
+      exit(1);
    }
 
 
@@ -4185,14 +4153,12 @@ IntNative main ( IntNative argc, Char *argv[] )
                case 'L': license();            break;
                case 'v': verbosity++; break;
                case 'h': usage ( progName );
-                         //exit ( 1 );
-                         MYmyexit ( 1 );
+                         exit ( 1 );
                          break;
                default:  fprintf ( stderr, "%s: Bad flag `%s'\n",
                                    progName, aa->name );
                          usage ( progName );
-                         //exit ( 1 );
-                         MYmyexit ( 1 );
+                         exit ( 1 );
                          break;
          }
 
@@ -4209,13 +4175,12 @@ IntNative main ( IntNative argc, Char *argv[] )
       if (ISFLAG("--repetitive-fast"))   workFactor = 5;             else
       if (ISFLAG("--repetitive-best"))   workFactor = 150;           else
       if (ISFLAG("--verbose"))           verbosity++;                else
-      if (ISFLAG("--help"))              { usage ( progName ); /*exit ( 1 );*/MYmyexit( 1 ); }
+      if (ISFLAG("--help"))              { usage ( progName ); exit ( 1 ); }
          else
          if (strncmp ( aa->name, "--", 2) == 0) {
             fprintf ( stderr, "%s: Bad flag `%s'\n", progName, aa->name );
             usage ( progName );
-            //exit ( 1 );
-            MYmyexit ( 1 );
+            exit ( 1 );
          }
    }
 
@@ -4224,22 +4189,19 @@ IntNative main ( IntNative argc, Char *argv[] )
    if (opMode == OM_Z && srcMode == SM_F2O && numFileNames > 1) {
       fprintf ( stderr, "%s: I won't compress multiple files to stdout.\n",
                 progName );
-      //exit ( 1 );
-      MYmyexit ( 1 );
+      exit ( 1 );
    }
 
    if (srcMode == SM_F2O && numFileNames == 0) {
       fprintf ( stderr, "%s: -c expects at least one filename.\n",
                 progName );
-      //exit ( 1 );
-      MYmyexit ( 1 );
+      exit ( 1 );
    }
 
    if (opMode == OM_TEST && srcMode == SM_F2O) {
       fprintf ( stderr, "%s: -c and -t cannot be used together.\n",
                 progName );
-      //exit ( 1 );
-      MYmyexit ( 1 );
+      exit ( 1 );
    }
 
    if (opMode != OM_Z) blockSize100k = 0;
@@ -4280,8 +4242,7 @@ IntNative main ( IntNative argc, Char *argv[] )
            "You can use the `bzip2recover' program to *attempt* to recover\n"
            "data from undamaged sections of corrupted files.\n\n"
          );
-         //exit(2);
-         MYmyexit(2);
+         exit(2);
       }
    }
    return 0;
@@ -4292,6 +4253,7 @@ IntNative main ( IntNative argc, Char *argv[] )
 /*-----------------------------------------------------------*/
 /*--- end                                         bzip2.c ---*/
 /*-----------------------------------------------------------*/
+
 
 #define SPEC_CPU2000
 #define SPEC_BZIP
@@ -4319,7 +4281,7 @@ int spec_write(int fd, unsigned char *buf, int size);
 int spec_putc(unsigned char ch, int fd);
 int debug_time();
 
-// #define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
 int dbglvl=4;
@@ -4352,32 +4314,31 @@ struct spec_fd_t {
 #undef ungetc
 
 long int seedi;
-// XXX commented out float/double
-// double ran()
-// /* See "Random Number Generators: Good Ones Are Hard To Find", */
-// /*     Park & Miller, CACM 31#10 October 1988 pages 1192-1201. */
-// /***********************************************************/
-// /* THIS IMPLEMENTATION REQUIRES AT LEAST 32 BIT INTEGERS ! */
-// /***********************************************************/
-// #define _A_MULTIPLIER  16807L
-// #define _M_MODULUS     2147483647L /* (2**31)-1 */
-// #define _Q_QUOTIENT    127773L     /* 2147483647 / 16807 */
-// #define _R_REMAINDER   2836L       /* 2147483647 % 16807 */
-// {
-// 	long lo;
-// 	long hi;
-// 	long test;
-// 
-// 	hi = seedi / _Q_QUOTIENT;
-// 	lo = seedi % _Q_QUOTIENT;
-// 	test = _A_MULTIPLIER * lo - _R_REMAINDER * hi;
-// 	if (test > 0) {
-// 		seedi = test;
-// 	} else {
-// 		seedi = test + _M_MODULUS;
-// 	}
-// 	return ( (float) seedi / _M_MODULUS);
-// }
+double ran()
+/* See "Random Number Generators: Good Ones Are Hard To Find", */
+/*     Park & Miller, CACM 31#10 October 1988 pages 1192-1201. */
+/***********************************************************/
+/* THIS IMPLEMENTATION REQUIRES AT LEAST 32 BIT INTEGERS ! */
+/***********************************************************/
+#define _A_MULTIPLIER  16807L
+#define _M_MODULUS     2147483647L /* (2**31)-1 */
+#define _Q_QUOTIENT    127773L     /* 2147483647 / 16807 */
+#define _R_REMAINDER   2836L       /* 2147483647 % 16807 */
+{
+	long lo;
+	long hi;
+	long test;
+
+	hi = seedi / _Q_QUOTIENT;
+	lo = seedi % _Q_QUOTIENT;
+	test = _A_MULTIPLIER * lo - _R_REMAINDER * hi;
+	if (test > 0) {
+		seedi = test;
+	} else {
+		seedi = test + _M_MODULUS;
+	}
+	return ( (float) seedi / _M_MODULUS);
+}
 
 
 int spec_init () {
@@ -4389,13 +4350,12 @@ int spec_init () {
     /* Allocate some large chunks of memory, we can tune this later */
     for (i = 0; i < MAX_SPEC_FD; i++) {
 	int limit = spec_fd[i].limit;
-	MYmymemset(&spec_fd[i], 0, sizeof(*spec_fd));
+	memset(&spec_fd[i], 0, sizeof(*spec_fd));
 	spec_fd[i].limit = limit;
 	spec_fd[i].buf = (unsigned char *)malloc(limit+FUDGE_BUF);
 	if (spec_fd[i].buf == NULL) {
 	    printf ("spec_init: Error mallocing memory!\n");
-	    //exit(1);
-	    MYmyexit(1);
+	    exit(1);
 	}
 	for (j = 0; j < limit; j+=1024) {
 	    spec_fd[i].buf[j] = 0;
@@ -4404,35 +4364,34 @@ int spec_init () {
     return 0;
 }
 
-// XXX commented out float/double -- call to ran()
-// int spec_random_load (int fd) {
-//     /* Now fill up the first chunk with random data, if this data is truly
-//        random then we will not get much of a boost out of it */
-// #define RANDOM_CHUNK_SIZE (128*1024)
-// #define RANDOM_CHUNKS     (32)
-//     /* First get some "chunks" of random data, because the gzip
-// 	algorithms do not look past 32K */
-//     int i, j;
-//     char random_text[RANDOM_CHUNKS][RANDOM_CHUNK_SIZE];
-// 
-//     debug(4,"Creating Chunks\n");
-//     for (i = 0; i < RANDOM_CHUNKS; i++) {
-// 	debug1(5,"Creating Chunk %d\n", i);
-// 	for (j = 0; j < RANDOM_CHUNK_SIZE; j++) {
-// 	    random_text[i][j] = (int)(ran()*256);
-// 	}
-//     }
-// 
-//     debug(4,"Filling input file\n");
-//     /* Now populate the input "file" with random chunks */
-//     for (i = 0 ; i < spec_fd[fd].limit; i+= RANDOM_CHUNK_SIZE) {
-// 	MYmymemcpy(spec_fd[fd].buf + i, random_text[(int)(ran()*RANDOM_CHUNKS)],
-// 		RANDOM_CHUNK_SIZE);
-//     }
-//     /* TODO-REMOVE: Pretend we only did 1M */
-//     spec_fd[fd].len = 1024*1024;
-//     return 0;
-// }
+int spec_random_load (int fd) {
+    /* Now fill up the first chunk with random data, if this data is truly
+       random then we will not get much of a boost out of it */
+#define RANDOM_CHUNK_SIZE (128*1024)
+#define RANDOM_CHUNKS     (32)
+    /* First get some "chunks" of random data, because the gzip
+	algorithms do not look past 32K */
+    int i, j;
+    char random_text[RANDOM_CHUNKS][RANDOM_CHUNK_SIZE];
+
+    debug(4,"Creating Chunks\n");
+    for (i = 0; i < RANDOM_CHUNKS; i++) {
+	debug1(5,"Creating Chunk %d\n", i);
+	for (j = 0; j < RANDOM_CHUNK_SIZE; j++) {
+	    random_text[i][j] = (int)(ran()*256);
+	}
+    }
+
+    debug(4,"Filling input file\n");
+    /* Now populate the input "file" with random chunks */
+    for (i = 0 ; i < spec_fd[fd].limit; i+= RANDOM_CHUNK_SIZE) {
+	memcpy(spec_fd[fd].buf + i, random_text[(int)(ran()*RANDOM_CHUNKS)],
+		RANDOM_CHUNK_SIZE);
+    }
+    /* TODO-REMOVE: Pretend we only did 1M */
+    spec_fd[fd].len = 1024*1024;
+    return 0;
+}
 
 int spec_load (int num, char *filename, int size) {
 #define FILE_CHUNK (128*1024)
@@ -4443,8 +4402,7 @@ int spec_load (int num, char *filename, int size) {
     fd = open(filename, O_RDONLY|O_BINARY);
     if (fd < 0) {
 	fprintf(stderr, "Can't open file %s: %s\n", filename, strerror(errno));
-	//exit (1);
-	MYmyexit (1);
+	exit (1);
     }
     spec_fd[num].pos = spec_fd[num].len = 0;
     for (i = 0 ; i < size; i+= rc) {
@@ -4452,8 +4410,7 @@ int spec_load (int num, char *filename, int size) {
 	if (rc == 0) break;
 	if (rc < 0) {
 	    fprintf(stderr, "Error reading from %s: %s\n", filename, strerror(errno));
-	    //exit (1);
-	    MYmyexit (1);
+	    exit (1);
 	}
 	spec_fd[num].len += rc;
     }
@@ -4462,7 +4419,7 @@ int spec_load (int num, char *filename, int size) {
 	int tmp = size - spec_fd[num].len;
 	if (tmp > spec_fd[num].len) tmp = spec_fd[num].len;
 	debug1(3,"Duplicating %d bytes\n", tmp);
-	MYmymemcpy(spec_fd[num].buf+spec_fd[num].len, spec_fd[num].buf, tmp);
+	memcpy(spec_fd[num].buf+spec_fd[num].len, spec_fd[num].buf, tmp);
 	spec_fd[num].len += tmp;
     }
     return 0;
@@ -4473,8 +4430,7 @@ int spec_read (int fd, unsigned char *buf, int size) {
     debug3(4,"spec_read: %d, %p, %d = ", fd, (void *)buf, size);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_read: fd=%d, > MAX_SPEC_FD!\n", fd);
-	//exit (1);
-	MYmyexit (1);
+	exit (1);
     }
     if (spec_fd[fd].pos >= spec_fd[fd].len) {
 	debug(4,"EOF\n");
@@ -4485,7 +4441,7 @@ int spec_read (int fd, unsigned char *buf, int size) {
     } else {
 	rc = size;
     }
-    MYmymemcpy(buf, &(spec_fd[fd].buf[spec_fd[fd].pos]), rc);
+    memcpy(buf, &(spec_fd[fd].buf[spec_fd[fd].pos]), rc);
     spec_fd[fd].pos += rc;
     debug1(4,"%d\n", rc);
     return rc;
@@ -4495,8 +4451,7 @@ int spec_getc (int fd) {
     debug1(4,"spec_getc: %d = ", fd);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_read: fd=%d, > MAX_SPEC_FD!\n", fd);
-	//exit (1);
-	MYmyexit (1);
+	exit (1);
     }
     if (spec_fd[fd].pos >= spec_fd[fd].len) {
 	debug(4,"EOF\n");
@@ -4511,18 +4466,15 @@ int spec_ungetc (unsigned char ch, int fd) {
     debug1(4,"spec_ungetc: %d = ", fd);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_read: fd=%d, > MAX_SPEC_FD!\n", fd);
-	//exit (1);
-	MYmyexit (1);
+	exit (1);
     }
     if (spec_fd[fd].pos <= 0) {
 	fprintf(stderr, "spec_ungetc: pos %d <= 0\n", spec_fd[fd].pos);
-	//exit (1);
-	MYmyexit (1);
+	exit (1);
     }
     if (spec_fd[fd].buf[--spec_fd[fd].pos] != ch) {
 	fprintf(stderr, "spec_ungetc: can't unget something that wasn't what was in the buffer!\n");
-	//exit (1);
-	MYmyexit (1);
+	exit (1);
     }
     debug1(4,"%d\n", rc);
     return ch;
@@ -4532,7 +4484,7 @@ int spec_rewind(int fd) {
     return 0;
 }
 int spec_reset(int fd) {
-    MYmymemset(spec_fd[fd].buf, 0, spec_fd[fd].len);
+    memset(spec_fd[fd].buf, 0, spec_fd[fd].len);
     spec_fd[fd].pos = spec_fd[fd].len = 0;
     return 0;
 }
@@ -4541,10 +4493,9 @@ int spec_write(int fd, unsigned char *buf, int size) {
     debug3(4,"spec_write: %d, %p, %d = ", fd, (void *)buf, size);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_write: fd=%d, > MAX_SPEC_FD!\n", fd);
-	//exit (1);
-	MYmyexit (1);
+	exit (1);
     }
-    MYmymemcpy(&(spec_fd[fd].buf[spec_fd[fd].pos]), buf, size); 
+    memcpy(&(spec_fd[fd].buf[spec_fd[fd].pos]), buf, size); 
     spec_fd[fd].len += size;
     spec_fd[fd].pos += size;
     debug1(4,"%d\n", size);
@@ -4554,8 +4505,7 @@ int spec_putc(unsigned char ch, int fd) {
     debug2(4,"spec_putc: %d, %d = ", ch, fd);
     if (fd > MAX_SPEC_FD) {
 	fprintf(stderr, "spec_write: fd=%d, > MAX_SPEC_FD!\n", fd);
-	//exit (1);
-	MYmyexit (1);
+	exit (1);
     }
     spec_fd[fd].buf[spec_fd[fd].pos++] = ch;
     spec_fd[fd].len ++;
@@ -4591,8 +4541,7 @@ int main (int argc, char *argv[]) {
     validate_array = (unsigned char *)malloc(input_size*MB/1024);
     if (validate_array == NULL) {
 	printf ("main: Error mallocing memory!\n");
-	//exit (1);
-	MYmyexit (1);
+	exit (1);
     }
     /* Save off one byte every ~1k for validation */
     for (i = 0; i*VALIDATE_SKIP < input_size*MB; i++) {
@@ -4601,7 +4550,7 @@ int main (int argc, char *argv[]) {
 
 
 #ifdef DEBUG_DUMP
-    int fd = open ("out.uncompressed", O_RDWR|O_CREAT, 0644);
+    fd = open ("out.uncompressed", O_RDWR|O_CREAT, 0644);
     write(fd, spec_fd[0].buf, spec_fd[0].len);
     close(fd);
 #endif
@@ -4649,8 +4598,7 @@ int main (int argc, char *argv[]) {
 	for (i = 0; i*VALIDATE_SKIP < input_size*MB; i++) {
 	    if (validate_array[i] != spec_fd[0].buf[i*VALIDATE_SKIP]) {
 		printf ("Tested %dMB buffer: Miscompared!!\n", input_size);
-		//exit (1);
-		MYmyexit (1);
+		exit (1);
 	    }
 	}
 	debug_time();
@@ -4688,16 +4636,14 @@ void spec_uncompress(int in, int out, int lev) {
 #error You must have SPEC_BZIP defined!
 #endif
 
-#ifdef TIMING_OUTPUT
 int debug_time () {
+#ifdef TIMING_OUTPUT
     static int last = 0;
     struct timeval tv;
     gettimeofday(&tv,NULL);
     debug2(2, "Time: %10d, %10d\n", tv.tv_sec, tv.tv_sec-last);
     last = tv.tv_sec;
+#endif
     return 0;
 }
-#else
-int debug_time();
-#endif
 #endif
