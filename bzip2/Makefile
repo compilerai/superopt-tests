@@ -1,9 +1,9 @@
 include ../config.mak                        # paths
 
 # set VPATH path for targets and src files
-VPATH = $(SRCDIR)/bzip2_locals
+VPATH = $(SRCDIR)/bzip2
 
-UNROLL2 := bzip2_locals
+UNROLL2 := bzip2
 
 EXPECTED_FAILS_CLANG :=                                    \
                         hbMakeCodeLengths                  \
