@@ -18,6 +18,7 @@ $(call add_suite,micro,         micro)
 $(call add_suite,vectorization, TSVC_prior_work TSVC_new LORE_mem_write LORE_no_mem_write)
 $(call add_suite,soundness,     soundness)
 $(call add_suite,bzip2,         bzip2_locals bzip2_modified)
+$(call add_suite,demo,         demo)
 
 # add new dirs' targets here
 #CODEGEN_TARGETS := compcert-tests
