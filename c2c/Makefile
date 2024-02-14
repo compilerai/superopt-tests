@@ -1,13 +1,13 @@
 include ../config.mak                        # paths
 
 # set VPATH path for targets and src files
-VPATH = $(SRCDIR)/demo
+VPATH = $(SRCDIR)/c2c
 
-UNROLL1_GCC := sum1d \
-               sum_positive \
-               sum2d \
-               kernel_mvt \
-               # s441 -- incomplete CG
+#UNROLL1_GCC := sum1d \
+#               sum_positive \
+#               sum2d \
+#               kernel_mvt \
+#               # s441 -- incomplete CG
 
 UNROLL1_SRCDST := nestedLoop \
                   ifswitch \
@@ -19,7 +19,7 @@ UNROLL4_SRCDST := bitflip \
 
 UNROLL8_SRCDST := strlen
 
-EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 7200
+EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 7200 --highmem-reserved-pages 1
 
 EXPECTED_FAILS_SRCDST := inequiv_1 inequiv_2
 
@@ -29,3 +29,6 @@ CLANG_EQCHECKER_FLAGS_EXTRA= $(CLANG_EQCHECKER_NOUNROLL_FLAGS)
 ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
 
 include $(SRCDIR)/Makefile.template
+
+cmds: eqtest_srcdst
+	cat $^ > $@
