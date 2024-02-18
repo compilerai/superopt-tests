@@ -7,6 +7,7 @@ EXTRA_FLAGS := --smt-query-timeout 120                                         \
                --global-timeout 7200                                           \
                --enable-query-decomposition                                    \
                --disable-removal-of-stack-from-stack-nonstack-ml-in-dst        \
+               --disable-dst-to-src-submap
 
 UNROLL1_PROGS :=                                                               \
                  addr_taken_simple                                             \
