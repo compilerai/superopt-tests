@@ -15,7 +15,7 @@ UNROLL1_SRCDST := nestedLoop \
                   inequiv_2
 
 UNROLL4_SRCDST := bitflip \
-                  # loopSplitting -- times out
+                  loopSplitting  # times out
 
 UNROLL8_SRCDST := strlen
 
