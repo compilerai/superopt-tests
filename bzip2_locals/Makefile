@@ -3,60 +3,61 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/bzip2_locals
 
-UNROLL2 := bzip2_locals \
+UNROLL2 := bzip2_locals
 
-EXPECTED_FAILS_CLANG :=                                              \
-                        getAndMoveToFrontDecode                      \
-                        getRLEpair                                   \
-                        hbMakeCodeLengths                            \
-                        main                                         \
-                        qSort3                                       \
-                        sendMTFValues                                \
-                        simpleSort                                   \
-                        sortIt                                       \
-                        undoReversibleTransformation_small           \
+EXPECTED_FAILS_CLANG :=                                                                                                \
+                        getAndMoveToFrontDecode                                                                        \
+                        getRLEpair                                                                                     \
+                        hbMakeCodeLengths                                                                              \
+                        main                                                                                           \
+                        qSort3                                                                                         \
+                        sendMTFValues                                                                                  \
+                        simpleSort                                                                                     \
+                        sortIt                                                                                         \
+                        undoReversibleTransformation_small                                                             \
 
 EXPECTED_FAILS_CLANG_O1 := $(EXPECTED_FAILS_CLANG)
 
-EXPECTED_FAILS_CLANG_O2 :=                                           \
-                           generateMTFValues                         \
-                           getAndMoveToFrontDecode                   \
-                           getRLEpair                                \
-                           hbCreateDecodeTables                      \
-                           hbMakeCodeLengths                         \
-                           loadAndRLEsource                          \
-                           main                                      \
-                           qSort3                                    \
-                           randomiseBlock                            \
-                           recvDecodingTables                        \
-                           sendMTFValues                             \
-                           simpleSort                                \
-                           sortIt                                    \
-                           undoReversibleTransformation_fast         \
-                           undoReversibleTransformation_small        \
+EXPECTED_FAILS_CLANG_O2 :=                                                                                             \
+                           generateMTFValues                                                                           \
+                           getAndMoveToFrontDecode                                                                     \
+                           getRLEpair                                                                                  \
+                           hbCreateDecodeTables                                                                        \
+                           hbMakeCodeLengths                                                                           \
+                           loadAndRLEsource                                                                            \
+                           main                                                                                        \
+                           qSort3                                                                                      \
+                           randomiseBlock                                                                              \
+                           recvDecodingTables                                                                          \
+                           sendMTFValues                                                                               \
+                           simpleSort                                                                                  \
+                           sortIt                                                                                      \
+                           undoReversibleTransformation_fast                                                           \
+                           undoReversibleTransformation_small                                                          \
                            # simpleSort [fails safety check due to query timeout]
 													 
-EXPECTED_FAILS_CLANGV :=                                             \
-                        getAndMoveToFrontDecode                      \
-                        hbMakeCodeLengths                            \
-                        main                                         \
-                        qSort3                                       \
-                        sendMTFValues                                \
-                        simpleSort                                   \
-                        sortIt                                       \
-                        undoReversibleTransformation_small           \
+EXPECTED_FAILS_CLANGV :=                                                                                               \
+                         getAndMoveToFrontDecode                                                                       \
+                         hbMakeCodeLengths                                                                             \
+                         main                                                                                          \
+                         qSort3                                                                                        \
+                         sendMTFValues                                                                                 \
+                         simpleSort                                                                                    \
+                         sortIt                                                                                        \
+                         undoReversibleTransformation_small                                                            \
+                         # loadAndRLEsource [sometimes query timeout]
 
 UNROLL2_CLANG = $(UNROLL2)
 
-EXTRA_FLAGS        := --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32
-											--disable-removal-of-stack-from-stack-nonstack-ml-in-dst                                         \
-											--enable-query-decomposition                                                                     \
-											--disable-dst-to-src-submap
+EXTRA_FLAGS :=        --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32                    \
+                      --disable-removal-of-stack-from-stack-nonstack-ml-in-dst                                         \
+                      --enable-query-decomposition                                                                     \
+                      --disable-dst-to-src-submap
 
-EXTRA_FLAGS_CLANGV := --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32
-											--disable-removal-of-stack-from-stack-nonstack-ml-in-dst                                         \
-											--enable-query-decomposition                                                                     \
-											--disable-dst-to-src-submap
+EXTRA_FLAGS_CLANGV := --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32                    \
+                      --disable-removal-of-stack-from-stack-nonstack-ml-in-dst                                         \
+                      --enable-query-decomposition                                                                     \
+                      --disable-dst-to-src-submap
 
 # compiler flags
 GCC_EQCHECKER_FLAGS_EXTRA= $(GCC_EQCHECKER_NOUNROLL_FLAGS)
