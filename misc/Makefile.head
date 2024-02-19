@@ -6,8 +6,8 @@ define genrule_run_tests
 run_tests_$(1): run_tests_%: %.finished
 	# @echo "Generating CSVs..."
 	# @$(foreach t,$(2), if $(MAKE) -C $(BUILDDIR)/$(t) collect_csv; then :; else echo "ERROR: 'make collect_csv' failed for target" $(BUILDDIR)/$(t); exit 1; fi; mv $(BUILDDIR)/$(t)/*.csv .;)
-	# @echo "Archiving the run results..."
-	# @$(foreach t,$(2), if $(MAKE) -C $(BUILDDIR)/$(t) archive_run; then :; else echo "ERROR: 'make archive_run' failed for target" $(BUILDDIR)/$(t); exit 1; fi; mv $(BUILDDIR)/$(t)/*.csv .;)
+	@echo "Archiving the run results..."
+	@$(foreach t,$(2), if $(MAKE) -C $(BUILDDIR)/$(t) archive_run; then :; else echo "ERROR: 'make archive_run' failed for target" $(BUILDDIR)/$(t); exit 1; fi;)
 
 # list of files containing commands -- make sure there are no spaces in filepaths
 $(1).run.deps := $(BUILDDIR)/$(1)_cmds # $(BUILDDIR)/$(1)_clangv_Od
