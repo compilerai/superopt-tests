@@ -41,7 +41,6 @@ EXPECTED_FAILS_ICC :=               \
                       s114          \
                       s1161         \
                       s1213         \
-                      s124          \
                       s1279         \
                       s273          \
                       s276          \
@@ -54,7 +53,6 @@ EXPECTED_FAILS_ICC :=               \
                       # s114 [timeout]
                       # s1161 [exceeds mem limit]
                       # s1213 [query-timeout]
-                      # s124 [query-timeout]
                       # s1279 [query-timeout]
                       # s273 [query-timeout]
                       # s274 [sometimes query-timeout]
