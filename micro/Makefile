@@ -3,14 +3,15 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/micro
 
-EXTRA_FLAGS := --global-timeout 1200 --max-address-space-size-gb 16 #--disable-dst-to-src-submap
+EXTRA_FLAGS := --global-timeout 1200 --max-address-space-size-gb 16            \
+               #--disable-dst-to-src-submap
 
 PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          fcall10 fcall10_with_memaccess                                        \
-         fcall25 fcall25_with_memaccess \
-         fcall50 fcall50_with_memaccess \
-         fcall100 fcall100_with_memaccess \
-         fcall200 \
+         fcall25 fcall25_with_memaccess                                        \
+         fcall50 fcall50_with_memaccess                                        \
+         fcall100 fcall100_with_memaccess                                      \
+         fcall200                                                              \
          fcall_taking_locals                                                   \
          fcalls_merge                                                          \
          ftmap_1                                                               \
@@ -48,8 +49,6 @@ EXPECTED_FAILS_GCC :=                                                          \
                       ftmap_3_main                                             \
                       ftmap_4_main                                             \
                       fcalls_sink_merge                                        \
-                      local_used_in_unreachable_loop                           \
-                      local_used_on_unreachable_branch                         \
                       # fptoui [???]
                       # fptouid [???]
                       # fptouil [???]
@@ -61,8 +60,6 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # nested_loops [requires invariant (m > 0) in due to unswitching of inner loop condition]
 											# sum2d [requires: pointer arithmetic overflow UB modelling]
-                      # local_used_in_unreachable_loop [no sp-update insn -- no alloc/dealloc enumerated]
-                      # local_used_on_unreachable_branch  [no sp-update insn -- no alloc/dealloc enumerated]
 
 UNROLL16_CLANG := $(PROGS) \
                   load_store_elim_conditional
@@ -70,13 +67,9 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         fptouil                                                \
                         ftmap_3_main                                           \
                         ftmap_4_main                                           \
-                        local_used_in_unreachable_loop                         \
-                        local_used_on_unreachable_branch                       \
                         # fptouil [???]
                         # ftmap_3 [nop fcall inlined]
                         # ftmap_4 [get_global_sym call inlined]
-                        # local_used_in_unreachable_loop [no sp-update insn -- no alloc/dealloc enumerated]
-                        # local_used_on_unreachable_branch  [no sp-update insn -- no alloc/dealloc enumerated]
 
 UNROLL1_SRCDST := inequiv_1                                \
                   inequiv_2                                \
