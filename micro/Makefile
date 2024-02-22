@@ -26,6 +26,8 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          non_linear_invariant_shl                                              \
          sum_positive                                                          \
          idiv                                                                  \
+         simple_struct                                                         \
+         ret_long_long                                                         \
                                                                                \
          local_used_in_unreachable_loop                                        \
          local_used_on_unreachable_branch                                      \
@@ -49,6 +51,8 @@ EXPECTED_FAILS_GCC :=                                                          \
                       ftmap_3_main                                             \
                       ftmap_4_main                                             \
                       fcalls_sink_merge                                        \
+                      call_ret_struct                                          \
+                      ret_long_long                                            \
                       # fptoui [???]
                       # fptouid [???]
                       # fptouil [???]
@@ -60,6 +64,8 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # nested_loops [requires invariant (m > 0) in due to unswitching of inner loop condition]
 											# sum2d [requires: pointer arithmetic overflow UB modelling]
+                      # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                      # ret_long_long [incompletness: need to include edx in return-reg expr]
 
 UNROLL16_CLANG := $(PROGS) \
                   load_store_elim_conditional
@@ -67,9 +73,13 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         fptouil                                                \
                         ftmap_3_main                                           \
                         ftmap_4_main                                           \
+                        call_ret_struct                                        \
+                        ret_long_long                                          \
                         # fptouil [???]
                         # ftmap_3 [nop fcall inlined]
                         # ftmap_4 [get_global_sym call inlined]
+                        # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                        # ret_long_long [incompletness: need to include edx in return-reg expr]
 
 UNROLL1_SRCDST := inequiv_1                                \
                   inequiv_2                                \
@@ -109,6 +119,8 @@ EXPECTED_FAILS_ICC :=                                                          \
                       store_store_elim                                         \
                       flcmp                                                    \
                       fdiv                                                     \
+                      call_ret_struct                                          \
+                      ret_long_long                                            \
                       # fptouil [???]
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # fcall_taking_locals [need manual addr mappings]
@@ -119,6 +131,8 @@ EXPECTED_FAILS_ICC :=                                                          \
                       # store_store_elim [???]
                       # flcmp [???]
                       # fdiv [???]
+                      # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                      # ret_long_long [incompletness: need to include edx in return-reg expr]
 
 # compiler flags
 ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
