@@ -17,7 +17,6 @@ UNROLL1_PROGS :=                                                               \
                                                                                \
                  vcu                                                           \
                  vsl                                                           \
-                 vil                                                           \
                  vilcc                                                         \
                  vilce                                                         \
                  v2il                                                          \
@@ -28,6 +27,8 @@ UNROLL1_PROGS :=                                                               \
                                                                                \
                  min                                                           \
                  rod                                                           \
+                 # vil same as vil1 (of vilN)
+                 # vil                                                           \
 
 UNROLL1_GCC := fib                                                             \
                $(UNROLL1_PROGS)                                                \
