@@ -7,8 +7,8 @@ UNROLL1 := bzip2_locals \
 
 UNROLL1_CLANG = $(UNROLL1)
 
-EXTRA_FLAGS        := --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32 --enable-query-decomposition
-EXTRA_FLAGS_CLANGV := --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32 --enable-query-decomposition
+EXTRA_FLAGS        := --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32 --enable-query-decomposition -j $(shell nproc)
+EXTRA_FLAGS_CLANGV := --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32 --enable-query-decomposition -j $(shell nproc)
 
 # compiler flags
 CLANG_EQCHECKER_FLAGS_EXTRA= $(CLANG_EQCHECKER_NOUNROLL_FLAGS)
