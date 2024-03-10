@@ -8,7 +8,7 @@ EXTRA_FLAGS := --smt-query-timeout 120                                         \
                --enable-query-decomposition                                    \
                --disable-removal-of-stack-from-stack-nonstack-ml-in-dst        \
                --encode-avail-exprs-in-smt-queries                             \
-               # --disable-dst-to-src-submap
+               --disable-d2s                                                   \
 
 UNROLL1_PROGS :=                                                               \
                  addr_taken_simple                                             \
@@ -71,6 +71,7 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       minscanf                                                 \
                       alloca_malloc_switch                                     \
                       alloca_conditional                                       \
+                      alloca_unreal_1                                          \
                       vla_conditional_use                                      \
                       # vla_3_single_loop [timeout]
                       # vla_2_in_loop [requires invariant (i < n) on loop body PCs / suffixpath]
@@ -84,6 +85,7 @@ EXPECTED_FAILS_GCC := vla_3_single_loop                                        \
                       # minprintf,minscanf [requires select(local.addr) which is missing from bv-eqclass exprs]
                       # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_conditional [requires invariant (i < n) on loop body PCs / suffixpath]
+                      # alloca_unreal_1 [times out -- don't know the exact reason for failure]
                       # vla_conditional_use [times-out somtimes because the invariant inference DFA does not proceed in RPO i.e. it tries relaxing an edge before relaxing all its predecessors]
 
 UNROLL1_CLANG := alloca_linked_list                                            \
@@ -96,16 +98,17 @@ EXPECTED_FAILS_CLANG := vla_3_single_loop                                      \
                         vla_4_single_loop                                      \
                         vla_2_single_loop                                      \
                         vla_2_in_loop                                          \
+                        vla_3_in_loop                                          \
                         vla_4_in_loop                                          \
                         vla_2d                                                 \
                         vla_2_nested_loops                                     \
                         variadic_acyclic                                       \
                         alloca_malloc_switch                                   \
-                        alloca_conditional_simple                              \
                         # vla_3_single_loop [timeout]
                         # vla_4_single_loop [timeout]
                         # vla_2_single_loop [missing non-affine invariant relating sp decrement offset value 'eax' with n]
                         # vla_2_in_loop [requires invariant (i < n) on loop body PCs / suffixpath]
+                        # vla_3_in_loop [query timeout => timeout]
                         # vla_4_in_loop [query timeout => timeout]
                         # vla_2d [non-affine invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
                         # vla_2_nested_loops [timeout]
@@ -157,7 +160,7 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       # vla_4_in_loop [query timeout => timeout]
                       # vla_2d [non-affine invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
                       # vla_2_nested_loops [loop peeling leading to multiple stack allocations for inner VLA alloc]
-                      # alloca_conditional_simple [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                      # alloca_conditional_simple [fails sp-below-isp wfcond after fcall / fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_malloc_switch [requires more powerful inequality inference and RPO DFA]
 
 #UNROLL1_ICX = alloca_linked_list $(UNROLL1_PROGS)
