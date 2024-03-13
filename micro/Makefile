@@ -118,7 +118,6 @@ EXPECTED_FAILS_ICC :=                                                          \
                       ftmap_4_main                                             \
                       store_store_elim                                         \
                       flcmp                                                    \
-                      fdiv                                                     \
                       call_ret_struct                                          \
                       ret_long_long                                            \
                       # fptouil [???]
@@ -130,7 +129,6 @@ EXPECTED_FAILS_ICC :=                                                          \
                       # ftmap_4_main [empty ml assert-fail due to buggy lr-status computation: return lr-status of fcall coming out as empty]
                       # store_store_elim [???]
                       # flcmp [???]
-                      # fdiv [???]
                       # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
                       # ret_long_long [incompletness: need to include edx in return-reg expr]
 
