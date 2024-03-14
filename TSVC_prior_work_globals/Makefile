@@ -4,7 +4,8 @@ include ../config.mak                        # paths
 VPATH = $(SRCDIR)/TSVC_prior_work_globals
 EXTRA_FLAGS :=                                                           \
                 --smt-query-timeout 30                                   \
-                --global-timeout 7200                                    \
+                --global-timeout 14400                                   \
+                --eqcheck-timeout 7200                                   \
                 --enable-query-decomposition                             \
                 --qd-smt-query-timeout 5                                 \
                 --disable-removal-of-stack-from-stack-nonstack-ml-in-dst \
