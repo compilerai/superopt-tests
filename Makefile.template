@@ -170,8 +170,8 @@ collect_logs:
 
 .PHONY: archive_run
 archive_run: collect_logs
-	find . -type f -path "./eqcheck.*" ! -name "*.xml" ! -name "*.record" -print0 | apack -0 $(ARCHIVE_FNAME).zip
-	ln -sf $(ARCHIVE_FNAME).zip $(ARCHIVE_LAST).zip
+	find . -type f -path "./eqcheck.*" ! -name "*.xml" ! -name "*.record" -print0 | apack -0 $(ARCHIVE_FNAME).zip || true
+	[ -f $(ARCHIVE_FNAME).zip ] && ln -sf $(ARCHIVE_FNAME).zip $(ARCHIVE_LAST).zip || true
 
 csv_%_helper:
 	@find -path './$(CSV_MATCH_PREFIX)$(CSV_MATCH_TAIL)/submit*/stdout' | python3 ${SUPEROPT_PROJECT_DIR}/superopt/utils/gen_stats -stdin -o $(subst _helper,,$@).csv
