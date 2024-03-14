@@ -1,3 +1,4 @@
+=FunctionName addr_taken_simple
 =PC: L0%6%spvEnd
 =local-addr-guesses begin
 =local.=Lentry%1%d=
