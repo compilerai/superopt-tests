@@ -4,7 +4,8 @@ include ../config.mak                        # paths
 VPATH = $(SRCDIR)/localmem-tests
 
 EXTRA_FLAGS := --smt-query-timeout 120                                         \
-               --global-timeout 7200                                           \
+               --global-timeout 14400                                          \
+               --eqcheck-timeout 7200                                          \
                --enable-query-decomposition                                    \
                --disable-removal-of-stack-from-stack-nonstack-ml-in-dst        \
                --disable-dst-to-src-submap
