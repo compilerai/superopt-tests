@@ -1,3 +1,4 @@
+=FunctionName addr_taken_array_in_loop
 =PC: L2%1%spvEnd
 =local-addr-guesses begin
 =local.=Lentry%1%d=

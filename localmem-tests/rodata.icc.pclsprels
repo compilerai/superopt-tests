@@ -1,3 +1,4 @@
+=FunctionName rodata
 =PC: L5%1%spvEnd
 =local-addr-guesses begin
 =local.=Lentry%1%d=

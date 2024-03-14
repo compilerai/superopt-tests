@@ -2,7 +2,6 @@
 #include <stdarg.h>
 #include <string.h>
 #include <sys/mman.h>
-//#include "eqchecker_helper.h"
 
 const size_t PAGE_SIZE = 4096; 
 
