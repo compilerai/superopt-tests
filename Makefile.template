@@ -170,7 +170,7 @@ collect_logs:
 
 .PHONY: archive_run
 archive_run: collect_logs
-	find . -type f -path "./eqcheck.*" ! -name "*.xml" -print0 | apack -0 $(ARCHIVE_FNAME).zip
+	find . -type f -path "./eqcheck.*" ! -name "*.xml" ! -name "*.record" -print0 | apack -0 $(ARCHIVE_FNAME).zip
 	ln -sf $(ARCHIVE_FNAME).zip $(ARCHIVE_LAST).zip
 
 csv_%_helper:
