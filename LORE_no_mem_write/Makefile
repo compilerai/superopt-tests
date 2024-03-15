@@ -7,7 +7,7 @@ EXTRA_FLAGS :=                                                                 \
                --eqcheck-timeout 1800                                          \
                --global-timeout 3600                                           \
                --max-address-space-size-gb 16                                  \
-               #--disable-dst-to-src-submap # dst-to-src-submap incurs overhead
+               --disable-d2s # dst-to-src-submap incurs overhead
 
 UNROLL4_GCC := ex1 ex2 ex3 ex4 ex5 ex6 ex8 ex9 ex10 ex11 ex12 ex13
 UNROLL8_GCC := ex2u ex3u ex4u ex5u ex6u ex13u
