@@ -22,14 +22,11 @@ make bzip2
 ## Running tests
 
 ```sh
-# run regression tests
-make regression_i386
+# run all
+make run_tests_all
 
-# Or, for a particular test suite
-make -C build/<dirname> test_i386 && parallel --load='33%' < build/<dirname>/test_i386
-
-# For example, for running localmem-tests
-make -C build/localmem-tests test_i386 && parallel --load='33%' < build/localmem-tests/test_i386
+# Or, for a particular test suite, e.g. micro benchmarks
+make run_tests_micro
 ```
 
 ## Cleaning-up
@@ -60,9 +57,10 @@ In addition, some environment variables are used for some paths.  The exhaustive
 
 5. `ICX_INSTALL_DIR`: Directory where ICX (intel's LLVM based compiler, AKA oneAPI compiler) is installed.  `icx` is then located to `${ICX_INSTALL_DIR}/compiler/latest/linux/bin/icc`.
 
-## Adding a new eqcheck test suite
+## Adding a new benchmark
 
-1. Create a new top-level directory: the name of directory will be your testsuite name
-2. Add your C/C++ sources to the newly created directory
-3. Copy `misc/Makefile.sample` as `Makefile` into your testsuite directory and edit per your requirements
-4. Append the suite name to `EQCHECK_TARGETS` in top-level `Makefile`
+1. Create a new top-level directory `<DIR>`: the name of directory will be your benchmark name
+2. Add your C sources to the newly created directory
+3. Copy `misc/Makefile.sample` as `Makefile` into your benchmark directory and edit per your requirements
+4. Add the newly added benchmark to top-level `Makefile` as a suite: add the line `$(call add_suite,<name>, <DIR>)`
+5. Run the newly added benchmark `make run_tests_<name>`

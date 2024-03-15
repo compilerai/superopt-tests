@@ -22,6 +22,7 @@ $(call add_suite,sorting,       sorting)
 $(call add_suite,micro,         micro)
 $(call add_suite,vectorization, TSVC_prior_work TSVC_new LORE_mem_write LORE_no_mem_write)
 $(call add_suite,soundness,     soundness)
+# $(call add_suite,<NEW_SUITE>,     <DIR>)
 
 # add new dirs' targets here
 #CODEGEN_TARGETS := compcert-tests
