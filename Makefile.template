@@ -1,6 +1,8 @@
 include $(SRCDIR)/Make.conf                  # compiler paths and flags
 include $(SRCDIR)/Makefile.common  # build rules
 
+TMPDIR_PREFIX ?= eqcheck
+
 # enumerate files to be compiled from user declared UNROLL1_GCC, UNROLL2_CLANG, .... variables
 UNROLL_FACTORS := 1 2 4 8 16 32 64
 COMPILERS := GCC CLANG ICC ICX ACK GPP CLANGPP ICPC ICPX
@@ -76,7 +78,7 @@ all: $(ALL_PROGS)
 ack-progs: $(ACK_EQCHECKER_PROGS)
 
 eqtest_%.helper:: $(ALL_PROGS) $(SRCDIR)/Makefile.template $(SRCDIR)/scripts/gen_eqtest_cmds.pl $(VPATH)/Makefile Makefile $(EQFLAGS_FILES)
-	perl $(SRCDIR)/scripts/gen_eqtest_cmds.pl eqcheck $@ $(SUPEROPT_PROJECT_DIR) $(VPATH) $(ARCH) $(shell echo $(CUR_COMPILER) | tr A-Z a-z) $(OPT_LEVEL) "extraflags@$(EXTRA_FLAGS) $(EXTRA_FLAGS_$(CUR_COMPILER))" "expectedfails@$(EXPECTED_FAILS_$(CUR_COMPILER))" $(PROGS_UNROLL_CUR_COMPILER)
+	perl $(SRCDIR)/scripts/gen_eqtest_cmds.pl eqcheck $@ $(SUPEROPT_PROJECT_DIR) $(VPATH) $(ARCH) $(shell echo $(CUR_COMPILER) | tr A-Z a-z) $(OPT_LEVEL) "extraflags@$(EXTRA_FLAGS) $(EXTRA_FLAGS_$(CUR_COMPILER)) $(EXTRA_FLAGS_I)" "expectedfails@$(EXPECTED_FAILS_$(CUR_COMPILER))" $(TMPDIR_PREFIX) $(PROGS_UNROLL_CUR_COMPILER)
 
 eqtest_%_gcc.helper:: CUR_COMPILER=GCC
 eqtest_%_gPP.helper:: CUR_COMPILER=GPP
@@ -120,6 +122,16 @@ eqtest_x64_O2:: OPT_LEVEL=O2
 eqtest_x64_O3:: ARCH=x64
 eqtest_x64_O3:: OPT_LEVEL=O3
 
+eqtest_pa_i386_O3:: ARCH=i386
+eqtest_pa_i386_O3:: OPT_LEVEL=O3
+eqtest_pa_i386_O3:: TMPDIR_PREFIX=eqcheck_pa
+eqtest_pa_i386_O3:: EXTRA_FLAGS_I=--force-partial-array-encoding
+
+eqtest_fa_i386_O3:: ARCH=i386
+eqtest_fa_i386_O3:: OPT_LEVEL=O3
+eqtest_fa_i386_O3:: TMPDIR_PREFIX=eqcheck_fa
+eqtest_fa_i386_O3:: EXTRA_FLAGS_I=--force-full-array-encoding
+
 # use .c/.ll files directly
 eqtest_srcdst.helper:: CUR_COMPILER=SRCDST
 eqtest_srcdst.helper:: ARCH=i386 #use i386 build for src-dst checks
@@ -139,16 +151,13 @@ clangv_O1-:: OPT_LEVEL=O1-
 clangv_O1 clangv_O2 clangv_O3 clangv_O1-::
 	perl $(SRCDIR)/scripts/gen_eqtest_cmds.pl clangv $@ $(SUPEROPT_PROJECT_DIR) $(VPATH) $(ARCH) $(OPT_LEVEL) "extraflags@$(EXTRA_FLAGS_CLANGV)" "expectedfails@$(EXPECTED_FAILS_CLANGV)" $(PROGS_UNROLL_CLANGV)
 
-eqtest_i386_O0 eqtest_i386_O1 eqtest_i386_O2 eqtest_i386_O3 eqtest_x64_O0 eqtest_x64_O1 eqtest_x64_O2 eqtest_x64_O3: eqtest_%: eqtest_%_gcc.helper eqtest_%_gPP.helper eqtest_%_clang.helper eqtest_%_clangPP.helper eqtest_%_ack.helper eqtest_%_ack.O1.helper eqtest_%_icx.helper eqtest_%_icpx.helper eqtest_%_icc.helper eqtest_%_icpc.helper
+eqtest_i386_O0 eqtest_i386_O1 eqtest_i386_O2 eqtest_i386_O3 eqtest_pa_i386_O3 eqtest_fa_i386_O3  eqtest_x64_O0 eqtest_x64_O1 eqtest_x64_O2 eqtest_x64_O3: eqtest_%: eqtest_%_gcc.helper eqtest_%_gPP.helper eqtest_%_clang.helper eqtest_%_clangPP.helper eqtest_%_ack.helper eqtest_%_ack.O1.helper eqtest_%_icx.helper eqtest_%_icpx.helper eqtest_%_icc.helper eqtest_%_icpc.helper
 	cat $^ > $@
 
 eqtest_i386 eqtest_x64: eqtest_%: eqtest_%_O0 eqtest_%_O1 eqtest_%_O2 eqtest_%_O3
 	cat $^ > $@
 
 eqtest_ll eqtest_srcdst: eqtest_%: eqtest_%.helper
-	cat $^ > $@
-
-eqtest: eqtest_i386 eqtest_x64 eqtest_srcdst eqtest_ll
 	cat $^ > $@
 
 .DEFAULT_GOAL := all
@@ -183,9 +192,10 @@ csv_%_icc_O3_helper::   CSV_MATCH_TAIL=.icc.eqchecker.O3*
 csv_%_clangv_helper::   CSV_MATCH_TAIL=.O1-
 
 csv_eqcheck_normal_%_helper:: CSV_MATCH_PREFIX=eqcheck.*
-# csv_eqcheck_slow_%_helper::   CSV_MATCH_PREFIX=eqcheck_slow.*
+csv_eqcheck_pa_%_helper::   CSV_MATCH_PREFIX=eqcheck_pa.*
+csv_eqcheck_fa_%_helper::   CSV_MATCH_PREFIX=eqcheck_fa.*
 csv_eqcheck_clangv_helper::   CSV_MATCH_PREFIX=clangv.*
 
-csv_eqcheck_normal_gcc_O3 csv_eqcheck_normal_clang_O3 csv_eqcheck_normal_icc_O3 csv_eqcheck_normal_clang_O1 csv_eqcheck_normal_clang_O2 csv_eqcheck_clangv: %: %_helper # csv_eqcheck_slow_gcc_O3 csv_eqcheck_slow_clang_O3 csv_eqcheck_slow_icc_O3 
+csv_eqcheck_normal_gcc_O3 csv_eqcheck_normal_clang_O3 csv_eqcheck_normal_icc_O3 csv_eqcheck_pa_gcc_O3 csv_eqcheck_pa_clang_O3 csv_eqcheck_pa_icc_O3 csv_eqcheck_fa_gcc_O3 csv_eqcheck_fa_clang_O3 csv_eqcheck_fa_icc_O3 csv_eqcheck_normal_clang_O1 csv_eqcheck_normal_clang_O2 csv_eqcheck_clangv: %: %_helper
 
 .PHONY: all clean

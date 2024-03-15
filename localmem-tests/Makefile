@@ -161,8 +161,23 @@ ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
 C_STD = gnu11
 include $(SRCDIR)/Makefile.template
 
-cmds: eqtest_i386_O3
+cmds_normal_run: eqtest_i386_O3
 	cat $^ > $@
+
+cmds_pa_run: eqtest_pa_i386_O3
+	cat $^ > $@
+
+cmds_fa_run: eqtest_fa_i386_O3
+	cat $^ > $@
+
+cmds: cmds_normal_run cmds_pa_run cmds_fa_run
+	cat $^ > $@
+
+.PHONY: collect_csv
+collect_csv: csv_eqcheck_normal_gcc_O3 csv_eqcheck_normal_clang_O3 csv_eqcheck_normal_icc_O3 csv_eqcheck_pa_gcc_O3 csv_eqcheck_pa_clang_O3 csv_eqcheck_pa_icc_O3 csv_eqcheck_fa_gcc_O3 csv_eqcheck_fa_clang_O3 csv_eqcheck_fa_icc_O3
+	mv csv_eqcheck_normal_gcc_O3.csv lt_gcc.csv
+	mv csv_eqcheck_normal_clang_O3.csv lt_clang.csv
+	mv csv_eqcheck_normal_icc_O3.csv lt_icc.csv
 
 clangv_Od: clangv_O1-
 	cat $^ > $@
