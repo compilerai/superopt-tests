@@ -23,7 +23,7 @@ UNROLL1_PROGS :=                                                               \
                  vla_simple                                                    \
                  vla_conditional_use                                           \
                  vla_midway_decl                                               \
-                 vla_2_nested_loops                                            \
+                 vla_nested_loops                                              \
                  vla_single_loop_N                                             \
                  vla_in_loop_N                                                 \
                  vla_in_loop_conditional_continue                              \
@@ -55,7 +55,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       vla_single_loop_2                                        \
                       vla_single_loop_3                                        \
                       vla_single_loop_4                                        \
-                      vla_2_nested_loops                                       \
+                      vla_nested_loops_2                                       \
                       vla_2d                                                   \
                       minprintf                                                \
                       minscanf                                                 \
@@ -70,7 +70,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # vla_single_loop_2 [missing non-affine invariant relating sp decrement offset value 'eax' with n]
                       # vla_single_loop_3 [timeout]
                       # vla_single_loop_4 [timeout]
-                      # vla_2_nested_loops [some bitwise computation is happening -- local-mem-eq is failing]
+                      # vla_nested_loops_2 [some bitwise computation is happening -- local-mem-eq is failing]
                       # vla_2d [mem-eq query timeout]
                       # minprintf,minscanf [requires select(local.addr) which is missing from bv-eqclass exprs]
                       # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
@@ -92,7 +92,7 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         vla_in_loop_3                                          \
                         vla_in_loop_4                                          \
                         vla_2d                                                 \
-                        vla_2_nested_loops                                     \
+                        vla_nested_loops_2                                     \
                         variadic_acyclic                                       \
                         alloca_malloc_switch                                   \
                         # vla_single_loop_2 [missing non-affine invariant relating sp decrement offset value 'eax' with n]
@@ -101,7 +101,7 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         # vla_in_loop_3 [query timeout => timeout]
                         # vla_in_loop_4 [query timeout => timeout]
                         # vla_2d [non-affine invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
-                        # vla_2_nested_loops [timeout]
+                        # vla_nested_loops_2 [timeout]
                         # variadic_acyclic [push insn is used for allocation -- we correlate local before write and thus get different mem on path where the local is not written-to before dealloc]
                         # alloca_malloc_switch [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
 
@@ -134,7 +134,7 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       vla_in_loop_conditional_continue                         \
                       vla_in_loop_conditional_exit                             \
                       vla_2d                                                   \
-                      vla_2_nested_loops                                       \
+                      vla_nested_loops_2                                       \
                       rodata                                                   \
                       alloca_conditional_simple                                \
                       alloca_malloc_switch                                     \
@@ -149,7 +149,7 @@ EXPECTED_FAILS_ICC := vla_simple                                               \
                       # vla_conditional_use [requires non-affine invariants]
                       # vla_in_loop_conditional_{continue,exit} [requires non-affine invariants]
                       # vla_2d [non-affine invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
-                      # vla_2_nested_loops [loop peeling leading to multiple stack allocations for inner VLA alloc]
+                      # vla_nested_loops_2 [loop peeling leading to multiple stack allocations for inner VLA alloc]
                       # alloca_conditional_simple [fails sp-below-isp wfcond after fcall -- requires RPO DFA for more precise spvr]
                       # alloca_malloc_switch [requires more powerful inequality inference and RPO DFA]
 
