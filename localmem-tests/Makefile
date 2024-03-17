@@ -12,6 +12,7 @@ EXTRA_FLAGS := --smt-query-timeout 120                                         \
 
 UNROLL1_PROGS :=                                                               \
                  addr_taken_simple                                             \
+                 addr_taken_parameter                                          \
                  addr_taken_conditional                                        \
                  addr_taken_array                                              \
                  addr_taken_array_in_loop                                      \
