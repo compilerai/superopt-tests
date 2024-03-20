@@ -13,7 +13,7 @@ struct Point {
 
 void read_points(struct Point* p1, struct Point* p2);
 
-int addr_taken_structs(void)
+int addr_taken_simple_structs(void)
 {
   struct Point p1, p2;
   read_points(&p1, &p2);

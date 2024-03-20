@@ -9,7 +9,7 @@
 =stack-addr end
 =local-addr-guesses end
 =done
-=FunctionName addr_taken_structs
+=FunctionName addr_taken_simple_structs
 =PC: L0%6%spvEnd
 =local-addr-guesses begin
 =local.=Lentry%1%d=
