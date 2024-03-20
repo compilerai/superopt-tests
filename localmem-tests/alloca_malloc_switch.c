@@ -3,8 +3,26 @@
 int MYmystrlen(char* s);
 char* MYmymalloc(int n);
 void MYmyfree(char* a);
+void foo(void*);
 int write(int fd, char* a, int n);
 
+void alloca_malloc_switch_simple(int n)
+{
+  if (n <= 0)
+    return;
+  char* a;
+  if (n < 4096) {
+    a = alloca(n);
+  } else {
+    a = MYmymalloc(n);
+    if (!a) return;
+  }
+  foo(a);
+  if (!(n < 4096))
+    MYmyfree(a);
+}
+
+/*
 int alloca_malloc_switch(char* s, int fd)
 {
   if (!s)
@@ -26,3 +44,4 @@ int alloca_malloc_switch(char* s, int fd)
     MYmyfree(a);
   return ret;
 }
+*/
