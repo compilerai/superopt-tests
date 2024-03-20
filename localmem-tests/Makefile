@@ -79,6 +79,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # vla_conditional_use [times-out somtimes because the invariant inference DFA does not proceed in RPO i.e. it tries relaxing an edge before relaxing all its predecessors]
 
 UNROLL1_CLANG := alloca_linked_list                                            \
+                 addr_taken_parameter_clang                                    \
                  $(UNROLL1_PROGS)                                              \
 
 UNROLL2_CLANG := fib                                                           \
