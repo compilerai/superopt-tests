@@ -1,6 +1,6 @@
 int bar(int*);
 
-int vla_2_nested_loops(int* a, unsigned n)
+int vla_nested_loops_2(int* a, unsigned n)
 {
   if (n == 0)
     return 0;
@@ -20,7 +20,7 @@ int vla_2_nested_loops(int* a, unsigned n)
 }
 
 /*
-int vla_2_nested_loops(int* a, unsigned n)
+int vla_nested_loops_2(int* a, unsigned n)
 {
   if (n == 0)
     return 0;
