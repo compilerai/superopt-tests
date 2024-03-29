@@ -29,6 +29,7 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          simple_struct                                                         \
          ret_long_long                                                         \
                                                                                \
+         variadic                                                              \
          local_used_in_unreachable_loop                                        \
          local_used_on_unreachable_branch                                      \
          # nested_loops                                                        \
