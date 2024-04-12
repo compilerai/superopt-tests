@@ -1,5 +1,25 @@
+void fillV(int*,int*,unsigned);
+void fooV(int*,unsigned);
 int bar(int*);
 
+void vla_nested_loops_2(int* a, unsigned n)
+{
+  if (n == 0)
+    return;
+
+  int v[n];
+  fillV(v, a, n);
+  for (unsigned i = 0; i < n; ++i) {
+    int w[i+1];
+#pragma clang loop vectorize(disable) unroll(disable)
+    for (unsigned j = 0; j <= i; ++j) {
+      w[j] = a[j]+v[j];
+    }
+    fooV(w, i+1);
+  }
+}
+
+/*
 int vla_nested_loops_2(int* a, unsigned n)
 {
   if (n == 0)
@@ -18,6 +38,7 @@ int vla_nested_loops_2(int* a, unsigned n)
   }
   return bar(v);
 }
+*/
 
 /*
 int vla_nested_loops_2(int* a, unsigned n)
