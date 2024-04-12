@@ -172,6 +172,12 @@ collect_csv: csv_eqcheck_normal_gcc_O3 csv_eqcheck_normal_clang_O3 csv_eqcheck_n
 	mv csv_eqcheck_normal_gcc_O3.csv lt_gcc.csv
 	mv csv_eqcheck_normal_clang_O3.csv lt_clang.csv
 	mv csv_eqcheck_normal_icc_O3.csv lt_icc.csv
+	mv csv_eqcheck_pa_gcc_O3.csv lt_gcc_pa.csv
+	mv csv_eqcheck_pa_clang_O3.csv lt_clang_pa.csv
+	mv csv_eqcheck_pa_icc_O3.csv lt_icc_pa.csv
+	mv csv_eqcheck_fa_gcc_O3.csv lt_gcc_fa.csv
+	mv csv_eqcheck_fa_clang_O3.csv lt_clang_fa.csv
+	mv csv_eqcheck_fa_icc_O3.csv lt_icc_fa.csv
 
 clangv_Od: clangv_O1-
 	cat $^ > $@
