@@ -1,29 +1,31 @@
 #include <alloca.h>
 
-int MYmystrlen(char* s);
-char* MYmymalloc(int n);
-void MYmyfree(char* a);
+char* MYmymalloc(size_t n);
+void MYmyfree(void* a);
 void foo(void*);
-int write(int fd, char* a, int n);
 
-void alloca_malloc_switch_simple(int n)
+int alloca_malloc_switch_acyclic(int n)
 {
   if (n <= 0)
-    return;
-  char* a;
+    return -1;
+  int* p;
   if (n < 4096) {
-    a = alloca(n);
+    p = alloca(sizeof(int)*n);
   } else {
-    a = MYmymalloc(n);
-    if (!a) return;
+    p = (int*)MYmymalloc(sizeof(int)*n);
+    if (!p) return -1;
   }
-  foo(a);
+  foo(p);
+  int ret = p[0] + p[n/2] + p[n-1];
   if (!(n < 4096))
-    MYmyfree(a);
+    MYmyfree((void*)p);
+  return ret;
 }
 
 /*
-int alloca_malloc_switch(char* s, int fd)
+int MYmystrlen(char* s);
+int write(int fd, char* a, int n);
+int alloca_malloc_switch_cyclic(char* s, int fd)
 {
   if (!s)
     return 0;
