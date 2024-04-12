@@ -41,8 +41,8 @@ UNROLL1_PROGS :=                                                               \
                  # fib                [u2]                                     \
                  # alloca_linked_list [u2]                                     \
 
-UNROLL1_GCC := fib                                                             \
-               fib_paper                                                       \
+UNROLL1_GCC :=                                                                 \
+               fib                                                             \
                $(UNROLL1_PROGS)                                                \
 
 UNROLL2_GCC := alloca_linked_list
@@ -75,8 +75,8 @@ UNROLL1_CLANG := alloca_linked_list                                            \
                  addr_taken_parameter_clang                                    \
                  $(UNROLL1_PROGS)                                              \
 
-UNROLL2_CLANG := fib                                                           \
-                 fib_paper
+UNROLL2_CLANG :=                                                               \
+                 fib       
 
 EXPECTED_FAILS_CLANG :=                                                        \
                         f_indir_byval                                          \
@@ -105,7 +105,7 @@ UNROLL2_ACK = addr_taken_simple                                                \
 EXTRA_FLAGS_ACK := --disable-fcall-wfconds
 
 UNROLL1_ICC = $(UNROLL1_PROGS)                                                 \
-              # fib [requires non-affine invariants]
+              fib
 
 UNROLL2_ICC = alloca_linked_list
 
@@ -114,8 +114,10 @@ EXPECTED_FAILS_ICC :=                                                          \
                       vla_simple                                               \
                       vla_simple_nested_1                                      \
                       vla_simple_nested_2                                      \
+                      fib                                                      \
                       vla_midway_decl                                          \
                       vla_single_loop_1                                        \
+                      vla_single_loop_2                                        \
                       vla_single_loop_3                                        \
                       vla_single_loop_4                                        \
                       vla_in_loop_3                                            \
@@ -130,6 +132,7 @@ EXPECTED_FAILS_ICC :=                                                          \
                       alloca_malloc_switch                                     \
                       # addr_taken_parameter_large_struct [byval not modeled]
                       # vla_simple{,_nested_1,_nested_2} [requires non-affine invariants]
+                      # fib [requires non-affine invariants]
                       # vla_single_loop_{1,2} [requires non-affine invariants]
                       # vla_single_loop_{3,4} [timeout]
                       # vla_midway_decl [multiple allocs]
