@@ -7,8 +7,13 @@ UNROLL2 := bzip2_modified
 
 UNROLL2_CLANG = $(UNROLL2)
 
-EXTRA_FLAGS        := --smt-query-timeout 300 --eqcheck-timeout 14400 --global-timeout 86400 --max-address-space-size-gb 32
-EXTRA_FLAGS_CLANGV := --smt-query-timeout 300 --eqcheck-timeout 14400 --global-timeout 86400 --max-address-space-size-gb 32
+EXTRA_FLAGS        := --smt-query-timeout 300 --eqcheck-timeout 14400 --global-timeout 86400 --max-address-space-size-gb 32 \
+                      --enable-query-decomposition                                                                          \
+                      --disable-dst-to-src-submap                                                                           \
+
+EXTRA_FLAGS_CLANGV := --smt-query-timeout 300 --eqcheck-timeout 14400 --global-timeout 86400 --max-address-space-size-gb 32 \
+                      --enable-query-decomposition                                                                          \
+                      --disable-dst-to-src-submap                                                                           \
 
 # compiler flags
 GCC_EQCHECKER_FLAGS_EXTRA= $(GCC_EQCHECKER_NOUNROLL_FLAGS)
