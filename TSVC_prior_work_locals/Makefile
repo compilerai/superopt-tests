@@ -25,7 +25,13 @@ ICC_EQCHECKER_FLAGS_EXTRA= $(VEC_FLAGS)
 C_STD = gnu11
 include $(SRCDIR)/Makefile.template
 
-cmds: eqtest_i386_O3
+cmds_pa_run:: eqtest_pa_i386_O3
+	cat $^ > $@
+
+cmds_normal_run:: eqtest_i386_O3
+	cat $^ > $@
+
+cmds: cmds_normal_run cmds_pa_run
 	cat $^ > $@
 
 clangv_Od: clangv_O3
