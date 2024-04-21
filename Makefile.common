@@ -334,19 +334,19 @@
 
 %.c.O0.bc32: %.c
 	$(CLANG_I386) $(CFLAGS) -Xclang -disable-O0-optnone $(INCLUDES) -m32 -O3 -Xclang -disable-llvm-passes -emit-llvm $^ -c -o $@.tmp
-	$(LLVM_OPT) -mem2reg -die -o $@ $@.tmp
+	$(LLVM_OPT) -p=mem2reg -o $@ $@.tmp
 
 %.c.O0.bc64: %.c
 	$(CLANG_X64) $(CFLAGS) -Xclang -disable-O0-optnone $(INCLUDES) -O3 -Xclang -disable-llvm-passes -emit-llvm $^ -c -o $@.tmp
-	$(LLVM_OPT) -mem2reg -die -o $@ $@.tmp
+	$(LLVM_OPT) -p=mem2reg -o $@ $@.tmp
 
 %.cpp.O0.bc32: %.cpp
 	$(CLANGPP_I386) $(CFLAGS) -Xclang -disable-O0-optnone $(INCLUDES) -m32 -O3 -Xclang -disable-llvm-passes -emit-llvm $^ -c -o $@.tmp
-	$(LLVM_OPT) -mem2reg -die -o $@ $@.tmp
+	$(LLVM_OPT) -p=mem2reg -o $@ $@.tmp
 
 %.cpp.O0.bc64: %.cpp
 	$(CLANGPP_X64) $(CFLAGS) -Xclang -disable-O0-optnone $(INCLUDES) -O3 -Xclang -disable-llvm-passes -emit-llvm $^ -c -o $@.tmp
-	$(LLVM_OPT) -mem2reg -die -o $@ $@.tmp
+	$(LLVM_OPT) -p=mem2reg -o $@ $@.tmp
 
 %.bc32.eqchecker.O0: %.c.O0.bc32
 	$(LLVM_LINK) $^ -o $@
