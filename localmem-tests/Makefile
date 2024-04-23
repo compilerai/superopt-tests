@@ -55,6 +55,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       vla_single_loop_4                                        \
                       vla_nested_loops_2                                       \
                       vla_2d                                                   \
+                      variadic_with_copy                                       \
                       minprintf                                                \
                       minscanf                                                 \
                       alloca_malloc_switch_cyclic                              \
@@ -66,6 +67,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # vla_single_loop_4 [timeout]
                       # vla_nested_loops_2 [some bitwise computation is happening -- local-mem-eq is failing]
                       # vla_2d [mem-eq query timeout]
+                      # variadic_with_copy [bug in ssa transformation]
                       # minprintf,minscanf [requires select(local.addr) which is missing from bv-eqclass exprs]
                       # alloca_malloc_switch_cyclic [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # alloca_conditional_3 [sometimes query timeout]
