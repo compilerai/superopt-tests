@@ -2,7 +2,7 @@
 
 char* MYmymalloc(size_t n);
 void MYmyfree(void* a);
-void foo(void*);
+int foo(void*);
 
 int alloca_malloc_switch_acyclic(int n)
 {
@@ -15,8 +15,8 @@ int alloca_malloc_switch_acyclic(int n)
     p = (int*)MYmymalloc(sizeof(int)*n);
     if (!p) return -1;
   }
-  foo(p);
-  int ret = p[0] + p[n/2] + p[n-1];
+  int i = foo(p);
+  int ret = n*p[i];
   if (!(n < 4096))
     MYmyfree((void*)p);
   return ret;
