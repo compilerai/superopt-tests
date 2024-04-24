@@ -1,9 +1,7 @@
 include ../config.mak                        # paths
 
 # set VPATH path for targets and src files
-VPATH = $(SRCDIR)/bzip2_locals
-
-UNROLL1 := bzip2_locals
+VPATH = $(SRCDIR)/bzip2
 
 EXPECTED_FAILS_CLANG :=                                                                                                \
                         getAndMoveToFrontDecode                                                                        \
@@ -16,6 +14,7 @@ EXPECTED_FAILS_CLANG :=                                                         
                         sortIt                                                                                         \
                         undoReversibleTransformation_small                                                             \
 
+# XXX the following are not used as of now
 EXPECTED_FAILS_CLANG_O0 :=                                                                                             \
 											     qSort3                                                                                      \
 											     sendMTFValues
@@ -51,7 +50,10 @@ EXPECTED_FAILS_CLANGV :=                                                        
                          undoReversibleTransformation_small                                                            \
                          # loadAndRLEsource [sometimes query timeout]
 
+UNROLL1 := bzip2
 UNROLL1_CLANG = $(UNROLL1)
+# UNROLL2 := bzip2
+# UNROLL2_CLANG = $(UNROLL2)
 
 EXTRA_FLAGS :=        --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32                    \
                       --disable-removal-of-stack-from-stack-nonstack-ml-in-dst                                         \
