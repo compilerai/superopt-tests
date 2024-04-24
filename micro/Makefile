@@ -116,6 +116,7 @@ EXPECTED_FAILS_ICC :=                                                          \
                       # fdiv [???]
 
 # compiler flags
+CLANG_EQCHECKER_FLAGS_EXTRA= $(CLANG_EQCHECKER_NOUNROLL_FLAGS)
 ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
 
 include $(SRCDIR)/Makefile.template
