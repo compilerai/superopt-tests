@@ -32,7 +32,7 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          #ddec arg_passing fpadd  fcall100 fcall100_with_memaccess             \
          #fpext : TOO SLOW                                                     \
 
-UNROLL8_GCC := $(PROGS) \
+UNROLL2_GCC := $(PROGS) \
                # load_store_elim_conditional not passing in GCC!
 EXPECTED_FAILS_GCC :=                                                          \
                       fptoui                                                   \
@@ -56,8 +56,8 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # nested_loops [requires invariant (m > 0) in due to unswitching of inner loop condition]
 											# sum2d [requires: pointer arithmetic overflow UB modelling]
 
-UNROLL16_CLANG := $(PROGS) \
-                  load_store_elim_conditional
+UNROLL2_CLANG := $(PROGS) \
+                 load_store_elim_conditional
 EXPECTED_FAILS_CLANG :=                                                        \
                         fptouil                                                \
                         ftmap_3_main                                           \
