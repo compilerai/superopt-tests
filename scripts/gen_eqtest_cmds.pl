@@ -24,26 +24,27 @@ my $num_processes_per_file = 10;
   
 my ($dst_arch, $compiler, $extraflagsarg, $expectedfailsarg, $ccoptsarg);
 my ($opt_level);
+my ($tmpdir_prefix);
 my $cur_index;
 
 if ($type eq "eqcheck") {
   $dst_arch = $ARGV[4];
   $compiler = convert_PP_to_plusplus($ARGV[5]);
   $opt_level = convert_PP_to_plusplus($ARGV[6]);
-  
   $extraflagsarg = $ARGV[7];
-  
   $expectedfailsarg = $ARGV[8];
   $ccoptsarg = $ARGV[9];
+  $tmpdir_prefix = $ARGV[10];
   #print "expectedfailsarg = $expectedfailsarg\n";
-  $cur_index = 10;
+  $cur_index = 11;
 } elsif ($type eq "clangv") {
   $dst_arch = "i386";
   $opt_level = $ARGV[4];
   $extraflagsarg = $ARGV[5];
   $expectedfailsarg = $ARGV[6];
   $ccoptsarg = $ARGV[7];
-  $cur_index = 8;
+  $tmpdir_prefix = $ARGV[8];
+  $cur_index = 9;
 } else {
   die "incorrect type";
 }
@@ -99,13 +100,13 @@ foreach my $prog (keys %unroll) {
     }
 
     if ($compiler eq "srcdst") {
-      my $tmpdir = "$PWD/eqcheck.$prog.$compiler";
+      my $tmpdir = "$PWD/$tmpdir_prefix.$prog.$compiler";
       my $src_pathname = identify_filetype_extension("$VPATH/$prog\_src");
       my $dst_pathname = identify_filetype_extension("$VPATH/$prog\_dst");
       print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='$compiler' -expect-fails='$expectedfails' -cc-opts '$ccopts' -tmpdir $tmpdir $src_pathname -assembly $dst_pathname.UNROLL$u\n";
     } else {
       my $compiler_suffix = ".eqchecker.$opt_level.$dst_arch.s";
-      my $tmpdir = "$PWD/eqcheck.$prog.$compiler$compiler_suffix";
+      my $tmpdir = "$PWD/$tmpdir_prefix.$prog.$compiler$compiler_suffix";
       my $compile_log_str = "";
       if ($compiler =~ /^clang/) {
         $compile_log_str = "-compile_log $PWD/$prog.$compiler$compiler_suffix.log"

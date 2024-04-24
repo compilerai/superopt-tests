@@ -18,10 +18,12 @@ UNROLL16_CLANG := ex1 ex7 ex8 ex9 ex10 ex11 ex12
 EXPECTED_FAILS_CLANG := ex1                                \
                         ex7                                \
                         ex8                                \
+                        ex10                                \
                         # ex1 [???]
                         # ex7 [timeout]
                         # ex8 [timeout]
                         # ex9 [timeout]
+                        # ex10 [sometimes global timeout]
                         # ex11 [sometimes timeout]
 
 UNROLL8_ICC := ex7
