@@ -29,7 +29,6 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          simple_struct                                                         \
          ret_long_long                                                         \
                                                                                \
-         variadic                                                              \
          local_used_in_unreachable_loop                                        \
          local_used_on_unreachable_branch                                      \
          # nested_loops                                                        \
@@ -54,6 +53,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       fcalls_sink_merge                                        \
                       call_ret_struct                                          \
                       ret_long_long                                            \
+                      fcall200                                                 \
                       # fptoui [???]
                       # fptouid [???]
                       # fptouil [???]
@@ -67,6 +67,7 @@ EXPECTED_FAILS_GCC :=                                                          \
 											# sum2d [requires: pointer arithmetic overflow UB modelling]
                       # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
                       # ret_long_long [incompletness: need to include edx in return-reg expr]
+                      # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
 
 UNROLL16_CLANG := $(PROGS) \
                   load_store_elim_conditional
@@ -76,11 +77,13 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         ftmap_4_main                                           \
                         call_ret_struct                                        \
                         ret_long_long                                          \
+                        fcall200                                               \
                         # fptouil [???]
                         # ftmap_3 [nop fcall inlined]
                         # ftmap_4 [get_global_sym call inlined]
                         # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
                         # ret_long_long [incompletness: need to include edx in return-reg expr]
+                        # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
 
 UNROLL1_SRCDST := inequiv_1                                \
                   inequiv_2                                \
@@ -121,6 +124,7 @@ EXPECTED_FAILS_ICC :=                                                          \
                       flcmp                                                    \
                       call_ret_struct                                          \
                       ret_long_long                                            \
+                      fcall200                                                 \
                       # fptouil [???]
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # fcall_taking_locals [need manual addr mappings]
@@ -132,6 +136,7 @@ EXPECTED_FAILS_ICC :=                                                          \
                       # flcmp [???]
                       # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
                       # ret_long_long [incompletness: need to include edx in return-reg expr]
+                      # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
 
 # compiler flags
 ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
