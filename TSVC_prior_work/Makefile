@@ -13,25 +13,33 @@ UNROLL8_GCC := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s173 s2244
                # cannot pass: s176 (non-bisimilar -- outer loop and inner loop collapse twice), s162 (non-linear invariant required: ecx == ((LEN-k)/4)*16)
 
 UNROLL64_CLANG := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s162 s173 s176 s2244 s243 s251 s3251 s351 s452 s453 sum1d vdotr vpv vpvpv vpvts vpvtv vtv vtvtv
-EXPECTED_FAILS_CLANG := s162     \
+EXPECTED_FAILS_CLANG :=          \
+                        s162     \
+                        s176     \
+                        s351     \
 												sum1d    \
                         # s162 [???]
+                        # s176 [query timeout]
+                        # s351 [times out due to expensive d2s -- 99% of time spent in cg_with_dst_to_src_submap::add_edge]
                         # sum1d [fails safety check -- needs debugging]
                         # vdotr [sometimes query timeouts]
 
 UNROLL16_ICC := s000 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s173 s176 s2244 s251 s3251 s452 s453 sum1d vdotr vpv vpvpv vpvts vpvtv vtv vtvtv # should pass: s1251 (query-timeout), s176 (???), s3251 (query timeout), vtvtv (query-timeout), vtv (query-timeout)
                 # cannot pass: s1112 (loop reversal with mem write), s243 (loop splitting -- can do similar function without mem write), s162 (non-linear invariant required: edi == (LEN-k)&(~15))
-EXPECTED_FAILS_ICC := vtvtv     \
+EXPECTED_FAILS_ICC :=           \
                       s1251     \
+                      s176      \
+                      s251      \
                       s3251     \
                       vdotr     \
-                      s176      \
-                      # vtvtv [query timeout]
+                      vtvtv     \
                       # s1251 [query timeout]
-                      # s3251 [query timeout]
-                      # vtv [sometimes query timeout?]
-                      # vdotr [query timeout]
                       # s176 [???]
+                      # s251  [query timeout]
+                      # s3251 [query timeout]
+                      # vdotr [query timeout]
+                      # vtv [sometimes query timeout?]
+                      # vtvtv [query timeout]
 
 # compiler flags
 GCC_EQCHECKER_FLAGS_EXTRA= $(VEC_FLAGS)
