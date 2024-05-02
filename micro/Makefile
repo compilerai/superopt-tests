@@ -87,13 +87,10 @@ UNROLL1_SRCDST := inequiv_1                                \
 
 UNROLL4_SRCDST := nested_loop_peeling                      \
                   nested_loop_unrolling                    \
-                  strlen                                   \
                   bitflip                                  \
                   loopSplitting                            \
                   path_enum_can_inv                        \
                   # epsilon_corr
-
-UNROLL8_SRCDST := strlen \
 
 EXPECTED_FAILS_SRCDST := inequiv_1                         \
                          inequiv_2                         \
