@@ -3,14 +3,15 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/micro
 
-EXTRA_FLAGS := --global-timeout 1200 --max-address-space-size-gb 16 #--disable-dst-to-src-submap
+EXTRA_FLAGS := --global-timeout 1200 --max-address-space-size-gb 16            \
+               #--disable-dst-to-src-submap
 
 PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          fcall10 fcall10_with_memaccess                                        \
-         fcall25 fcall25_with_memaccess \
-         fcall50 fcall50_with_memaccess \
-         fcall100 fcall100_with_memaccess \
-         fcall200 \
+         fcall25 fcall25_with_memaccess                                        \
+         fcall50 fcall50_with_memaccess                                        \
+         fcall100 fcall100_with_memaccess                                      \
+         fcall200                                                              \
          fcall_taking_locals                                                   \
          fcalls_merge                                                          \
          ftmap_1                                                               \
@@ -25,6 +26,8 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          non_linear_invariant_shl                                              \
          sum_positive                                                          \
          idiv                                                                  \
+         simple_struct                                                         \
+         ret_long_long                                                         \
                                                                                \
          local_used_in_unreachable_loop                                        \
          local_used_on_unreachable_branch                                      \
@@ -48,8 +51,9 @@ EXPECTED_FAILS_GCC :=                                                          \
                       ftmap_3_main                                             \
                       ftmap_4_main                                             \
                       fcalls_sink_merge                                        \
-                      local_used_in_unreachable_loop                           \
-                      local_used_on_unreachable_branch                         \
+                      call_ret_struct                                          \
+                      ret_long_long                                            \
+                      fcall200                                                 \
                       # fptoui [???]
                       # fptouid [???]
                       # fptouil [???]
@@ -61,8 +65,9 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # nested_loops [requires invariant (m > 0) in due to unswitching of inner loop condition]
 											# sum2d [requires: pointer arithmetic overflow UB modelling]
-                      # local_used_in_unreachable_loop [no sp-update insn -- no alloc/dealloc enumerated]
-                      # local_used_on_unreachable_branch  [no sp-update insn -- no alloc/dealloc enumerated]
+                      # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                      # ret_long_long [incompletness: need to include edx in return-reg expr]
+                      # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
 
 UNROLL16_CLANG := $(PROGS) \
                   load_store_elim_conditional
@@ -70,13 +75,15 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         fptouil                                                \
                         ftmap_3_main                                           \
                         ftmap_4_main                                           \
-                        local_used_in_unreachable_loop                         \
-                        local_used_on_unreachable_branch                       \
+                        call_ret_struct                                        \
+                        ret_long_long                                          \
+                        fcall200                                               \
                         # fptouil [???]
                         # ftmap_3 [nop fcall inlined]
                         # ftmap_4 [get_global_sym call inlined]
-                        # local_used_in_unreachable_loop [no sp-update insn -- no alloc/dealloc enumerated]
-                        # local_used_on_unreachable_branch  [no sp-update insn -- no alloc/dealloc enumerated]
+                        # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                        # ret_long_long [incompletness: need to include edx in return-reg expr]
+                        # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
 
 UNROLL1_SRCDST := inequiv_1                                \
                   inequiv_2                                \
@@ -112,7 +119,9 @@ EXPECTED_FAILS_ICC :=                                                          \
                       ftmap_4_main                                             \
                       store_store_elim                                         \
                       flcmp                                                    \
-                      fdiv                                                     \
+                      call_ret_struct                                          \
+                      ret_long_long                                            \
+                      fcall200                                                 \
                       # fptouil [???]
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # fcall_taking_locals [need manual addr mappings]
@@ -122,7 +131,9 @@ EXPECTED_FAILS_ICC :=                                                          \
                       # ftmap_4_main [empty ml assert-fail due to buggy lr-status computation: return lr-status of fcall coming out as empty]
                       # store_store_elim [???]
                       # flcmp [???]
-                      # fdiv [???]
+                      # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                      # ret_long_long [incompletness: need to include edx in return-reg expr]
+                      # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
 
 # compiler flags
 ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)

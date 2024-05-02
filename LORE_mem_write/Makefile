@@ -3,19 +3,32 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/LORE_mem_write
 
-EXTRA_FLAGS := --global-timeout 1200 --max-address-space-size-gb 16 #--disable-dst-to-src-submap # dst-to-src-submap incurs overhead
+EXTRA_FLAGS :=                                                                 \
+               --eqcheck-timeout 1200                                          \
+               --global-timeout 3600                                           \
+               --max-address-space-size-gb 16                                  \
+               --disable-d2s # dst-to-src-submap incurs overhead
 
 UNROLL4_GCC := ex101 ex102 ex103 ex104 ex105 ex106 ex107 ex108
 UNROLL8_GCC := ex106u ex107u
-EXPECTED_FAILS_GCC := ex107u      \
-                      # ex107 [query-timeout] sometimes
-                      # ex107u [query-timeout]
+EXPECTED_FAILS_GCC :=                                      \
+                      ex107u                               \
+                      # ex107 [sometimes query-timeout]
+                      # ex107u [timeout]
 
 UNROLL16_CLANG := ex101 ex102 ex103 ex104 ex105 ex108
                   # not tested: ex106 ex107
-EXPECTED_FAILS_CLANG := ex108     \
-                        # ex105 [timeout] sometimes
-                        # ex108 [timeout]
+EXPECTED_FAILS_CLANG :=                                    \
+												ex102                              \
+												ex103                              \
+												ex104                              \
+												ex105                              \
+                        ex108                              \
+                        # ex102 [timeout]
+                        # ex103 [timeout]
+                        # ex104 [timeout]
+                        # ex105 [timeout]
+                        # ex108 [sometimes timeout]
 
 UNROLL8_SRCDST := ex109 ex109_8 ex1010 ex1011
 

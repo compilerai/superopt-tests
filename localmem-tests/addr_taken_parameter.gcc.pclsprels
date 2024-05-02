@@ -1,0 +1,22 @@
+=FunctionName addr_taken_parameter_scalar
+=PC: L0%7%spvEnd
+=local-addr-guesses begin
+=local.=Lentry%2%d=
+=stack-addr:
+1 : input.dst.sp=L0%7%spvEnd=sp.L0%7%spvEnd : BV:32
+2 : 15 : BV:32
+3 : bvadd(1, 2) : BV:32
+=stack-addr end
+=local-addr-guesses end
+=done
+=FunctionName addr_taken_parameter_small_struct
+=PC: L0%7%spvEnd
+=local-addr-guesses begin
+=local.=Lentry%3%d=
+=stack-addr:
+1 : input.dst.sp=L0%7%spvEnd=sp.L0%7%spvEnd : BV:32
+2 : 15 : BV:32
+3 : bvadd(1, 2) : BV:32
+=stack-addr end
+=local-addr-guesses end
+=done
