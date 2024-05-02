@@ -10,13 +10,13 @@ DEPS := $(VPATH)/Makefile $(VPATH)/emi1.c $(VPATH)/emi9f.c $(VPATH)/emi1.s $(VPA
 
 fails: $(DEPS)
 	# safety check fail
-	echo '$(EQBIN) -isa i386 -j 10 -extra_flags="--disable-innermost-only-loop-unrolling-heuristic" -expect-fail "main" -tmpdir $(TMPDIR_PATH)/eqcheck.emi1.s $(VPATH)/emi1.c -assembly $(VPATH)/emi1.s.UNROLL3' > $@
+	echo '$(EQBIN) -isa i386 -j 10 -tmpdir $(TMPDIR_PATH)/eqcheck.emi1.s $(VPATH)/emi1.c -assembly $(VPATH)/emi1.s.UNROLL3' > $@
 	# equivalence fail
-	echo '$(EQBIN) -isa i386 -j 10 -extra_flags="--disable-innermost-only-loop-unrolling-heuristic" -expect-fail "main" -tmpdir $(TMPDIR_PATH)/eqcheck.emi9f.s $(VPATH)/emi9f.c -assembly $(VPATH)/emi9f.s.UNROLL3' >> $@
+	echo '$(EQBIN) -isa i386 -j 10 -expect-fail "main" -tmpdir $(TMPDIR_PATH)/eqcheck.emi9f.s $(VPATH)/emi9f.c -assembly $(VPATH)/emi9f.s.UNROLL3' >> $@
 
 passes: $(DEPS)
-	echo '$(EQBIN) -isa i386 -j 10 -extra_flags="--disable-innermost-only-loop-unrolling-heuristic" -expect-fail "main" -tmpdir $(TMPDIR_PATH)/eqcheck.emi1.fixed.s $(VPATH)/emi1.c -assembly $(VPATH)/emi1.fixed.s.UNROLL3' > $@
-	echo '$(EQBIN) -isa i386 -j 10 -extra_flags="--disable-innermost-only-loop-unrolling-heuristic" -expect-fail "main" -tmpdir $(TMPDIR_PATH)/eqcheck.emi9f.fixed.s $(VPATH)/emi9f.c -assembly $(VPATH)/emi9f.fixed.s.UNROLL3' >> $@
+	echo '$(EQBIN) -isa i386 -j 10 -expect-fail "main" -tmpdir $(TMPDIR_PATH)/eqcheck.emi1.fixed.s $(VPATH)/emi1.c -assembly $(VPATH)/emi1.fixed.s.UNROLL3' > $@
+	echo '$(EQBIN) -isa i386 -j 10 -expect-fail "main" -tmpdir $(TMPDIR_PATH)/eqcheck.emi9f.fixed.s $(VPATH)/emi9f.c -assembly $(VPATH)/emi9f.fixed.s.UNROLL3' >> $@
 
 cmds: fails passes
 	cat $^ > $@
