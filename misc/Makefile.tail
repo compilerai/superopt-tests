@@ -30,6 +30,8 @@ clean_outside_build:
 logs_clean:
 	find $(BUILDDIR) -name "clangv.*" | xargs rm -rf
 	find $(BUILDDIR) -name "eqcheck.*" | xargs rm -rf
+	find $(BUILDDIR) -name "eqcheck_pa.*" | xargs rm -rf
+	find $(BUILDDIR) -name "eqcheck_fa.*" | xargs rm -rf
 
 .PHONY: clean
 clean:: clean_outside_build
