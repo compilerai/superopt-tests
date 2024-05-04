@@ -6,8 +6,8 @@ VPATH = $(SRCDIR)/TSVC_prior_work
 EXTRA_FLAGS :=                                                                 \
                --global-timeout 7200                                           \
                --eqcheck-timeout 3600                                          \
-               --max-address-space-size-gb 16                                  \
-               --disable-d2s # dst-to-src-submap incurs overhead
+               --max-address-space-size-gb 16
+               #--disable-d2s # dst-to-src-submap incurs overhead
 
 UNROLL8_GCC := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s173 s2244 s243 s251 s3251 s351 s452 s453 sum1d vdotr vpv vpvpv vpvts vpvtv vtv vtvtv
                # cannot pass: s176 (non-bisimilar -- outer loop and inner loop collapse twice), s162 (non-linear invariant required: ecx == ((LEN-k)/4)*16)
