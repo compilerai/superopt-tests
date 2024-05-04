@@ -4,9 +4,12 @@ include ../config.mak                        # paths
 VPATH = $(SRCDIR)/soundness
 TMPDIR_PATH := $(BUILDDIR)/soundness
 
+include $(SRCDIR)/Makefile.template
+
 EQBIN := python3 $(SUPEROPT_PROJECT_DIR)/superopt/utils/eqbin.py
 
 DEPS := $(VPATH)/Makefile $(VPATH)/emi1.c $(VPATH)/emi9f.c $(VPATH)/emi1.s $(VPATH)/emi9f.s $(VPATH)/emi1.fixed.s $(VPATH)/emi9f.fixed.s
+
 
 fails: $(DEPS)
 	# safety check fail
