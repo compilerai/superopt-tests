@@ -15,7 +15,8 @@ int ftmap_5_main()
   g_x = 10;
   // p ~~> {}
   p = mut_g_x();
-  // p ~~> GLOBALS
-  *p += 20;
-  return *p + g_x;
+  // p ~~> GLOBALS (conservative) -- our result
+  // p ~~> g_x (precise) -- compiler's result
+  *p += 20; // compiler writes to g_x directly instead of chasing pointer
+  return *p + g_x; // reads g_x directly
 }
