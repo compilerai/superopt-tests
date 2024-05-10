@@ -1,4 +1,4 @@
-int a[20];
+int a[100];
 int foo(int a);
 
 void fcall50_with_memaccess(int i)
