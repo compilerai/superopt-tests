@@ -50,7 +50,6 @@ UNROLL2_GCC := alloca_linked_list
 EXPECTED_FAILS_GCC :=                                                          \
                       addr_taken_parameter_large_struct                        \
                       vla_single_loop_1                                        \
-                      vla_single_loop_2                                        \
                       vla_single_loop_3                                        \
                       vla_single_loop_4                                        \
                       vla_nested_loops_2                                       \
