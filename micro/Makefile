@@ -97,22 +97,13 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         # nested_loops_depth_5 [timeout]
                         # ret_long_long [incompletness: need to include edx in return-reg expr]
 
-UNROLL1_SRCDST := inequiv_1                                \
-                  inequiv_2                                \
-                  nestedLoop                               \
-                  ifswitch                                 \
+UNROLL1_SRCDST :=                                          \
                   ptr_arith_ub                             \
                   path_enum_loop_body                      \
 
 UNROLL4_SRCDST := nested_loop_peeling                      \
                   nested_loop_unrolling                    \
-                  strlen                                   \
-                  bitflip                                  \
-                  loopSplitting                            \
                   path_enum_can_inv                        \
-                  # epsilon_corr
-
-UNROLL8_SRCDST := strlen \
 
 EXPECTED_FAILS_SRCDST := inequiv_1                         \
                          inequiv_2                         \
