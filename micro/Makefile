@@ -83,7 +83,6 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         ftmap_3_main                                           \
                         ftmap_4_main                                           \
                         ftmap_5_main                                           \
-                        nested_loops_depth_3                                   \
                         nested_loops_depth_4                                   \
                         nested_loops_depth_5                                   \
                         ret_long_long                                          \
@@ -93,7 +92,7 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         # ftmap_3 [nop fcall inlined]
                         # ftmap_4_main [get_global_sym call inlined]
                         # ftmap_5_main [needs more precise points-to analysis -- see ftmap_5.c]
-                        # nested_loops_depth_3 [timeout]
+                        # nested_loops_depth_3 [sometimes timeout]
                         # nested_loops_depth_4 [timeout]
                         # nested_loops_depth_5 [timeout]
                         # ret_long_long [incompletness: need to include edx in return-reg expr]
