@@ -100,6 +100,7 @@ EXPECTED_FAILS_CLANG :=                                                        \
 UNROLL1_SRCDST :=                                          \
                   ptr_arith_ub                             \
                   path_enum_loop_body                      \
+                  diff_speed                               \
 
 UNROLL4_SRCDST := nested_loop_peeling                      \
                   nested_loop_unrolling                    \
@@ -109,6 +110,7 @@ EXPECTED_FAILS_SRCDST := inequiv_1                         \
                          inequiv_2                         \
                          ptr_arith_ub                      \
                          path_enum_can_inv                 \
+                         diff_speed                        \
                          # ptr_arith_ub [requires: pointer arithmetic overflow UB modeling]
                          # path_enum_can_inv [requires: better path enumeration or better invariant inference; see path_enum_can_inv_src.c]
 
