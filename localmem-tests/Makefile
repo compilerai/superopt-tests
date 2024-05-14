@@ -61,7 +61,6 @@ EXPECTED_FAILS_GCC :=                                                          \
                       vla_in_loop_conditional_continue                         \
                       vla_nested_loops_2                                       \
                       vla_single_loop_1                                        \
-                      vla_single_loop_2                                        \
                       vla_single_loop_3                                        \
                       vla_single_loop_4                                        \
                       vla_in_loop_1                                            \
@@ -96,7 +95,6 @@ UNROLL2_CLANG :=                                                               \
 EXPECTED_FAILS_CLANG :=                                                        \
                         f_indir_byval                                          \
                         addr_taken_parameter_large_struct                      \
-                        vla_single_loop_2                                      \
                         vla_single_loop_3                                      \
                         vla_single_loop_4                                      \
                         vla_in_loop_1                                          \
@@ -109,7 +107,6 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         alloca_malloc_switch_cyclic                            \
                         # f_indir_byval [requires different modeling of byval parameter: the _value_ of the parameter in src is equal to the _address_ in dst]
                         # addr_taken_parameter_large_struct [byval not modeled]
-                        # vla_single_loop_2 [missing non-affine invariant relating sp decrement offset value 'eax' with n]
                         # vla_single_loop_{3,4} [timeout]
                         # vla_in_loop_1 [requires invariant (i < n) on loop body PCs / suffixpath]
                         # vla_in_loop_2 [requires invariant (i < n) on loop body PCs / suffixpath]
@@ -145,8 +142,6 @@ EXPECTED_FAILS_ICC :=                                                          \
                       vla_single_loop_2                                        \
                       vla_single_loop_3                                        \
                       vla_single_loop_4                                        \
-                      vla_in_loop_1                                            \
-                      vla_in_loop_2                                            \
                       vla_in_loop_3                                            \
                       vla_in_loop_4                                            \
                       vla_conditional_use                                      \
@@ -163,10 +158,8 @@ EXPECTED_FAILS_ICC :=                                                          \
                       # vla_single_loop_{1,2} [requires non-affine invariants]
                       # vla_single_loop_{3,4} [timeout]
                       # vla_midway_decl [multiple allocs]
-                      # vla_in_loop_1 [requires non-affine invariants?]
-                      # vla_in_loop_4 [requires non-affine invariants?]
-                      # vla_in_loop_3 [requires non-affine invariants?]
-                      # vla_in_loop_4 [requires non-affine invariants?]
+                      # vla_in_loop_3 [query timeout/timeout]
+                      # vla_in_loop_4 [query timeout/timeout]
                       # rodata [requires non-affine invariants]
                       # vla_conditional_use [requires non-affine invariants]
                       # vla_in_loop_conditional_{continue,exit} [requires non-affine invariants]

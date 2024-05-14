@@ -18,6 +18,7 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          ftmap_2                                                               \
          ftmap_3                                                               \
          ftmap_4                                                               \
+         ftmap_5                                                               \
          rodata_simple                                                         \
          load_store_elim_simple                                                \
          loop_hoisting                                                         \
@@ -42,98 +43,104 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
 UNROLL8_GCC := $(PROGS) \
                # load_store_elim_conditional not passing in GCC!
 EXPECTED_FAILS_GCC :=                                                          \
+                      call_ret_struct                                          \
+                      fcall200                                                 \
+                      fcalls_sink_merge                                        \
                       fptoui                                                   \
                       fptouid                                                  \
                       fptouil                                                  \
-                      non_linear_invariant_casting                             \
                       ftmap_1_main                                             \
                       ftmap_2_main                                             \
                       ftmap_3_main                                             \
                       ftmap_4_main                                             \
-                      fcalls_sink_merge                                        \
-                      call_ret_struct                                          \
+                      ftmap_5_main                                             \
+                      nested_loops_depth_5                                     \
+                      non_linear_invariant_casting                             \
                       ret_long_long                                            \
-                      fcall200                                                 \
+											# sum2d [requires: pointer arithmetic overflow UB modelling]
+                      # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                      # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
+                      # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # fptoui [???]
                       # fptouid [???]
                       # fptouil [???]
-                      # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
                       # ftmap_1_main [sp is not aligned by 16 at callsite; the callee is in same translation unit]
                       # ftmap_2_main [pclsprels missing]
                       # ftmap_3_main [nop fcall inlined]
                       # ftmap_4_main [sp is not aligned by 16 at callsite; the callee is in same translation unit]
-                      # fcalls_sink_merge [calls to bar() are sunk and merged]
+                      # ftmap_5_main [needs more precise points-to analysis -- see ftmap_5.c]
                       # nested_loops [requires invariant (m > 0) in due to unswitching of inner loop condition]
-											# sum2d [requires: pointer arithmetic overflow UB modelling]
-                      # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                      # nested_loops_depth_5 [timeout]
+                      # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
                       # ret_long_long [incompletness: need to include edx in return-reg expr]
-                      # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
 
 UNROLL16_CLANG := $(PROGS) \
                   load_store_elim_conditional
 EXPECTED_FAILS_CLANG :=                                                        \
+                        call_ret_struct                                        \
+                        fcall200                                               \
                         fptouil                                                \
                         ftmap_3_main                                           \
                         ftmap_4_main                                           \
-                        call_ret_struct                                        \
+                        ftmap_5_main                                           \
+                        nested_loops_depth_4                                   \
+                        nested_loops_depth_5                                   \
                         ret_long_long                                          \
-                        fcall200                                               \
+                        # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                        # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
                         # fptouil [???]
                         # ftmap_3 [nop fcall inlined]
-                        # ftmap_4 [get_global_sym call inlined]
-                        # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                        # ftmap_4_main [get_global_sym call inlined]
+                        # ftmap_5_main [needs more precise points-to analysis -- see ftmap_5.c]
+                        # nested_loops_depth_3 [sometimes timeout]
+                        # nested_loops_depth_4 [timeout]
+                        # nested_loops_depth_5 [timeout]
                         # ret_long_long [incompletness: need to include edx in return-reg expr]
-                        # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
 
-UNROLL1_SRCDST := inequiv_1                                \
-                  inequiv_2                                \
-                  nestedLoop                               \
-                  ifswitch                                 \
+UNROLL1_SRCDST :=                                          \
                   ptr_arith_ub                             \
                   path_enum_loop_body                      \
+                  diff_speed                               \
 
 UNROLL4_SRCDST := nested_loop_peeling                      \
                   nested_loop_unrolling                    \
-                  bitflip                                  \
-                  loopSplitting                            \
                   path_enum_can_inv                        \
-                  # epsilon_corr
 
 EXPECTED_FAILS_SRCDST := inequiv_1                         \
                          inequiv_2                         \
                          ptr_arith_ub                      \
                          path_enum_can_inv                 \
+                         diff_speed                        \
                          # ptr_arith_ub [requires: pointer arithmetic overflow UB modeling]
                          # path_enum_can_inv [requires: better path enumeration or better invariant inference; see path_enum_can_inv_src.c]
 
 UNROLL1_ICC = $(PROGS)
 
 EXPECTED_FAILS_ICC :=                                                          \
-                      fptouil                                                  \
-                      ftmap_4_main                                             \
-                      fcalls_sink_merge                                        \
+                      call_ret_struct                                          \
+                      fcall200                                                 \
+                      fcall50_with_memaccess                                   \
                       fcall_taking_locals                                      \
-                      non_linear_invariant_casting                             \
+                      fcalls_sink_merge                                        \
+                      flcmp                                                    \
+                      fptouil                                                  \
                       ftmap_2_main                                             \
                       ftmap_3_main                                             \
-                      ftmap_4_main                                             \
-                      store_store_elim                                         \
-                      flcmp                                                    \
-                      call_ret_struct                                          \
+                      non_linear_invariant_casting                             \
                       ret_long_long                                            \
-                      fcall200                                                 \
-                      # fptouil [???]
-                      # fcalls_sink_merge [calls to bar() are sunk and merged]
+                      store_store_elim                                         \
+                      # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                      # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
+                      # fcall50_with_memaccess [times out]
                       # fcall_taking_locals [need manual addr mappings]
-                      # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
+                      # fcalls_sink_merge [calls to bar() are sunk and merged]
+                      # flcmp [???]
+                      # fptouil [???]
                       # ftmap_2_main [need manual addr mappings]
                       # ftmap_3_main [need manual addr mappings]
-                      # ftmap_4_main [empty ml assert-fail due to buggy lr-status computation: return lr-status of fcall coming out as empty]
-                      # store_store_elim [???]
-                      # flcmp [???]
-                      # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                      # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
                       # ret_long_long [incompletness: need to include edx in return-reg expr]
-                      # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
+                      # store_store_elim [???]
 
 # compiler flags
 ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)

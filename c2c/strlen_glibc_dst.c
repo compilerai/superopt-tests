@@ -19,9 +19,9 @@ size_t strlen(char * str)
 #endif
   for (;;)
   {
-    longword = *longword_ptr++;
+    longword = *longword_ptr++; // UB!
     if ((longword - lomagic) & ~longword & himagic) {
-      char *cp = (char *)(longword_ptr - 1);
+      char *cp = (char *)(longword_ptr-1);
       if (cp[0] == 0) return cp - str ;
       if (cp[1] == 0) return cp - str + 1;
       if (cp[2] == 0) return cp - str + 2;
