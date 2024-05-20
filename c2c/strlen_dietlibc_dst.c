@@ -16,7 +16,7 @@ typedef uint32_t	word_t;
 
 static word_t const	magic = (word_t)(0x0101010101010101ull);
 
-size_t strlen(const char *s)
+size_t strlen_dietlibc(const char *s)
 {
   const char *t = s;
   word_t	word;

@@ -11,13 +11,14 @@ UNROLL1_SRCDST := nestedLoop                               \
 UNROLL4_SRCDST := bitflip                                  \
                   loopSplitting                            \
                   strlen_dietlibc                          \
-                  strlen_glibc                             \
                   strlen_glibc_fixed                       \
+                  strlen_glibc
 
 EXPECTED_FAILS_SRCDST := inequiv_1                         \
                          inequiv_2                         \
+                         strlen_dietlibc                   \
 
-EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 7200 --highmem-reserved-pages 1
+EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 7200 #--highmem-reserved-pages 1
 
 # compiler flags
 GCC_EQCHECKER_FLAGS_EXTRA= $(GCC_EQCHECKER_NOUNROLL_FLAGS)

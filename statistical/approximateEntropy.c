@@ -84,5 +84,5 @@ ApproximateEntropy(int m, int n)
 	}
 	
 	fprintf(stats[TEST_APEN], "%s\t\tp_value = %f\n\n", p_value < ALPHA ? "FAILURE" : "SUCCESS", p_value); fflush(stats[TEST_APEN]);
-	fprintf(results[TEST_APEN], "%f\n", p_value); fflush(results[TEST_APEN]);
+	fprintf(results[TEST_APEN], "%f hello\n", p_value); fflush(results[TEST_APEN]);
 }

@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <limits.h>
 
-size_t strlen(char * str)
+size_t strlen_glibc_fixed(char * str)
 {
   char *ptr ;
   unsigned long *longword_ptr;
