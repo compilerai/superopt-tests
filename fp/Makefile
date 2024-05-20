@@ -4,7 +4,7 @@ include ../config.mak                        # paths
 VPATH = $(SRCDIR)/fp
 
 PROGS := fp1 fp1_d fp1_l fp2 fp2_d fp3 fp4 fpconst fpconst_d fpedge fpedge_d soundness \
-         cast
+         cast fcall_fp
 
 #PROGS_EQCHECKER_COMPILER := 
 #PROGS_EQCHECKER_SRCDST :=
