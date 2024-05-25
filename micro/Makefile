@@ -58,7 +58,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       non_linear_invariant_casting                             \
                       ret_long_long                                            \
 											# sum2d [requires: pointer arithmetic overflow UB modelling]
-                      # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                      # call_ret_struct [fails as fcall happens while esp is not 16 aligned]
                       # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # fptoui [???]
@@ -77,7 +77,6 @@ EXPECTED_FAILS_GCC :=                                                          \
 UNROLL16_CLANG := $(PROGS) \
                   load_store_elim_conditional
 EXPECTED_FAILS_CLANG :=                                                        \
-                        call_ret_struct                                        \
                         fcall200                                               \
                         fptouil                                                \
                         ftmap_3_main                                           \
@@ -86,7 +85,6 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         nested_loops_depth_4                                   \
                         nested_loops_depth_5                                   \
                         ret_long_long                                          \
-                        # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
                         # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
                         # fptouil [???]
                         # ftmap_3 [nop fcall inlined]
@@ -117,7 +115,6 @@ EXPECTED_FAILS_SRCDST := inequiv_1                         \
 UNROLL1_ICC = $(PROGS)
 
 EXPECTED_FAILS_ICC :=                                                          \
-                      call_ret_struct                                          \
                       fcall200                                                 \
                       fcall50_with_memaccess                                   \
                       fcall_taking_locals                                      \
@@ -129,7 +126,6 @@ EXPECTED_FAILS_ICC :=                                                          \
                       non_linear_invariant_casting                             \
                       ret_long_long                                            \
                       store_store_elim                                         \
-                      # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
                       # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
                       # fcall50_with_memaccess [times out]
                       # fcall_taking_locals [need manual addr mappings]
