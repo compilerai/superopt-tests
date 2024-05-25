@@ -186,7 +186,7 @@ cmds_pa_run: eqtest_pa_i386_O3
 cmds_fa_run: eqtest_fa_i386_O3
 	cat $^ > $@
 
-cmds: cmds_normal_run cmds_pa_run cmds_fa_run
+cmds: cmds_normal_run #cmds_pa_run cmds_fa_run
 	cat $^ > $@
 
 .PHONY: collect_csv

@@ -2,12 +2,12 @@
 
 typedef long double ldouble;
 
-ldouble same(ldouble a)
+ldouble same_ld(ldouble a)
 {
   return a;
 }
 
-ldouble max(ldouble a, ldouble b)
+ldouble max_ld(ldouble a, ldouble b)
 {
   if(a >= b)
     return a;
@@ -15,12 +15,12 @@ ldouble max(ldouble a, ldouble b)
     return b;
 }
 
-ldouble sign(ldouble a)
+ldouble sign_ld(ldouble a)
 {
   return -a;
 }
 
-ldouble abs1(ldouble a)
+ldouble abs1_ld(ldouble a)
 {
   if(a < 0)
     a = -a;
@@ -28,7 +28,7 @@ ldouble abs1(ldouble a)
   return a;
 }
 
-ldouble abs_max(ldouble a, ldouble b)
+ldouble abs_max_ld(ldouble a, ldouble b)
 {
   if(a < 0)
     a = -a;
@@ -42,17 +42,17 @@ ldouble abs_max(ldouble a, ldouble b)
     return b;
 }
 
-ldouble add1(ldouble a)
+ldouble add1_ld(ldouble a)
 {
   return a + 1;
 }
 
-ldouble sub1(ldouble a)
+ldouble sub1_ld(ldouble a)
 {
   return a - 1;
 }
 
-ldouble sqradd(ldouble a, ldouble b)
+ldouble sqradd_ld(ldouble a, ldouble b)
 {
   ldouble s1 = a*a;
   ldouble s2 = b*b;

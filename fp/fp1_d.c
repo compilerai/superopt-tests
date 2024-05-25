@@ -1,6 +1,6 @@
 /* simple functions using floating-types without loops and calls */
 
-double max(double a, double b)
+double max_d(double a, double b)
 {
   if(a >= b)
     return a;
@@ -8,12 +8,12 @@ double max(double a, double b)
     return b;
 }
 
-double sign(double a)
+double sign_d(double a)
 {
   return -a;
 }
 
-double abs1(double a)
+double abs1_d(double a)
 {
   if(a < 0)
     a = -a;
@@ -21,7 +21,7 @@ double abs1(double a)
   return a;
 }
 
-double abs_max(double a, double b)
+double abs_max_d(double a, double b)
 {
   if(a < 0)
     a = -a;
@@ -35,17 +35,17 @@ double abs_max(double a, double b)
     return b;
 }
 
-double add1(double a)
+double add1_d(double a)
 {
   return a + 1;
 }
 
-double sub1(double a)
+double sub1_d(double a)
 {
   return a - 1;
 }
 
-double sqradd(double a, double b)
+double sqradd_d(double a, double b)
 {
   double s1 = a*a;
   double s2 = b*b;
