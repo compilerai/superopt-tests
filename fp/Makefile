@@ -21,5 +21,5 @@ ICC_EQCHECKER_FLAGS_EXTRA= $(VEC_FLAGS)
 
 include $(SRCDIR)/Makefile.template
 
-cmds: eqtest_i386_O3
+cmds: eqtest_i386_O3 eqtest_i386_O0
 	cat $^ > $@
