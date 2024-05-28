@@ -1,9 +1,9 @@
-int quadruple_lt(double a[], double b[])
+int quadruple_lt_d(double a[], double b[])
 {
   return (a[0] < b[0]) && (a[1] < b[1]) && (a[2] < b[2]) && (a[3] < b[3]);
 }
 
-double diff1(double a, double b)
+double diff1_d(double a, double b)
 {
   double d;
 
@@ -15,7 +15,7 @@ double diff1(double a, double b)
   return d;
 }
 
-double diff1a(double a[], double b[])
+double diff1a_d(double a[], double b[])
 {
   double d1;
 
@@ -27,7 +27,7 @@ double diff1a(double a[], double b[])
   return d1;
 }
 
-double diff2(double a1, double a2, double b1, double b2)
+double diff2_d(double a1, double a2, double b1, double b2)
 {
   double d1, d2;
 
@@ -43,7 +43,7 @@ double diff2(double a1, double a2, double b1, double b2)
   return d1 + d2;
 }
 
-double diff2a(double a[], double b[])
+double diff2a_d(double a[], double b[])
 {
   double d1, d2;
 
@@ -69,7 +69,7 @@ double diff2a(double a[], double b[])
   }                    \
 }
 
-void sort2(double a[])
+void sort2_d(double a[])
 {
   double t;
 
