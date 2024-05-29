@@ -89,7 +89,10 @@ foreach my $prog (keys %unroll) {
   my $prog_extraflagsstr = $extraflagsstr;
 
   if ($type eq "eqcheck") {
-    if (-f "$VPATH/$prog.$compiler.pclsprels") {
+    if (-f "$VPATH/$prog.$compiler.$opt_level.pclsprels") {
+      $prog_extraflagsstr = $prog_extraflagsstr . " --pc-local-addr-guesses $VPATH/$prog.$compiler.$opt_level.pclsprels";
+    }
+    elsif (-f "$VPATH/$prog.$compiler.pclsprels") {
       $prog_extraflagsstr = $prog_extraflagsstr . " --pc-local-addr-guesses $VPATH/$prog.$compiler.pclsprels";
     }
     if (-f "$VPATH/$prog.$compiler.correl_hints") {
