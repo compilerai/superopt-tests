@@ -22,7 +22,7 @@ my $benchmark = basename($VPATH);
 my $PWD = getcwd;
 my $num_processes_per_file = 10;
   
-my ($dst_arch, $compiler, $extraflagsarg, $expectedfailsarg, $ccoptsarg);
+my ($dst_arch, $compiler, $extraflagsarg, $expectedfailsarg, $ccoptsarg, $record_filename_arg);
 my ($opt_level);
 my ($tmpdir_prefix);
 my $cur_index;
@@ -34,17 +34,19 @@ if ($type eq "eqcheck") {
   $extraflagsarg = $ARGV[7];
   $expectedfailsarg = $ARGV[8];
   $ccoptsarg = $ARGV[9];
-  $tmpdir_prefix = $ARGV[10];
+  $record_filename_arg = $ARGV[10];
+  $tmpdir_prefix = $ARGV[11];
   #print "expectedfailsarg = $expectedfailsarg\n";
-  $cur_index = 11;
+  $cur_index = 12;
 } elsif ($type eq "clangv") {
   $dst_arch = "i386";
   $opt_level = $ARGV[4];
   $extraflagsarg = $ARGV[5];
   $expectedfailsarg = $ARGV[6];
   $ccoptsarg = $ARGV[7];
-  $tmpdir_prefix = $ARGV[8];
-  $cur_index = 9;
+  $record_filename_arg = $ARGV[8];
+  $tmpdir_prefix = $ARGV[9];
+  $cur_index = 10;
 } else {
   die "incorrect type";
 }
@@ -55,6 +57,7 @@ my $extraflagsstr = join('',@extraflags);
 
 my $expectedfails = get_string_arg($expectedfailsarg);
 my $ccopts = get_string_arg($ccoptsarg);
+my $record_filename = get_string_arg($record_filename_arg);
 
 my %unroll;
 
@@ -103,7 +106,7 @@ foreach my $prog (keys %unroll) {
       my $tmpdir = "$PWD/$tmpdir_prefix.$prog.$compiler";
       my $src_pathname = identify_filetype_extension("$VPATH/$prog\_src");
       my $dst_pathname = identify_filetype_extension("$VPATH/$prog\_dst");
-      print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='$compiler' -expect-fails='$expectedfails' -cc-opts '$ccopts' -tmpdir $tmpdir $src_pathname -assembly $dst_pathname.UNROLL$u\n";
+      print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='$compiler' -expect-fails='$expectedfails' -cc-opts '$ccopts' -record='$record_filename' -tmpdir $tmpdir $src_pathname -assembly $dst_pathname.UNROLL$u\n";
     } else {
       my $compiler_suffix = ".eqchecker.$opt_level.$dst_arch.s";
       my $tmpdir = "$PWD/$tmpdir_prefix.$prog.$compiler$compiler_suffix";
@@ -113,14 +116,14 @@ foreach my $prog (keys %unroll) {
       }
       my $src_pathname = identify_filetype_extension("$VPATH/$prog");
       if ($compiler ne "ack" || -f "$PWD/$prog.$compiler$compiler_suffix") { # skip missing binaries for 'ack' which does not support VLA/alloca()
-        print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='$compiler' -opt_level $opt_level -expect-fails='$expectedfails' -cc-opts '$ccopts' -tmpdir $tmpdir $src_pathname -assembly $PWD/$prog.$compiler$compiler_suffix.UNROLL$u $compile_log_str\n";
+        print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='$compiler' -opt_level $opt_level -expect-fails='$expectedfails' -cc-opts '$ccopts' -record '$record_filename' -tmpdir $tmpdir $src_pathname -assembly $PWD/$prog.$compiler$compiler_suffix.UNROLL$u $compile_log_str\n";
       } else {
       }
     }
   } elsif ($type eq "clangv") {
     my $src_pathname = identify_filetype_extension("$VPATH/$prog");
     my $tmpdir = "$PWD/clangv.$prog.$opt_level";
-    print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='clangv' -expect-fails='$expectedfails' -cc-opts '$ccopts' -tmpdir $tmpdir -unroll $u -opt_level $opt_level $src_pathname\n";
+    print OUT "python3 $SUPEROPT_PROJECT_DIR/superopt/utils/eqbin.py -isa $dst_arch -j $num_processes_per_file -extra_flags='$prog_extraflagsstr' -compiler='clangv' -expect-fails='$expectedfails' -cc-opts '$ccopts' -record '$record_filename' -tmpdir $tmpdir -unroll $u -opt_level $opt_level $src_pathname\n";
   } else {
     die "not-reached";
   }
@@ -156,7 +159,7 @@ sub get_string_arg
   shift(@expectedfails_tmp);
   my $expectedfails = "";
   if (scalar @expectedfails_tmp gt 0) {
-    if (scalar @expectedfails_tmp gt 1) { die "expectedfails/ccopts formatted illegally"; }
+    if (scalar @expectedfails_tmp gt 1) { die "expectedfails/ccopts/record-filename formatted illegally"; }
     $expectedfails = $expectedfails_tmp[0];
   }
   return $expectedfails;
