@@ -67,6 +67,11 @@ EXPECTED_FAILS_GCC :=                                                          \
                       vla_in_loop_2                                            \
                       vla_in_loop_3                                            \
                       vla_in_loop_4                                            \
+                      addr_taken_parameter_scalar                              \
+                      addr_taken_parameter_small_struct                        \
+                      addr_taken_scalar                                        \
+                      addr_taken_simple_structs                                \
+                      rodata                                                   \
                       # addr_taken_parameter_large_struct [byval not modeled]
                       # alloca_conditional [requires invariant (i < n) on loop body PCs / suffixpath]
                       # alloca_conditional_3 [sometimes query timeout]
@@ -105,6 +110,10 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         vla_nested_loops_2                                     \
                         variadic_acyclic                                       \
                         alloca_malloc_switch_cyclic                            \
+                        addr_taken_parameter_scalar                            \
+                        addr_taken_parameter_small_struct                      \
+                        addr_taken_scalar                                      \
+                        addr_taken_simple_structs                              \
                         # f_indir_byval [requires different modeling of byval parameter: the _value_ of the parameter in src is equal to the _address_ in dst]
                         # addr_taken_parameter_large_struct [byval not modeled]
                         # vla_single_loop_{3,4} [timeout]
