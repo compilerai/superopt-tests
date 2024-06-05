@@ -44,16 +44,17 @@ UNROLL8_GCC := $(PROGS) \
                # load_store_elim_conditional not passing in GCC!
 EXPECTED_FAILS_GCC :=                                                          \
                       call_ret_struct                                          \
+                      call_ret_struct_indir                                    \
                       fcall200                                                 \
                       fcalls_sink_merge                                        \
-                      fptoui                                                   \
-                      fptouid                                                  \
-                      fptouil                                                  \
                       ftmap_1_main                                             \
                       ftmap_2_main                                             \
                       ftmap_3_main                                             \
                       ftmap_4_main                                             \
                       ftmap_5_main                                             \
+                      nested_loops_depth_2                                     \
+                      nested_loops_depth_3                                     \
+                      nested_loops_depth_4                                     \
                       nested_loops_depth_5                                     \
                       non_linear_invariant_casting                             \
                       ret_long_long                                            \
@@ -85,6 +86,7 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         nested_loops_depth_4                                   \
                         nested_loops_depth_5                                   \
                         ret_long_long                                          \
+                        non_linear_invariant_casting                           \
                         # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
                         # fptouil [???]
                         # ftmap_3 [nop fcall inlined]

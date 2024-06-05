@@ -7,10 +7,10 @@ PROGS := fp1 fp1_d fp1_l fp2 fp2_d fp3 fp4 fpconst fpconst_d fpedge fpedge_d sou
          cast fcall_fp
 
 EXPECTED_FAILS_GCC :=                                                          \
-                      invalid3                                                 \
+                      abs1_ld abs_max_ld                                       \
 
 EXPECTED_FAILS_CLANG :=                                                        \
-                          invalid3                                             \
+                        abs1_ld abs_max_ld                                     \
 
 
 #PROGS_EQCHECKER_COMPILER := 

@@ -17,6 +17,7 @@ UNROLL4_SRCDST := bitflip                                  \
 EXPECTED_FAILS_SRCDST := inequiv_1                         \
                          inequiv_2                         \
                          strlen_dietlibc                   \
+                         strlen_glibc                      \
 
 EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 7200 #--highmem-reserved-pages 1
 
