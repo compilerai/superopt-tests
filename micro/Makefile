@@ -3,7 +3,10 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/micro
 
-EXTRA_FLAGS := --global-timeout 1200 --max-address-space-size-gb 16 --disable-dst-to-src-submap
+EXTRA_FLAGS := --global-timeout 1200                                           \
+               --max-address-space-size-gb 16                                  \
+               --disable-dst-to-src-submap                                     \
+               --disable-removal-of-stack-from-stack-nonstack-ml-in-dst        \
 
 PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          fcall10 fcall10_with_memaccess                                        \
@@ -56,8 +59,10 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # nested_loops [requires invariant (m > 0) in due to unswitching of inner loop condition]
 											# sum2d [requires: pointer arithmetic overflow UB modelling]
 
-UNROLL2_CLANG := $(PROGS) \
-                 load_store_elim_conditional
+UNROLL2_CLANG := $(PROGS)                                                      \
+                 unreachable_alloc_in_src_pathset                              \
+                 load_store_elim_conditional                                   \
+
 EXPECTED_FAILS_CLANG :=                                                        \
                         fptouil                                                \
                         ftmap_3_main                                           \
