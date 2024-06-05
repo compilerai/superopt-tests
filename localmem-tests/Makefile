@@ -17,6 +17,8 @@ UNROLL1_PROGS :=                                                               \
                  addr_taken_array                                              \
                  addr_taken_array_in_loop                                      \
                                                                                \
+                 dead_and_alive_alloc                                          \
+                                                                               \
                  variadic_acyclic                                              \
                  variadic_with_loop                                            \
                                                                                \
@@ -49,6 +51,8 @@ UNROLL2_GCC := alloca_linked_list
 
 EXPECTED_FAILS_GCC :=                                                          \
                       addr_taken_parameter_large_struct                        \
+                      alive_alloca                                             \
+                      dead_alloca                                              \
                       vla_single_loop_1                                        \
                       vla_single_loop_3                                        \
                       vla_single_loop_4                                        \
@@ -61,6 +65,8 @@ EXPECTED_FAILS_GCC :=                                                          \
                       alloca_conditional_3                                     \
                       vla_conditional_use                                      \
                       # addr_taken_parameter_large_struct [byval not modeled]
+                      # alive_alloca [correlation of alloc fails -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
+                      # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
                       # vla_single_loop_1 [dealloc path correlation failing: sinking (code merging) of sp restore (dealloc) to common path instead of alloc dominating path, no coresponding path in src]
                       # vla_single_loop_3 [timeout]
                       # vla_single_loop_4 [timeout]
@@ -82,6 +88,8 @@ UNROLL2_CLANG :=                                                               \
 EXPECTED_FAILS_CLANG :=                                                        \
                         f_indir_byval                                          \
                         addr_taken_parameter_large_struct                      \
+                        alive_alloca                                           \
+                        dead_alloca                                            \
                         vla_single_loop_3                                      \
                         vla_single_loop_4                                      \
                         vla_2d                                                 \
@@ -90,6 +98,8 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         alloca_malloc_switch_cyclic                            \
                         # f_indir_byval [requires different modeling of byval parameter: the _value_ of the parameter in src is equal to the _address_ in dst]
                         # addr_taken_parameter_large_struct [byval not modeled]
+                        # alive_alloca [correlation of alloc fails failure -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
+                        # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
                         # vla_single_loop_{3,4} [timeout]
                         # vla_2d [non-affine invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
                         # vla_nested_loops_2 [timeout]
@@ -112,6 +122,8 @@ UNROLL2_ICC = alloca_linked_list
 
 EXPECTED_FAILS_ICC :=                                                          \
                       addr_taken_parameter_large_struct                        \
+                      alive_alloca                                             \
+                      dead_alloca                                              \
                       vla_simple                                               \
                       vla_simple_nested_1                                      \
                       vla_simple_nested_2                                      \
@@ -132,6 +144,8 @@ EXPECTED_FAILS_ICC :=                                                          \
                       alloca_conditional_simple                                \
                       alloca_malloc_switch_cyclic                              \
                       # addr_taken_parameter_large_struct [byval not modeled]
+                      # alive_alloca [correlation of alloc fails -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
+                      # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
                       # vla_simple{,_nested_1,_nested_2} [requires non-affine invariants]
                       # fib [requires non-affine invariants]
                       # vla_single_loop_{1,2} [requires non-affine invariants]
