@@ -16,7 +16,16 @@ SRCS:=  \
     R_7_4.c  \
     R_8_10.c \
     R_8_12.c \
-    R_8_14.c
+    R_8_14.c \
+    D_4_10.c \
+    R_13_5.c \
+    R_16_1.c \
+    R_17_2.c \
+    R_17_6.c \
+    R_21_4.c \
+    R_21_5.c \
+    R_5_3.c  \
+    R_9_3.c
 
 BINS:=$(SRCS:.c=.o)
 EXECUTABLE=output_executable
