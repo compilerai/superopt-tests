@@ -9,6 +9,6 @@ pointer to object and a non-integer arithmetic type
 int main(){
     int x = 2;
     int* p = &x;
-    double r = (double) p;
+    float b = (float) p;
     return 0;
 }
