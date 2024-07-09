@@ -36,6 +36,7 @@ SRCS:=  \
     R_17_1.c \
     R_20_6.c  \
     R_18_7.c \
+    R_14_3.c \
 
 BINS:=$(SRCS:.c=.o)
 EXECUTABLE=output_executable
