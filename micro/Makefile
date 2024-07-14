@@ -40,7 +40,7 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          #ddec arg_passing fpadd  fcall100 fcall100_with_memaccess             \
          #fpext : TOO SLOW                                                     \
 
-UNROLL8_GCC := $(PROGS) \
+UNROLL2_GCC := $(PROGS) \
                # load_store_elim_conditional not passing in GCC!
 EXPECTED_FAILS_GCC :=                                                          \
                       call_ret_struct                                          \
@@ -74,8 +74,8 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
                       # ret_long_long [incompletness: need to include edx in return-reg expr]
 
-UNROLL16_CLANG := $(PROGS) \
-                  load_store_elim_conditional
+UNROLL2_CLANG := $(PROGS) \
+                 load_store_elim_conditional
 EXPECTED_FAILS_CLANG :=                                                        \
                         call_ret_struct                                        \
                         fcall200                                               \
@@ -143,6 +143,7 @@ EXPECTED_FAILS_ICC :=                                                          \
                       # store_store_elim [???]
 
 # compiler flags
+CLANG_EQCHECKER_FLAGS_EXTRA= $(CLANG_EQCHECKER_NOUNROLL_FLAGS)
 ICC_EQCHECKER_FLAGS_EXTRA= $(ICC_EQCHECKER_NOUNROLL_FLAGS)
 
 include $(SRCDIR)/Makefile.template
