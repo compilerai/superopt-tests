@@ -27,6 +27,7 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
                                                                                \
          local_used_in_unreachable_loop                                        \
          local_used_on_unreachable_branch                                      \
+         dead_and_alive_alloc                                                  \
          # nested_loops                                                        \
          # sum1d                                                               \
          # sum2d                                                               \
@@ -38,6 +39,8 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
 UNROLL2_GCC := $(PROGS) \
                # load_store_elim_conditional not passing in GCC!
 EXPECTED_FAILS_GCC :=                                                          \
+                      alive_alloca                                             \
+                      dead_alloca                                              \
                       fptoui                                                   \
                       fptouid                                                  \
                       fptouil                                                  \
@@ -47,6 +50,8 @@ EXPECTED_FAILS_GCC :=                                                          \
                       ftmap_3_main                                             \
                       ftmap_4_main                                             \
                       fcalls_sink_merge                                        \
+                      # alive_alloca [correlation of alloc fails failure -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
+                      # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
                       # fptoui [???]
                       # fptouid [???]
                       # fptouil [???]
@@ -64,9 +69,13 @@ UNROLL2_CLANG := $(PROGS)                                                      \
                  load_store_elim_conditional                                   \
 
 EXPECTED_FAILS_CLANG :=                                                        \
+                        alive_alloca                                           \
+                        dead_alloca                                            \
                         fptouil                                                \
                         ftmap_3_main                                           \
                         ftmap_4_main                                           \
+                        # alive_alloca [correlation of alloc fails -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
+                        # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
                         # fptouil [???]
                         # ftmap_3 [nop fcall inlined]
                         # ftmap_4 [get_global_sym call inlined]
@@ -98,6 +107,8 @@ EXPECTED_FAILS_SRCDST := inequiv_1                         \
 UNROLL1_ICC = $(PROGS)
 
 EXPECTED_FAILS_ICC :=                                                          \
+                      alive_alloca                                             \
+                      dead_alloca                                              \
                       fptouil                                                  \
                       ftmap_4_main                                             \
                       fcalls_sink_merge                                        \
@@ -109,6 +120,8 @@ EXPECTED_FAILS_ICC :=                                                          \
                       store_store_elim                                         \
                       flcmp                                                    \
                       fdiv                                                     \
+                      # alive_alloca [correlation of alloc fails -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
+                      # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
                       # fptouil [???]
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # fcall_taking_locals [need manual addr mappings]
