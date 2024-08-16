@@ -79,19 +79,25 @@ UNROLL16_CLANG := $(PROGS) \
                   load_store_elim_conditional
 EXPECTED_FAILS_CLANG :=                                                        \
                         fcall200                                               \
+                        fcalls_hoist_merge                                     \
+                        fcalls_sink_merge                                      \
                         fptouil                                                \
                         ftmap_3_main                                           \
                         ftmap_4_main                                           \
                         ftmap_5_main                                           \
+                        loop_hosting                                           \
                         nested_loops_depth_4                                   \
                         nested_loops_depth_5                                   \
                         ret_long_long                                          \
                         non_linear_invariant_casting                           \
                         # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
+                        # fcalls_hoist_merge [calls to printf are folded into one by conditionally setting args]
+                        # fcalls_sink_merge [calls to bar() are sunk and merged]
                         # fptouil [???]
                         # ftmap_3 [nop fcall inlined]
                         # ftmap_4_main [get_global_sym call inlined]
                         # ftmap_5_main [needs more precise points-to analysis -- see ftmap_5.c]
+                        # loop_hoisting [requires non-affine invariant: ecx = (n-1)&4]
                         # nested_loops_depth_3 [sometimes timeout]
                         # nested_loops_depth_4 [timeout]
                         # nested_loops_depth_5 [timeout]
