@@ -1,9 +1,9 @@
 =FunctionName addr_taken_scalar
-=PC: L0%6%spvEnd
+=PC: L0%5%spvEnd
 =local-addr-guesses begin
 =local.=Lentry%1%d=
 =stack-addr:
-1 : input.dst.sp=L0%6%spvEnd=sp.L0%6%spvEnd : BV:32
+1 : input.dst.sp=L0%5%spvEnd=sp.L0%5%spvEnd : BV:32
 2 : 24 : BV:32
 3 : bvadd(1, 2) : BV:32
 =stack-addr end
@@ -14,13 +14,13 @@
 =local-addr-guesses begin
 =local.=Lentry%1%d=
 =stack-addr:
-1 : input.dst.sp=L0%6%spvEnd=sp.L0%6%spvEnd : BV:32
+1 : input.dst.sp=L0%5%spvEnd=sp.L0%5%spvEnd : BV:32
 2 : 8 : BV:32
 3 : bvadd(1, 2) : BV:32
 =stack-addr end
 =local.=Lentry%2%d=
 =stack-addr:
-1 : input.dst.sp=L0%6%spvEnd=sp.L0%6%spvEnd : BV:32
+1 : input.dst.sp=L0%5%spvEnd=sp.L0%5%spvEnd : BV:32
 2 : 16 : BV:32
 3 : bvadd(1, 2) : BV:32
 =stack-addr end
