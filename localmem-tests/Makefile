@@ -50,28 +50,28 @@ UNROLL2_GCC := alloca_linked_list
 
 EXPECTED_FAILS_GCC :=                                                          \
                       addr_taken_parameter_large_struct                        \
+                      addr_taken_parameter_scalar                              \
+                      addr_taken_parameter_small_struct                        \
+                      addr_taken_scalar                                        \
+                      addr_taken_simple_structs                                \
                       alloca_conditional                                       \
                       alloca_conditional_3                                     \
                       alloca_malloc_switch_cyclic                              \
                       minprintf                                                \
                       minscanf                                                 \
+                      rodata                                                   \
                       variadic_with_copy                                       \
                       vla_2d                                                   \
                       vla_conditional_use                                      \
+                      vla_in_loop_1                                            \
+                      vla_in_loop_2                                            \
+                      vla_in_loop_3                                            \
+                      vla_in_loop_4                                            \
                       vla_in_loop_conditional_continue                         \
                       vla_nested_loops_2                                       \
                       vla_single_loop_1                                        \
                       vla_single_loop_3                                        \
                       vla_single_loop_4                                        \
-                      vla_in_loop_1                                            \
-                      vla_in_loop_2                                            \
-                      vla_in_loop_3                                            \
-                      vla_in_loop_4                                            \
-                      addr_taken_parameter_scalar                              \
-                      addr_taken_parameter_small_struct                        \
-                      addr_taken_scalar                                        \
-                      addr_taken_simple_structs                                \
-                      rodata                                                   \
                       # addr_taken_parameter_large_struct [byval not modeled]
                       # alloca_conditional [requires invariant (i < n) on loop body PCs / suffixpath]
                       # alloca_conditional_3 [sometimes query timeout]

@@ -44,7 +44,10 @@ EXPECTED_FAILS_CLANG :=           \
                         # s1119 [timeout]
                         # s124 [timeout]
                         # s125 [query timeout]
-                        # s1421 [needs select(symbol.2) in bv-eqclass; earlier the required relation was coming from sprels but we started pruning memory operations away at some point]
+                        # s1421 [needs select(symbol.2) in bv-eqclass at loop head; this select is anticipated but the correlation times out before we reach loop body node
+                        #        (with higher timeout the correlation indeed passes in the non-relocatable mls setting, but won't work in the relocatable case because the
+                        #         required relation is "select(symbol.2) == symbol.1 + OFFSET" which necessitaties presence of symbol.1 in interesting exprs (but we seemingly don't add them))
+                        #        this was working earlier because the required relation was coming from sprels/avail-exprs but we started pruning slot from avail-exprs at some point]
                         # s171 [???]
                         # s174 [???]
                         # s252 [sometimes query-timeout]
