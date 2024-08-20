@@ -24,7 +24,7 @@ $(call add_suite,vectorization, TSVC_prior_work TSVC_new LORE_mem_write LORE_no_
 $(call add_suite,soundness,     soundness)
 $(call add_suite,fp,            fp)
 $(call add_suite,c2c,           c2c)
-$(call add_suite,misra-c-rules, misra-c-rules)
+$(call add_suite,misra-c-rules, misra-c-rules misra-c-rules/Checkers)
 # $(call add_suite,<NEW_SUITE>,     <DIR>)
 
 # add new dirs' targets here

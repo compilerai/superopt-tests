@@ -39,20 +39,12 @@ SRCS:=  \
     R_14_3.c \
 
 BINS:=$(SRCS:.c=.o)
-EXECUTABLE=output_executable
-
-all: $(EXECUTABLE)
-
-$(EXECUTABLE): $(BINS)
+all: $(BINS)
 	$(CLANG) $(BINS) -o $(EXECUTABLE)
 
 %.o: %.c
 	$(CLANG) -c $< -o $@
 
 clean:
-	rm -f $(BINS) $(EXECUTABLE)
+	rm -f $(BINS)
 
-.PHONY: clean all
-
-run: $(EXECUTABLE)
-	./$(EXECUTABLE)
