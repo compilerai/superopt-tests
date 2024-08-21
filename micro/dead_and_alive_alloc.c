@@ -1,5 +1,7 @@
 #include <alloca.h>
 
+int MYmyprintf(const char*, ...);
+
 // both alive_local() and dead_local() pass because the alloca is hoisted to the prologue in src
 int alive_local(int n)
 {
