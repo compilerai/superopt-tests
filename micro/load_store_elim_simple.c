@@ -14,7 +14,7 @@
  * The compiler optimize away the store or replace the load with a scalar move:
  *  R: y <- x        <|>   // "store p', x" removed
  * Note that p' need not be syntactically equivalent to p (as is the case in below benchmarks)
- * The optimiziation will trigger if a CSE or GVN pass is able to establish that p == p'.
+ * The optimization will trigger if a CSE or GVN pass is able to establish that p == p'.
  */
 
 int load_load_elim(int *P, int C, int D) {
@@ -60,8 +60,10 @@ int store_load_elim(int *P, int C, int D) {
   return *P + acc;
 }
 
+// in store_store_elim, clang/LLVM sinks the store to the last occurrence as (*P) is not used anywhere
+// because we require equality of memories at each anchor node, eqcheck fails in this case
 int store_store_elim(int *P, int C, int D) {
-  *P = C+D;
+  *P = C+D; // eliminated by clang/LLVM
   int acc = 0;
 #pragma clang loop vectorize(disable) unroll(disable)
   for (int i = 0; i < C+D; ++i) {
@@ -71,6 +73,6 @@ int store_store_elim(int *P, int C, int D) {
   for (int i = 0; i < C-D; ++i) {
     acc += (i^3);
   }
-  *P = C+D;
+  *P = C+D; // only this one is preserved
   return acc;
 }

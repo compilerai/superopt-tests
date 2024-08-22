@@ -4,6 +4,8 @@ struct ptr_pair
   int* p2;
 };
 
+void foo(struct ptr_pair*);
+
 int x;
 int y;
 
@@ -32,4 +34,6 @@ void ftmap_2_main()
 
   w_deref_arg(&pp);       // R:        W: pp
   // M[&pp] ~~> { &y, &x-heap, &l }
+
+  foo(&pp); // for escaping pp so that effects in previous statements can be observed
 }
