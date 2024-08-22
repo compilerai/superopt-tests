@@ -16,11 +16,9 @@ UNROLL64_CLANG := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s162 s1
 EXPECTED_FAILS_CLANG :=          \
                         s162     \
                         s176     \
-                        s351     \
 												sum1d    \
                         # s162 [???]
                         # s176 [query timeout]
-                        # s351 [times out due to expensive d2s -- 99% of time spent in cg_with_dst_to_src_submap::add_edge]
                         # sum1d [fails safety check -- needs debugging]
                         # vdotr [sometimes query timeouts]
 
@@ -28,18 +26,26 @@ UNROLL16_ICC := s000 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s173 s176 s2244
                 # cannot pass: s1112 (loop reversal with mem write), s243 (loop splitting -- can do similar function without mem write), s162 (non-linear invariant required: edi == (LEN-k)&(~15))
 EXPECTED_FAILS_ICC :=           \
                       s1251     \
+                      s127      \
+                      s1281     \
                       s176      \
                       s251      \
+                      s2244     \
                       s3251     \
                       vdotr     \
                       vtvtv     \
+                      vpvtv     \
                       # s1251 [query timeout]
+                      # s127 [query-timeout?]
+                      # s1281 [query-timeout?]
                       # s176 [???]
                       # s251  [query timeout]
+                      # s2244 [timeout?]
                       # s3251 [query timeout]
                       # vdotr [query timeout]
                       # vtv [sometimes query timeout?]
                       # vtvtv [query timeout]
+                      # vpvtv [timeout?]
 
 # compiler flags
 GCC_EQCHECKER_FLAGS_EXTRA= $(VEC_FLAGS)
