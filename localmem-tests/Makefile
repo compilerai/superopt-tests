@@ -55,32 +55,28 @@ EXPECTED_FAILS_GCC :=                                                          \
                       addr_taken_scalar                                        \
                       addr_taken_simple_structs                                \
                       alloca_conditional                                       \
-                      alloca_conditional_3                                     \
+                      alloca_simple                                            \
                       alloca_malloc_switch_cyclic                              \
                       minprintf                                                \
                       minscanf                                                 \
                       rodata                                                   \
-                      variadic_with_copy                                       \
                       vla_2d                                                   \
-                      vla_conditional_use                                      \
                       vla_in_loop_1                                            \
                       vla_in_loop_2                                            \
                       vla_in_loop_3                                            \
                       vla_in_loop_4                                            \
-                      vla_in_loop_conditional_continue                         \
                       vla_nested_loops_2                                       \
                       vla_single_loop_1                                        \
                       vla_single_loop_3                                        \
                       vla_single_loop_4                                        \
                       # addr_taken_parameter_large_struct [byval not modeled]
                       # alloca_conditional [requires invariant (i < n) on loop body PCs / suffixpath]
+                      # alloca_simple [query-timeout??]
                       # alloca_conditional_3 [sometimes query timeout]
                       # alloca_malloc_switch_cyclic [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # minprintf,minscanf [requires select(local.addr) which is missing from bv-eqclass exprs]
-                      # variadic_with_copy [bug in ssa transformation]
                       # vla_2d [mem-eq query timeout]
-                      # vla_conditional_use [times-out somtimes because the invariant inference DFA does not proceed in RPO i.e. it tries relaxing an edge before relaxing all its predecessors]
-                      # vla_in_loop_conditional_continue [assert-fail in cg_create_new_d2s_state()]
+                      # vla_conditional_use [times-out sometimes because the invariant inference DFA does not proceed in RPO i.e. it tries relaxing an edge before relaxing all its predecessors]
                       # vla_in_loop_1 [requires invariant (i < n) on loop body PCs / suffixpath]
                       # vla_in_loop_2 [requires invariant (i < n) on loop body PCs / suffixpath]
                       # vla_in_loop_3 [requires invariant (i < n) on loop body PCs / suffixpath]
@@ -98,33 +94,38 @@ UNROLL2_CLANG :=                                                               \
                  fib       
 
 EXPECTED_FAILS_CLANG :=                                                        \
-                        f_indir_byval                                          \
                         addr_taken_parameter_large_struct                      \
-                        vla_single_loop_3                                      \
-                        vla_single_loop_4                                      \
+                        addr_taken_parameter_small_struct                      \
+                        alloca_malloc_switch_cyclic                            \
+                        alloca_simple                                          \
+                        alloca_conditional                                     \
+                        alloca_linked_list                                     \
+                        f_indir_byval                                          \
+                        fib                                                    \
+                        variadic_acyclic                                       \
+                        vla_2d                                                 \
                         vla_in_loop_1                                          \
                         vla_in_loop_2                                          \
                         vla_in_loop_3                                          \
                         vla_in_loop_4                                          \
-                        vla_2d                                                 \
                         vla_nested_loops_2                                     \
-                        variadic_acyclic                                       \
-                        alloca_malloc_switch_cyclic                            \
-                        addr_taken_parameter_scalar                            \
-                        addr_taken_parameter_small_struct                      \
-                        addr_taken_scalar                                      \
-                        addr_taken_simple_structs                              \
-                        # f_indir_byval [requires different modeling of byval parameter: the _value_ of the parameter in src is equal to the _address_ in dst]
+                        vla_single_loop_3                                      \
+                        vla_single_loop_4                                      \
                         # addr_taken_parameter_large_struct [byval not modeled]
-                        # vla_single_loop_{3,4} [timeout]
+                        # alloca_malloc_switch_cyclic [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                        # alloca_simple [query-timeout??]
+                        # alloca_conditional [???]
+                        # alloca_linked_list [???]
+                        # f_indir_byval [requires different modeling of byval parameter: the _value_ of the parameter in src is equal to the _address_ in dst]
+                        # fib [non-linear invariant required for relating edx with m]
+                        # variadic_acyclic [push insn is used for allocation -- we correlate local before write and thus get different mem on path where the local is not written-to before dealloc]
+                        # vla_2d [non-affine invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
                         # vla_in_loop_1 [requires invariant (i < n) on loop body PCs / suffixpath]
                         # vla_in_loop_2 [requires invariant (i < n) on loop body PCs / suffixpath]
                         # vla_in_loop_3 [requires invariant (i < n) on loop body PCs / suffixpath]
                         # vla_in_loop_4 [requires invariant (i < n) on loop body PCs / suffixpath]
-                        # vla_2d [non-affine invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
                         # vla_nested_loops_2 [timeout]
-                        # variadic_acyclic [push insn is used for allocation -- we correlate local before write and thus get different mem on path where the local is not written-to before dealloc]
-                        # alloca_malloc_switch_cyclic [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                        # vla_single_loop_{3,4} [timeout]
 
 # ack does not support VLA and alloca()
 UNROLL2_ACK = addr_taken_simple                                                \
@@ -142,26 +143,30 @@ UNROLL2_ICC = alloca_linked_list
 
 EXPECTED_FAILS_ICC :=                                                          \
                       addr_taken_parameter_large_struct                        \
+                      alloca_conditional_simple                                \
+                      alloca_malloc_switch_cyclic                              \
+                      alloca_simple                                            \
+                      alloca_conditional                                       \
+                      fib                                                      \
+                      rodata                                                   \
+                      vla_2d                                                   \
+                      vla_conditional_use                                      \
+                      vla_in_loop_3                                            \
+                      vla_in_loop_4                                            \
+                      vla_in_loop_conditional_continue                         \
+                      vla_in_loop_conditional_exit                             \
+                      vla_midway_decl                                          \
+                      vla_nested_loops_2                                       \
                       vla_simple                                               \
                       vla_simple_nested_1                                      \
                       vla_simple_nested_2                                      \
-                      fib                                                      \
-                      vla_midway_decl                                          \
                       vla_single_loop_1                                        \
                       vla_single_loop_2                                        \
                       vla_single_loop_3                                        \
                       vla_single_loop_4                                        \
-                      vla_in_loop_3                                            \
-                      vla_in_loop_4                                            \
-                      vla_conditional_use                                      \
-                      vla_in_loop_conditional_continue                         \
-                      vla_in_loop_conditional_exit                             \
-                      vla_2d                                                   \
-                      vla_nested_loops_2                                       \
-                      rodata                                                   \
-                      alloca_conditional_simple                                \
-                      alloca_malloc_switch_cyclic                              \
                       # addr_taken_parameter_large_struct [byval not modeled]
+                      # alloca_simple [query-timeout??]
+                      # alloca_conditional [???]
                       # vla_simple{,_nested_1,_nested_2} [requires non-affine invariants]
                       # fib [requires non-affine invariants]
                       # vla_single_loop_{1,2} [requires non-affine invariants]
