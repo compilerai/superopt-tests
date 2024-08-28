@@ -1,6 +1,7 @@
 # List of source files
 SOURCES =\
 	R_22_4.c\
+	R_9_1.c\
 
 # Corresponding binary names
 BINS = $(SOURCES:.c=)
@@ -10,6 +11,7 @@ CC = clang --analyze -Xclang
 
 # Individual flags for each program (order corresponds to the SOURCES list)
 CHECKER_R_22_4 = -analyzer-checker=alpha.unix.ReadOnlyStreamChecker
+CHECKER_R_9_1= -analyzer-checker=core
 # Default target to build all programs
 all: $(BINS)
 
