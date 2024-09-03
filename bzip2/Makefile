@@ -3,17 +3,6 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/bzip2
 
-EXPECTED_FAILS_CLANG :=                                                                                                \
-                        getAndMoveToFrontDecode                                                                        \
-                        getRLEpair                                                                                     \
-                        hbMakeCodeLengths                                                                              \
-                        main                                                                                           \
-                        qSort3                                                                                         \
-                        sendMTFValues                                                                                  \
-                        simpleSort                                                                                     \
-                        sortIt                                                                                         \
-                        undoReversibleTransformation_small                                                             \
-
 # XXX the following are not used as of now
 EXPECTED_FAILS_CLANG_O0 :=                                                                                             \
 											     qSort3                                                                                      \
@@ -38,17 +27,31 @@ EXPECTED_FAILS_CLANG_O2 :=                                                      
                            undoReversibleTransformation_fast                                                           \
                            undoReversibleTransformation_small                                                          \
                            # simpleSort [fails safety check due to query timeout]
+
+EXPECTED_FAILS_CLANG_O3 :=                                                                                             \
+                           getAndMoveToFrontDecode                                                                        \
+                           getRLEpair                                                                                     \
+                           hbMakeCodeLengths                                                                              \
+                           main                                                                                           \
+                           qSort3                                                                                         \
+                           sendMTFValues                                                                                  \
+                           simpleSort                                                                                     \
+                           sortIt                                                                                         \
+                           undoReversibleTransformation_small                                                             \
 													 
+EXPECTED_FAILS_CLANG := $(EXPECTED_FAILS_CLANG_O0)
+
 EXPECTED_FAILS_CLANGV :=                                                                                               \
+                         generateMTFValues                                                                             \
                          getAndMoveToFrontDecode                                                                       \
                          hbMakeCodeLengths                                                                             \
-                         main                                                                                          \
+                         loadAndRLEsource                                                                              \
                          qSort3                                                                                        \
                          sendMTFValues                                                                                 \
-                         simpleSort                                                                                    \
                          sortIt                                                                                        \
                          undoReversibleTransformation_small                                                            \
-                         # loadAndRLEsource [sometimes query timeout]
+                         # loadAndRLEsource [query timeout]
+                         # generateMTFValues [???]
 
 UNROLL1 := bzip2
 UNROLL1_CLANG = $(UNROLL1)

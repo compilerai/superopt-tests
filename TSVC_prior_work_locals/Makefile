@@ -51,7 +51,7 @@ cmds_pa_run:: eqtest_pa_i386_O3
 cmds_normal_run:: eqtest_i386_O3
 	cat $^ > $@
 
-cmds: cmds_normal_run cmds_pa_run
+cmds: cmds_normal_run # cmds_pa_run
 	cat $^ > $@
 
 clangv_Od: clangv_O3

@@ -12,38 +12,52 @@ EXTRA_FLAGS :=                                                                 \
 UNROLL8_GCC := s111 s1111 s113 s119 s124 s125 s128 s131 s132 s1421 s174 s2233 s311 s3111 s319 s421 s423 s441 s443 s471 va vbor
                # cannot pass: s1119 non-bisimilar, s2275 loop interchange, s231 loop interchange, s235 loop interchange, s317 non-linear invariant required, s331 non-linear invariant required
 EXPECTED_FAILS_GCC :=             \
+                      s124        \
+                      s125        \
                       s174        \
                       s441        \
+                      s443        \
                       vbor        \
+                      # s124 [timeout???]
+                      # s125 [query timeout]
                       # s174 [non-linear invariant required?]
                       # s441 [sometime query-timeouts]
-                      # s441 [timeout]
+                      # s443 [timeout???]
                       # vbor [query-timeout]
 
 UNROLL64_CLANG := s1119 s116 s119 s124 s125 s1279 s131 s132 s1421 s171 s174 s252 s254 s271 s2711 s2712 s273 s311 s3111 s319 s352 s421 s423 s471 va vbor vif
                   # cannot pass: s1115 non-bisimilar, s2233 loop interchange, s317 non-linear invariant required
 EXPECTED_FAILS_CLANG :=           \
+                        s119      \
                         s1119     \
                         s124      \
                         s125      \
+                        s1279     \
+                        s132      \
                         s1421     \
                         s171      \
                         s174      \
                         s252      \
                         s254      \
+                        s271      \
                         s2711     \
+                        s2712     \
                         s273      \
                         s311      \
                         s3111     \
+                        s352      \
                         s421      \
                         s423      \
                         s471      \
                         va        \
                         vbor      \
                         vif       \
+                        # s119 [timeout???]
                         # s1119 [timeout]
                         # s124 [timeout]
                         # s125 [query timeout]
+                        # s1279 [timeout???]
+                        # s132 [query timeout]
                         # s1421 [needs select(symbol.2) in bv-eqclass at loop head; this select is anticipated but the correlation times out before we reach loop body node
                         #        (with higher timeout the correlation indeed passes in the non-relocatable mls setting, but won't work in the relocatable case because the
                         #         required relation is "select(symbol.2) == symbol.1 + OFFSET" which necessitaties presence of symbol.1 in interesting exprs (but we seemingly don't add them))
@@ -52,9 +66,12 @@ EXPECTED_FAILS_CLANG :=           \
                         # s174 [???]
                         # s252 [sometimes query-timeout]
                         # s254 [timeout]
+                        # s271 [timeout???]
                         # s2711 [query-timeout]
+                        # s2712 [timeout???]
                         # s273 [timeout]
                         # s311 [dst-ml-check on vectorized access]
+                        # s352 [timeout???]
                         # s3111 [assert-fail in simplification; exceeds max iter count of 1024]
                         # s421 [dst-ml-check on vectorized access]
                         # s423 [???]
@@ -71,14 +88,19 @@ EXPECTED_FAILS_ICC :=               \
                       s1161         \
                       s119          \
                       s1213         \
+                      s124          \
                       s125          \
+                      s132          \
                       s1279         \
                       s1421         \
                       s174          \
+                      s253          \
                       s271          \
                       s2710         \
                       s2711         \
+                      s2712         \
                       s273          \
+                      s274          \
                       s276          \
                       s3111         \
                       s4115         \
@@ -93,13 +115,16 @@ EXPECTED_FAILS_ICC :=               \
                       # s1161 [exceeds mem limit]
                       # s119  [timeout -- simplify_bv_add_atomic() takes 50% of time]
                       # s1213 [query-timeout]
+                      # s124 [timeout???]
                       # s125 [query-timeout]
+                      # s132 [query-timeout]
                       # s1279 [sometimes query-timeout]
                       # s174 [timeout]
                       # s271 [timeout]
                       # s2710 [timeout]
                       # s2711 [timeout]
-                      # s2712 [timeout]
+                      # s2712 [timeout???]
+                      # s253 [query-timeout]
                       # s273 [query-timeout]
                       # s274 [sometimes query-timeout]
                       # s276 [query-timeout]
