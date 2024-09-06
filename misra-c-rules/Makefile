@@ -38,12 +38,16 @@ SRCS:=  \
     R_18_7.c \
     R_14_3.c \
 
-BINS:=$(SRCS:.c=.o)
-all: $(BINS)
-	$(CLANG) $(BINS) -o $(EXECUTABLE)
+BINS:=$(SRCS:.c=)
 
-%.o: %.c
-	$(CLANG) -c $< -o $@
+# MISRA_R_10_2 =
+
+all: $(BINS)
+
+# Rule to build each binary
+$(BINS): % : %.c
+	$(CLANG) $(MISRA_$*) -o $@ $<
+
 
 clean:
 	rm -f $(BINS)

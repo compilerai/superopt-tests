@@ -7,11 +7,11 @@ SOURCES =\
 BINS = $(SOURCES:.c=)
 
 # Compiler
-CC = clang --analyze -Xclang 
+CC = clang --analyze  
 
 # Individual flags for each program (order corresponds to the SOURCES list)
-CHECKER_R_22_4 = -analyzer-checker=alpha.unix.ReadOnlyStreamChecker
-CHECKER_R_9_1= -analyzer-checker=core
+CHECKER_R_22_4 = -Xclang -analyzer-checker=alpha.unix.ReadOnlyStreamChecker
+CHECKER_R_9_1= -Xclang -analyzer-checker=core
 # Default target to build all programs
 all: $(BINS)
 
