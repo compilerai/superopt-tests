@@ -3,7 +3,9 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/micro
 
-EXTRA_FLAGS := --global-timeout 1200 --max-address-space-size-gb 16            \
+EXTRA_FLAGS := --global-timeout 1200                                           \
+               --max-address-space-size-gb 16                                  \
+               --disable-removal-of-stack-from-stack-nonstack-ml-in-dst        \
                #--disable-dst-to-src-submap
 
 PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
@@ -32,6 +34,7 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
                                                                                \
          local_used_in_unreachable_loop                                        \
          local_used_on_unreachable_branch                                      \
+         dead_and_alive_alloc                                                  \
          # nested_loops                                                        \
          # sum1d                                                               \
          # sum2d                                                               \
@@ -43,6 +46,8 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
 UNROLL2_GCC := $(PROGS) \
                # load_store_elim_conditional not passing in GCC!
 EXPECTED_FAILS_GCC :=                                                          \
+                      alive_alloca                                             \
+                      dead_alloca                                              \
                       call_ret_struct                                          \
                       fcall200                                                 \
                       fcalls_sink_merge                                        \
@@ -58,7 +63,9 @@ EXPECTED_FAILS_GCC :=                                                          \
                       non_linear_invariant_casting                             \
                       ret_long_long                                            \
 											# sum2d [requires: pointer arithmetic overflow UB modelling]
+                      # alive_alloca [correlation of alloc fails failure -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
                       # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                      # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
                       # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # fptoui [???]
@@ -74,11 +81,16 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
                       # ret_long_long [incompletness: need to include edx in return-reg expr]
 
-UNROLL2_CLANG := $(PROGS) \
-                 load_store_elim_conditional
+UNROLL2_CLANG := $(PROGS)                                                      \
+                 unreachable_alloc_in_src_pathset                              \
+                 load_store_elim_conditional                                   \
+
 EXPECTED_FAILS_CLANG :=                                                        \
+                        alive_alloca                                           \
                         call_ret_struct                                        \
+                        dead_alloca                                            \
                         fcall200                                               \
+                        fptouil                                                \
                         fptouil                                                \
                         ftmap_3_main                                           \
                         ftmap_4_main                                           \
@@ -86,7 +98,9 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         nested_loops_depth_4                                   \
                         nested_loops_depth_5                                   \
                         ret_long_long                                          \
+                        # alive_alloca [correlation of alloc fails -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
                         # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                        # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
                         # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
                         # fptouil [???]
                         # ftmap_3 [nop fcall inlined]
@@ -117,19 +131,27 @@ EXPECTED_FAILS_SRCDST := inequiv_1                         \
 UNROLL1_ICC = $(PROGS)
 
 EXPECTED_FAILS_ICC :=                                                          \
+                      alive_alloca                                             \
                       call_ret_struct                                          \
+                      dead_alloca                                              \
                       fcall200                                                 \
                       fcall50_with_memaccess                                   \
                       fcall_taking_locals                                      \
                       fcalls_sink_merge                                        \
+                      fdiv                                                     \
                       flcmp                                                    \
+                      flcmp                                                    \
+                      fptouil                                                  \
                       fptouil                                                  \
                       ftmap_2_main                                             \
                       ftmap_3_main                                             \
+                      ftmap_4_main                                             \
                       non_linear_invariant_casting                             \
                       ret_long_long                                            \
                       store_store_elim                                         \
+                      # alive_alloca [correlation of alloc fails -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
                       # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
+                      # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
                       # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
                       # fcall50_with_memaccess [times out]
                       # fcall_taking_locals [need manual addr mappings]
