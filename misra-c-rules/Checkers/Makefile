@@ -4,6 +4,7 @@ SOURCES =\
 	R_22_6.c\
 	R_22_4.c\
 	R_9_1.c\
+	R_22_2.c\
 
 # Corresponding binary names
 BINS = $(SOURCES:.c=)
@@ -16,6 +17,7 @@ CHECKER_R_21_20= -Xclang -analyzer-checker=unix.StdLibOldReturnValueUseChecker
 CHECKER_R_22_6= -Xclang -analyzer-checker=alpha.unix.Stream
 CHECKER_R_22_4 = -Xclang -analyzer-checker=alpha.unix.ReadOnlyStreamChecker
 CHECKER_R_9_1= -Xclang -analyzer-checker=core
+CHECKER_R_22_2= -Xclang -analyzer-checker=unix.Malloc
 # Default target to build all programs
 all: $(BINS)
 
