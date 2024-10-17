@@ -50,11 +50,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       call_ret_struct                                          \
                       call_ret_struct_indir                                    \
                       dead_alloca                                              \
-                      fcall200                                                 \
                       fcalls_sink_merge                                        \
-                      fptoui                                                   \
-                      fptouid                                                  \
-                      fptouil                                                  \
                       ftmap_1_main                                             \
                       ftmap_2_main                                             \
                       ftmap_3_main                                             \
@@ -66,10 +62,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # alive_alloca [correlation of alloc fails failure -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
                       # call_ret_struct [fails as fcall happens while esp is not 16 aligned]
                       # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
-                      # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
-                      # fptoui [???]
-                      # fptouid [???]
                       # ftmap_1_main [sp is not aligned by 16 at callsite; the callee is in same translation unit]
                       # ftmap_2_main [pclsprels missing]
                       # ftmap_3_main [nop fcall inlined]
@@ -87,30 +80,25 @@ UNROLL2_CLANG := $(PROGS)                                                      \
 
 EXPECTED_FAILS_CLANG :=                                                        \
                         alive_alloca                                           \
-                        call_ret_struct                                        \
                         dead_alloca                                            \
-                        fcall200                                               \
                         fcalls_hoist_merge                                     \
                         fcalls_sink_merge                                      \
-                        fptouil                                                \
                         ftmap_3_main                                           \
                         ftmap_4_main                                           \
                         ftmap_5_main                                           \
+                        load_load_elim                                         \
                         loop_hoisting                                          \
-                        nested_loops_depth_4                                   \
-                        nested_loops_depth_5                                   \
                         ret_long_long                                          \
                         store_store_elim                                       \
                         # alive_alloca [correlation of alloc fails -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
-                        # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
                         # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
-                        # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
                         # fcalls_hoist_merge [calls to printf are folded into one by conditionally setting args]
                         # fcalls_sink_merge [calls to bar() are sunk and merged]
-                        # fptouil [???]
                         # ftmap_3 [nop fcall inlined]
                         # ftmap_4_main [get_global_sym call inlined]
                         # ftmap_5_main [needs more precise points-to analysis -- see ftmap_5.c]
+                        # load_load_elim [safety check failed due to sinking of a heap load]
+                        # load_load_elim [safety check failed due to sinking of a heap load]
                         # loop_hoisting [requires non-affine invariant: ecx = (n-1)&4]
                         # ret_long_long [incompletness: need to include edx in return-reg expr]
                         # store_store_elim [store sinking -- heaps diverge]
@@ -136,27 +124,17 @@ UNROLL1_ICC = $(PROGS)
 
 EXPECTED_FAILS_ICC :=                                                          \
                       alive_alloca                                             \
-                      call_ret_struct                                          \
                       dead_alloca                                              \
-                      fcall200                                                 \
-                      fcall50_with_memaccess                                   \
                       fcall_taking_locals                                      \
                       fcalls_sink_merge                                        \
-                      fdiv                                                     \
                       flcmp                                                    \
                       flcmp                                                    \
-                      fptouil                                                  \
                       ftmap_2_main                                             \
                       ftmap_3_main                                             \
-                      ftmap_4_main                                             \
-                      non_linear_invariant_casting                             \
                       ret_long_long                                            \
                       store_store_elim                                         \
                       # alive_alloca [correlation of alloc fails -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
-                      # call_ret_struct [incompleteness: need to update esp to esp+4 for an fcall which returns aggregate (struct/union)]
                       # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
-                      # fcall200 [times out -- needs another 20 minutes or so (total 40 minutes)]
-                      # fcall50_with_memaccess [times out]
                       # fcall_taking_locals [need manual addr mappings]
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # flcmp [???]
