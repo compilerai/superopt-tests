@@ -55,8 +55,8 @@ EXPECTED_FAILS_GCC :=                                                          \
                       addr_taken_scalar                                        \
                       addr_taken_simple_structs                                \
                       alloca_conditional                                       \
-                      alloca_simple                                            \
                       alloca_malloc_switch_cyclic                              \
+                      alloca_simple                                            \
                       minprintf                                                \
                       minscanf                                                 \
                       rodata                                                   \
@@ -83,8 +83,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # vla_in_loop_4 [requires invariant (i < n) on loop body PCs / suffixpath]
                       # vla_nested_loops_2 [some bitwise computation is happening -- local-mem-eq is failing]
                       # vla_single_loop_1 [dealloc path correlation failing: sinking (code merging) of sp restore (dealloc) to common path instead of alloc dominating path, no coresponding path in src]
-                      # vla_single_loop_3 [timeout]
-                      # vla_single_loop_4 [timeout]
+                      # vla_single_loop_{3,4} [wfcond fails on second alloc -- most likely due to missing invariants as in case of clang]
 
 UNROLL1_CLANG := alloca_linked_list                                            \
                  addr_taken_parameter_clang                                    \
@@ -96,10 +95,10 @@ UNROLL2_CLANG :=                                                               \
 EXPECTED_FAILS_CLANG :=                                                        \
                         addr_taken_parameter_large_struct                      \
                         addr_taken_parameter_small_struct                      \
-                        alloca_malloc_switch_cyclic                            \
-                        alloca_simple                                          \
                         alloca_conditional                                     \
                         alloca_linked_list                                     \
+                        alloca_malloc_switch_cyclic                            \
+                        alloca_simple                                          \
                         f_indir_byval                                          \
                         fib                                                    \
                         variadic_acyclic                                       \
@@ -112,10 +111,10 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         vla_single_loop_3                                      \
                         vla_single_loop_4                                      \
                         # addr_taken_parameter_large_struct [byval not modeled]
-                        # alloca_malloc_switch_cyclic [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                        # alloca_simple [query-timeout??]
                         # alloca_conditional [???]
                         # alloca_linked_list [???]
+                        # alloca_malloc_switch_cyclic [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                        # alloca_simple [query-timeout??]
                         # f_indir_byval [requires different modeling of byval parameter: the _value_ of the parameter in src is equal to the _address_ in dst]
                         # fib [non-linear invariant required for relating edx with m]
                         # variadic_acyclic [push insn is used for allocation -- we correlate local before write and thus get different mem on path where the local is not written-to before dealloc]
@@ -125,7 +124,8 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         # vla_in_loop_3 [requires invariant (i < n) on loop body PCs / suffixpath]
                         # vla_in_loop_4 [requires invariant (i < n) on loop body PCs / suffixpath]
                         # vla_nested_loops_2 [timeout]
-                        # vla_single_loop_{3,4} [timeout]
+                        # vla_single_loop_3 [wfcond fails on second alloc due to missing invariant -- eax (which is dead) needs to be related to esi and %n]
+                        # vla_single_loop_4 [wfcond fails on second alloc due to missing invariant -- eax (which is dead) needs to be related to ecx and %n]
 
 # ack does not support VLA and alloca()
 UNROLL2_ACK = addr_taken_simple                                                \
@@ -169,8 +169,7 @@ EXPECTED_FAILS_ICC :=                                                          \
                       # alloca_conditional [???]
                       # vla_simple{,_nested_1,_nested_2} [requires non-affine invariants]
                       # fib [requires non-affine invariants]
-                      # vla_single_loop_{1,2} [requires non-affine invariants]
-                      # vla_single_loop_{3,4} [timeout]
+                      # vla_single_loop_{1,2,3,4} [requires non-affine invariants]
                       # vla_midway_decl [multiple allocs]
                       # vla_in_loop_3 [query timeout/timeout]
                       # vla_in_loop_4 [query timeout/timeout]

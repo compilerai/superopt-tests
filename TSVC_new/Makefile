@@ -52,8 +52,8 @@ EXPECTED_FAILS_CLANG :=           \
                         va        \
                         vbor      \
                         vif       \
-                        # s119 [timeout???]
                         # s1119 [timeout]
+                        # s119 [timeout???]
                         # s124 [timeout]
                         # s125 [query timeout]
                         # s1279 [timeout???]
@@ -71,8 +71,8 @@ EXPECTED_FAILS_CLANG :=           \
                         # s2712 [timeout???]
                         # s273 [timeout]
                         # s311 [dst-ml-check on vectorized access]
-                        # s352 [timeout???]
                         # s3111 [assert-fail in simplification; exceeds max iter count of 1024]
+                        # s352 [timeout???]
                         # s421 [dst-ml-check on vectorized access]
                         # s423 [???]
                         # s471 [dst-ml-check on vectorized access]
