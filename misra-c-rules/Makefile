@@ -1,6 +1,7 @@
 CLANG=clang
 
 SRCS:=  \
+    R_5_1.c \
     R_10_2.c \
     R_12_2.c \
     R_15_2.c \
