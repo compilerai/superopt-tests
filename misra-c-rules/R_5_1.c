@@ -12,5 +12,9 @@ extern int func1();
 extern int func1(); // should raise warning
 extern int Func1(); // should not raise warning
 int main(){
+    {
+        extern int t1; //should raise warning
+        extern int func1(); //should raise warning
+    }
     return 0;
 }
