@@ -21,9 +21,7 @@ UNROLL64_CLANG := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s162 s1
 EXPECTED_FAILS_CLANG :=          \
                         s162     \
                         s176     \
-												sum1d    \
-												vpvts    \
-												vtv      \
+                        sum1d    \
                         # s162 [???]
                         # s176 [query timeout]
                         # sum1d [fails safety check -- needs debugging]
@@ -36,16 +34,12 @@ UNROLL16_ICC := s000 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s173 s176 s2244
 EXPECTED_FAILS_ICC :=           \
                       s1251     \
                       s127      \
-                      s1281     \
                       s176      \
                       s2244     \
                       s251      \
                       s3251     \
-                      s452      \
                       vdotr     \
-                      vpvts     \
                       vpvtv     \
-                      vtv       \
                       vtvtv     \
                       # s1251 [query timeout]
                       # s127 [query-timeout?]

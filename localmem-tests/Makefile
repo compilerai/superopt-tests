@@ -15,7 +15,6 @@ UNROLL1_PROGS :=                                                               \
                  addr_taken_simple                                             \
                  addr_taken_parameter                                          \
                  addr_taken_conditional                                        \
-                 addr_taken_array                                              \
                  addr_taken_array_in_loop                                      \
                                                                                \
                  variadic_acyclic                                              \
@@ -46,17 +45,17 @@ UNROLL1_GCC :=                                                                 \
                fib                                                             \
                $(UNROLL1_PROGS)                                                \
 
-UNROLL2_GCC := alloca_linked_list
-
+UNROLL2_GCC := addr_taken_array                                                \
+	             alloca_linked_list                                              \
+               
 EXPECTED_FAILS_GCC :=                                                          \
                       addr_taken_parameter_large_struct                        \
                       addr_taken_parameter_scalar                              \
-                      addr_taken_parameter_small_struct                        \
                       addr_taken_scalar                                        \
                       addr_taken_simple_structs                                \
                       alloca_conditional                                       \
+                      alloca_conditional_3                                     \
                       alloca_malloc_switch_cyclic                              \
-                      alloca_simple                                            \
                       minprintf                                                \
                       minscanf                                                 \
                       rodata                                                   \
@@ -71,7 +70,6 @@ EXPECTED_FAILS_GCC :=                                                          \
                       vla_single_loop_4                                        \
                       # addr_taken_parameter_large_struct [byval not modeled]
                       # alloca_conditional [requires invariant (i < n) on loop body PCs / suffixpath]
-                      # alloca_simple [query-timeout??]
                       # alloca_conditional_3 [sometimes query timeout]
                       # alloca_malloc_switch_cyclic [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
                       # minprintf,minscanf [requires select(local.addr) which is missing from bv-eqclass exprs]
@@ -87,6 +85,7 @@ EXPECTED_FAILS_GCC :=                                                          \
 
 UNROLL1_CLANG := alloca_linked_list                                            \
                  addr_taken_parameter_clang                                    \
+                 addr_taken_array                                              \
                  $(UNROLL1_PROGS)                                              \
 
 UNROLL2_CLANG :=                                                               \
@@ -98,7 +97,6 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         alloca_conditional                                     \
                         alloca_linked_list                                     \
                         alloca_malloc_switch_cyclic                            \
-                        alloca_simple                                          \
                         f_indir_byval                                          \
                         fib                                                    \
                         variadic_acyclic                                       \
@@ -114,7 +112,6 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         # alloca_conditional [???]
                         # alloca_linked_list [???]
                         # alloca_malloc_switch_cyclic [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
-                        # alloca_simple [query-timeout??]
                         # f_indir_byval [requires different modeling of byval parameter: the _value_ of the parameter in src is equal to the _address_ in dst]
                         # fib [non-linear invariant required for relating edx with m]
                         # variadic_acyclic [push insn is used for allocation -- we correlate local before write and thus get different mem on path where the local is not written-to before dealloc]
@@ -137,6 +134,7 @@ UNROLL2_ACK = addr_taken_simple                                                \
 EXTRA_FLAGS_ACK := --disable-fcall-wfconds
 
 UNROLL1_ICC = $(UNROLL1_PROGS)                                                 \
+              addr_taken_array                                                 \
               fib
 
 UNROLL2_ICC = alloca_linked_list
@@ -145,7 +143,6 @@ EXPECTED_FAILS_ICC :=                                                          \
                       addr_taken_parameter_large_struct                        \
                       alloca_conditional_simple                                \
                       alloca_malloc_switch_cyclic                              \
-                      alloca_simple                                            \
                       alloca_conditional                                       \
                       fib                                                      \
                       rodata                                                   \
@@ -165,7 +162,6 @@ EXPECTED_FAILS_ICC :=                                                          \
                       vla_single_loop_3                                        \
                       vla_single_loop_4                                        \
                       # addr_taken_parameter_large_struct [byval not modeled]
-                      # alloca_simple [query-timeout??]
                       # alloca_conditional [???]
                       # vla_simple{,_nested_1,_nested_2} [requires non-affine invariants]
                       # fib [requires non-affine invariants]

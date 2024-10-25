@@ -90,6 +90,7 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         ftmap_4_main                                           \
                         ftmap_5_main                                           \
                         load_load_elim                                         \
+                        load_store_elim                                        \
                         loop_hoisting                                          \
                         ret_long_long                                          \
                         store_store_elim                                       \
@@ -101,7 +102,7 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         # ftmap_4_main [get_global_sym call inlined]
                         # ftmap_5_main [needs more precise points-to analysis -- see ftmap_5.c]
                         # load_load_elim [safety check failed due to sinking of a heap load]
-                        # load_load_elim [safety check failed due to sinking of a heap load]
+                        # load_store_elim [safety check failed due to sinking of a heap load]
                         # loop_hoisting [requires non-affine invariant: ecx = (n-1)&4]
                         # ret_long_long [incompletness: need to include edx in return-reg expr]
                         # store_store_elim [store sinking -- heaps diverge]

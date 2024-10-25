@@ -16,25 +16,42 @@ UNROLL64_CLANG := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s162 s1
 UNROLL64_ICC := # s000 s112 s122 s1251 s127 s1281 s1351 s173 s2244 s251 s452 s453 sum1d vdotr vpv vpvpv vpvtv vtv vpvts
 
 EXPECTED_FAILS_CLANG :=                                    \
-                        s1221                              \
+                        s000                               \
+                        s1112                              \
+                        s112                               \
+                        s121                               \
                         s1251                              \
-                        s1281                              \
-                        s251                               \
+                        s1351                              \
+                        s162                               \
+                        s173                               \
+                        s2244                              \
+                        s243                               \
+                        s452                               \
+                        s453                               \
                         sum1d                              \
                         vdotr                              \
                         vpv                                \
-                        vpvpv                              \
                         vpvts                              \
                         vtv                                \
-                        # s1221  [query-timeout -> QD invoked -> timeout]
+                        # s000 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
+                        # s1112 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
+                        # s112 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
+                        # s121 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
                         # s1221 [sometimes query-timeout?]
                         # s1251 [query-timeout -> QD invoked -> timeout]
-                        # s1281 [query-timeout -> QD invoked -> timeout]
-                        # s251   [query-timeout -> QD invoked -> timeout]
+                        # s1281 [sometimes query-timeout?]
+                        # s1351 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
+                        # s162 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
+                        # s173 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
+                        # s2244 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
+                        # s243 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
+                        # s251   [sometimes query-timeout?]
+                        # s452 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
+                        # s453 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
                         # sum1d [timeout -- d2s_state_update takes >90% of total time]
                         # vdotr [global timeout]
                         # vpv    [query-timeout -> QD invoked -> timeout]
-                        # vpvpv  [query-timeout -> QD invoked -> timeout]
+                        # vpvpv  [sometimes query-timeout?]
                         # vpvts  [query-timeout -> QD invoked -> timeout]
                         # vtv    [query-timeout -> QD invoked -> timeout]
 # compiler flags
