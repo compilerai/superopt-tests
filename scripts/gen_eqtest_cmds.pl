@@ -15,7 +15,7 @@ sub read_file {
 
 #constants
 my $type = $ARGV[0];
-my $filename = $ARGV[1];
+my $out_filename = $ARGV[1];
 my $SUPEROPT_PROJECT_DIR = $ARGV[2];
 my $VPATH = $ARGV[3];
 my $benchmark = basename($VPATH);
@@ -86,7 +86,7 @@ foreach(my $i = $cur_index; $i <= $#ARGV; $i++) {
   }
 }
 
-open(OUT, '>', $filename) or die $!;
+open(OUT, '>', $out_filename) or die $!;
 foreach my $prog (keys %unroll) {
   my $u = $unroll{$prog};
   my $prog_extraflagsstr = $extraflagsstr;
@@ -135,14 +135,18 @@ sub identify_filetype_extension
   my $path = shift;
   my $cpath = "$path.c";
   my $llpath = "$path.ll";
+  my $spath = "$path.s";
   if (-e $cpath) {
     return $cpath;
   }
   if (-e $llpath) {
     return $llpath;
   }
-  unlink($filename);
-  die "Neither C file ($cpath) nor LLVM file ($llpath) exists\n";
+  if (-e $spath) {
+    return $spath;
+  }
+  unlink($out_filename);
+  die "Neither of C file ($cpath) or LLVM file ($llpath) or S file ($spath) exists\n";
 }
 
 sub convert_PP_to_plusplus
