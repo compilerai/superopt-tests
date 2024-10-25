@@ -42,6 +42,7 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          # load_store_elim_cmove # needs "anticipated-cmove expressions"       \
          #ddec arg_passing fpadd  fcall100 fcall100_with_memaccess             \
          #fpext : TOO SLOW                                                     \
+         # src_ub : gcc harvest fails due to ud2                               \
 
 UNROLL2_GCC := $(PROGS) \
                # load_store_elim_conditional not passing in GCC!
@@ -59,6 +60,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       nested_loops_depth_5                                     \
                       non_linear_invariant_casting                             \
                       ret_long_long                                            \
+                      src_always_ub                                            \
                       # alive_alloca [correlation of alloc fails failure -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
                       # call_ret_struct [fails as fcall happens while esp is not 16 aligned]
                       # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
@@ -73,6 +75,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # nested_loops_depth_5 [timeout]
                       # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
                       # ret_long_long [incompletness: need to include edx in return-reg expr]
+                      # src_always_ub [eqgen fails due to ud2]
 
 UNROLL2_CLANG := $(PROGS)                                                      \
                  unreachable_alloc_in_src_pathset                              \
@@ -107,6 +110,7 @@ UNROLL1_SRCDST :=                                          \
                   ptr_arith_ub                             \
                   path_enum_loop_body                      \
                   diff_speed                               \
+                  src_ub                                   \
 
 UNROLL4_SRCDST := nested_loop_peeling                      \
                   nested_loop_unrolling                    \
