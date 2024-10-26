@@ -79,7 +79,7 @@ all: $(ALL_PROGS)
 ack-progs: $(ACK_EQCHECKER_PROGS)
 
 eqtest_%.helper:: $(ALL_PROGS) $(SRCDIR)/Makefile.template $(SRCDIR)/scripts/gen_eqtest_cmds.pl $(VPATH)/Makefile Makefile $(EQFLAGS_FILES)
-	perl $(SRCDIR)/scripts/gen_eqtest_cmds.pl eqcheck $@ $(SUPEROPT_PROJECT_DIR) $(VPATH) $(ARCH) $(shell echo $(CUR_COMPILER) | tr A-Z a-z) $(OPT_LEVEL) "extraflags@$(EXTRA_FLAGS) $(EXTRA_FLAGS_$(CUR_COMPILER)) $(EXTRA_FLAGS_I)" "expectedfails@$(EXPECTED_FAILS_$(CUR_COMPILER))" "cc-opts@$(CC_OPTS)" "record@a.record" $(TMPDIR_PREFIX) $(PROGS_UNROLL_CUR_COMPILER)
+	perl $(SRCDIR)/scripts/gen_eqtest_cmds.pl eqcheck $@ $(SUPEROPT_PROJECT_DIR) $(VPATH) $(ARCH) $(shell echo $(CUR_COMPILER) | tr A-Z a-z) $(OPT_LEVEL) "extraflags@$(EXTRA_FLAGS) $(EXTRA_FLAGS_$(CUR_COMPILER)) $(EXTRA_FLAGS_I)" "expectedfails@$(EXPECTED_FAILS_$(CUR_COMPILER))" "cc-opts@$(CC_OPTS)" "record@" $(TMPDIR_PREFIX) $(PROGS_UNROLL_CUR_COMPILER)
 
 eqtest_%_gcc.helper:: CUR_COMPILER=GCC
 eqtest_%_gPP.helper:: CUR_COMPILER=GPP
@@ -151,7 +151,7 @@ clangv_O3:: OPT_LEVEL=O3
 clangv_O1-:: OPT_LEVEL=O1-
 
 clangv_O0 clangv_O1 clangv_O2 clangv_O3 clangv_O1-::
-	perl $(SRCDIR)/scripts/gen_eqtest_cmds.pl clangv $@ $(SUPEROPT_PROJECT_DIR) $(VPATH) $(ARCH) $(OPT_LEVEL) "extraflags@$(EXTRA_FLAGS) $(EXTRA_FLAGS_CLANGV)" "expectedfails@$(EXPECTED_FAILS_CLANGV)" "cc-opts@$(CC_OPTS)" "record@a.record" $(PROGS_UNROLL_CLANGV)
+	perl $(SRCDIR)/scripts/gen_eqtest_cmds.pl clangv $@ $(SUPEROPT_PROJECT_DIR) $(VPATH) $(ARCH) $(OPT_LEVEL) "extraflags@$(EXTRA_FLAGS) $(EXTRA_FLAGS_CLANGV)" "expectedfails@$(EXPECTED_FAILS_CLANGV)" "cc-opts@$(CC_OPTS)" "record@" $(PROGS_UNROLL_CLANGV)
 
 eqtest_i386_O0 eqtest_i386_O1 eqtest_i386_O2 eqtest_i386_O3 eqtest_pa_i386_O3 eqtest_fa_i386_O3  eqtest_x64_O0 eqtest_x64_O1 eqtest_x64_O2 eqtest_x64_O3: eqtest_%: eqtest_%_gcc.helper eqtest_%_gPP.helper eqtest_%_clang.helper eqtest_%_clangPP.helper eqtest_%_ack.helper eqtest_%_ack.O1.helper eqtest_%_icx.helper eqtest_%_icpx.helper eqtest_%_icc.helper eqtest_%_icpc.helper
 	cat $^ > $@
