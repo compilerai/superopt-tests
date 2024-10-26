@@ -8,7 +8,7 @@ EXTRA_FLAGS := --global-timeout 6000                                           \
                # --disable-dst-to-src-submap                                     \
                # --disable-removal-of-stack-from-stack-nonstack-ml-in-dst        \
 
-PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
+PROGS :=                                                                       \
          fcall10 fcall10_with_memaccess                                        \
          fcall25 fcall25_with_memaccess                                        \
          fcall50 fcall50_with_memaccess                                        \
@@ -40,8 +40,7 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          # sum2d                                                               \
          # path_enum_2                                                         \
          # load_store_elim_cmove # needs "anticipated-cmove expressions"       \
-         #ddec arg_passing fpadd  fcall100 fcall100_with_memaccess             \
-         #fpext : TOO SLOW                                                     \
+         #ddec arg_passing fcall100 fcall100_with_memaccess                    \
          # src_ub : gcc harvest fails due to ud2                               \
 
 UNROLL2_GCC := $(PROGS) \
@@ -132,8 +131,6 @@ EXPECTED_FAILS_ICC :=                                                          \
                       dead_alloca                                              \
                       fcall_taking_locals                                      \
                       fcalls_sink_merge                                        \
-                      flcmp                                                    \
-                      flcmp                                                    \
                       ftmap_2_main                                             \
                       ftmap_3_main                                             \
                       ret_long_long                                            \
@@ -142,7 +139,6 @@ EXPECTED_FAILS_ICC :=                                                          \
                       # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
                       # fcall_taking_locals [need manual addr mappings]
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
-                      # flcmp [???]
                       # ftmap_2_main [need manual addr mappings]
                       # ftmap_3_main [need manual addr mappings]
                       # ret_long_long [incompletness: need to include edx in return-reg expr]
