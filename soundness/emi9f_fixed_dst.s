@@ -10,9 +10,9 @@
         .section        .text.unlikely
 .Ltext_cold0:
         .section        .text.startup
-        .globl  main
-        .type   main, @function
-main:
+        .globl  emi9f_fixed
+        .type   emi9f_fixed, @function
+emi9f_fixed:
 .LFB0:
         .file 1 "emi9f.c"
         .loc 1 7 0
@@ -21,7 +21,7 @@ main:
         .cfi_def_cfa_offset 20
 .LVL0:
         .loc 1 15 0
-        movl    $1, %eax
+        movl    $0, %eax
         movl    $2, b
         addl    $16, %esp
         .cfi_def_cfa_offset 4
@@ -29,7 +29,7 @@ main:
         ret
         .cfi_endproc
 .LFE0:
-        .size   main, .-main
+        .size   emi9f_fixed, .-emi9f_fixed
         .section        .text.unlikely
 .LCOLDE0:
         .section        .text.startup

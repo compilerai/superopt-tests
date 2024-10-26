@@ -12,9 +12,9 @@
         .section        .text.unlikely
 .Ltext_cold0:
         .section        .text.startup
-        .globl  main
-        .type   main, @function
-main:
+        .globl  emi1_fixed
+        .type   emi1_fixed, @function
+emi1_fixed:
 .LFB0:
         .file 1 "emi1.c"
         .loc 1 11 0
@@ -35,7 +35,6 @@ main:
 .LVL1:
 .L2:
         testl   %ecx, %ecx
-        movl    262124(%ebp), %edx
         js      .L3
 .L5:
 .LVL2:
@@ -60,12 +59,13 @@ main:
 .L3:
         .cfi_restore_state
         .loc 1 20 0
+        movl    262124(%ebp), %edx
         testl   %edx, %edx
         je      .L5
         jmp     .L3
         .cfi_endproc
 .LFE0:
-        .size   main, .-main
+        .size   emi1_fixed, .-emi1_fixed
         .section        .text.unlikely
 .LCOLDE0:
         .section        .text.startup

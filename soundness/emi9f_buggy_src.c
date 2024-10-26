@@ -14,7 +14,7 @@ struct S {
   int f1;
 };
 int b;
-int main()
+int emi9f_buggy()
 {
   struct S a[2] = { 0 };
   struct S d = { 0, 1 };

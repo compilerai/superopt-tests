@@ -9,7 +9,7 @@
 
 int a;
 
-int main ()
+int emi1_buggy()
 {
   int b = -1, d, e = 0, f[2] = { 0 };
   unsigned short c = b;
