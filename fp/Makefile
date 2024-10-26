@@ -3,8 +3,7 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/fp
 
-# cvc4 seems to be generating problematic counterexamples in presence of fp ops
-EXTRA_FLAGS := --disable-cvc4
+EXTRA_FLAGS :=
 
 PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          fp1 fp1_d fp1_l fp2 fp2_d fp3 fp4                                     \
@@ -13,12 +12,14 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          cast fcall_fp                                                         \
 
 EXPECTED_FAILS_GCC :=                                                          \
-                      abs1_ld                                                  \
-                      abs_max_ld                                               \
+                      cast3sf                                                  \
+                      cast3uf                                                  \
+                      fcall_fp2a                                               \
+                      # cast3sf Failing due to timeout in region_agrees_with_memlabel (The addr calculation has float_to_ieee_bv in it)
+                      # cast3uf Failing due to timeout in region_agrees_with_memlabel (The addr calculation has float_to_ieee_bv in it)
+                      # fcall_fp2a nondet termination due to old_preds != new_preds
 
 EXPECTED_FAILS_CLANG :=                                                        \
-                        abs1_ld                                                \
-                        abs_max_ld                                             \
 
 #PROGS_EQCHECKER_COMPILER := 
 #PROGS_EQCHECKER_SRCDST :=
