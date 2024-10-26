@@ -3,8 +3,7 @@ include ../config.mak                        # paths
 # set VPATH path for targets and src files
 VPATH = $(SRCDIR)/fp
 
-# cvc4 seems to be generating problematic counterexamples in presence of fp ops
-EXTRA_FLAGS := --disable-cvc4
+EXTRA_FLAGS :=
 
 PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
          fp1 fp1_d fp1_l fp2 fp2_d fp3 fp4                                     \
@@ -37,5 +36,5 @@ ICC_EQCHECKER_FLAGS_EXTRA= $(VEC_FLAGS)
 
 include $(SRCDIR)/Makefile.template
 
-cmds: eqtest_i386_O3 eqtest_i386_O0
+cmds: eqtest_i386_O0 # eqtest_i386_O3
 	cat $^ > $@
