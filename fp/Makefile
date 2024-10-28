@@ -14,10 +14,8 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
 EXPECTED_FAILS_GCC :=                                                          \
                       cast3sf                                                  \
                       cast3uf                                                  \
-                      fcall_fp2a                                               \
                       # cast3sf Failing due to timeout in region_agrees_with_memlabel (The addr calculation has float_to_ieee_bv in it)
                       # cast3uf Failing due to timeout in region_agrees_with_memlabel (The addr calculation has float_to_ieee_bv in it)
-                      # fcall_fp2a nondet termination due to old_preds != new_preds
 
 EXPECTED_FAILS_CLANG :=                                                        \
 
