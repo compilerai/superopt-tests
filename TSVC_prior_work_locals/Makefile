@@ -22,11 +22,9 @@ EXPECTED_FAILS_CLANG :=                                    \
                         s121                               \
                         s1251                              \
                         s1351                              \
-                        s162                               \
                         s173                               \
                         s2244                              \
                         s243                               \
-                        s452                               \
                         s453                               \
                         sum1d                              \
                         vdotr                              \

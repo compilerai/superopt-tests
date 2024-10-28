@@ -13,11 +13,9 @@ UNROLL8_GCC := s111 s1111 s113 s119 s124 s125 s128 s131 s132 s1421 s174 s2233 s3
                # cannot pass: s1119 non-bisimilar, s2275 loop interchange, s231 loop interchange, s235 loop interchange, s317 non-linear invariant required, s331 non-linear invariant required
 EXPECTED_FAILS_GCC :=             \
                       s124        \
-                      s125        \
                       s174        \
                       s441        \
                       s443        \
-                      vbor        \
                       # s124 [timeout???]
                       # s125 [query timeout]
                       # s174 [non-linear invariant required?]
@@ -37,7 +35,6 @@ EXPECTED_FAILS_CLANG :=           \
                         s1421     \
                         s171      \
                         s174      \
-                        s252      \
                         s254      \
                         s271      \
                         s2711     \

@@ -8,8 +8,6 @@ UNROLL2 := mergesort \
 
 UNROLL2_CLANG = $(UNROLL2)
 
-# EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 28800 --max-address-space-size-gb 32 \
-#                --disable-removal-of-stack-from-stack-nonstack-ml-in-dst
 EXTRA_FLAGS        := --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32 --disable-removal-of-stack-from-stack-nonstack-ml-in-dst --enable-query-decomposition
 EXTRA_FLAGS_CLANGV := --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32 --disable-removal-of-stack-from-stack-nonstack-ml-in-dst --enable-query-decomposition
 
