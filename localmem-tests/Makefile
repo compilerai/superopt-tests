@@ -54,7 +54,6 @@ EXPECTED_FAILS_GCC :=                                                          \
                       addr_taken_scalar                                        \
                       addr_taken_simple_structs                                \
                       alloca_conditional                                       \
-                      alloca_conditional_3                                     \
                       alloca_malloc_switch_cyclic                              \
                       minprintf                                                \
                       minscanf                                                 \
@@ -93,7 +92,6 @@ UNROLL2_CLANG :=                                                               \
 
 EXPECTED_FAILS_CLANG :=                                                        \
                         addr_taken_parameter_large_struct                      \
-                        addr_taken_parameter_small_struct                      \
                         alloca_conditional                                     \
                         alloca_linked_list                                     \
                         alloca_malloc_switch_cyclic                            \
@@ -109,6 +107,7 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         vla_single_loop_3                                      \
                         vla_single_loop_4                                      \
                         # addr_taken_parameter_large_struct [byval not modeled]
+                        # addr_taken_parameter_small_struct [sometimes query-timeout]
                         # alloca_conditional [???]
                         # alloca_linked_list [???]
                         # alloca_malloc_switch_cyclic [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
@@ -134,16 +133,16 @@ UNROLL2_ACK = addr_taken_simple                                                \
 EXTRA_FLAGS_ACK := --disable-fcall-wfconds
 
 UNROLL1_ICC = $(UNROLL1_PROGS)                                                 \
-              addr_taken_array                                                 \
               fib
 
-UNROLL2_ICC = alloca_linked_list
+UNROLL2_ICC = alloca_linked_list                                               \
+              addr_taken_array                                                 \
 
 EXPECTED_FAILS_ICC :=                                                          \
                       addr_taken_parameter_large_struct                        \
+                      alloca_conditional                                       \
                       alloca_conditional_simple                                \
                       alloca_malloc_switch_cyclic                              \
-                      alloca_conditional                                       \
                       fib                                                      \
                       rodata                                                   \
                       vla_2d                                                   \
