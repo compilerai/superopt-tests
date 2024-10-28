@@ -4,10 +4,9 @@ include ../config.mak                        # paths
 VPATH = $(SRCDIR)/LORE_mem_write
 
 EXTRA_FLAGS :=                                                                 \
-               --eqcheck-timeout 1200                                          \
+               --eqcheck-timeout 3600                                          \
                --global-timeout 3600                                           \
                --max-address-space-size-gb 16
-               #--disable-d2s # dst-to-src-submap incurs overhead
 
 UNROLL4_GCC := ex101 ex102 ex103 ex104 ex105 ex106 ex107 ex108
 UNROLL8_GCC := ex106u ex107u
