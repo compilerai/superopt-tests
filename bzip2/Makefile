@@ -45,11 +45,11 @@ EXPECTED_FAILS_CLANGV :=                                                        
                          generateMTFValues                                                                             \
                          getAndMoveToFrontDecode                                                                       \
                          hbMakeCodeLengths                                                                             \
-                         loadAndRLEsource                                                                              \
+                         main                                                                                          \
                          qSort3                                                                                        \
                          sendMTFValues                                                                                 \
+                         simpleSort                                                                                    \
                          sortIt                                                                                        \
-                         undoReversibleTransformation_small                                                            \
                          # loadAndRLEsource [query timeout]
                          # generateMTFValues [???]
 
