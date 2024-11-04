@@ -15,6 +15,12 @@ int cmp_const(float a)
   return a == 3.14159 || 2*a > 1.41;
 }
 
+// XXX DELETE ME AFTER DEBUGGING
+int cmp_consti(int a)
+{
+  return a == 3 || 2*a > 1;
+}
+
 float expr1()
 {
   return 1.0/3;
