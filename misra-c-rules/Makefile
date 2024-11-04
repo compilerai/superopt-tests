@@ -3,6 +3,7 @@ CLANG=clang
 SRCS:=  \
     D_4_10.c \
     R_5_3.c  \
+    R_5_1.c \
     R_5_6.c  \
     R_5_7.c  \
     R_6_1.c  \
