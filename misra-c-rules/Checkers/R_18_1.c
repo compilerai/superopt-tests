@@ -37,4 +37,9 @@ void test_valid_traverse_array() {
         int value = *(p + i);  // Points to arr[i], within bounds
     }
 }
+void test_valid_past_one_element(){
+    int arr[5]={1,2,3,4,5};
+    int *p=arr;
+    p=p+5;//valid, C standards allow one past elemnent 
+}
 
