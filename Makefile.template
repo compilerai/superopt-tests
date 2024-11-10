@@ -2,6 +2,7 @@ include $(SRCDIR)/Make.conf                  # compiler paths and flags
 include $(SRCDIR)/Makefile.common  # build rules
 
 TMPDIR_PREFIX ?= eqcheck
+EXTRA_FLAGS_I = $(EQFLAGS)
 
 # enumerate files to be compiled from user declared UNROLL1_GCC, UNROLL2_CLANG, .... variables
 UNROLL_FACTORS := 1 2 4 8 16 32 64
@@ -124,13 +125,13 @@ eqtest_x64_O3:: OPT_LEVEL=O3
 
 eqtest_pa_i386_O3:: ARCH=i386
 eqtest_pa_i386_O3:: OPT_LEVEL=O3
-eqtest_pa_i386_O3:: TMPDIR_PREFIX=eqcheck_pa
-eqtest_pa_i386_O3:: EXTRA_FLAGS_I=--force-partial-array-encoding
+eqtest_pa_i386_O3:: TMPDIR_PREFIX:=$(TMPDIR_PREFIX)_pa
+eqtest_pa_i386_O3:: EXTRA_FLAGS_I+=--force-partial-array-encoding
 
 eqtest_fa_i386_O3:: ARCH=i386
 eqtest_fa_i386_O3:: OPT_LEVEL=O3
-eqtest_fa_i386_O3:: TMPDIR_PREFIX=eqcheck_fa
-eqtest_fa_i386_O3:: EXTRA_FLAGS_I=--force-full-array-encoding
+eqtest_fa_i386_O3:: TMPDIR_PREFIX:=$(TMPDIR_PREFIX)_fa
+eqtest_fa_i386_O3:: EXTRA_FLAGS_I+=--force-full-array-encoding
 
 # use .c/.ll files directly
 eqtest_srcdst.helper:: CUR_COMPILER=SRCDST
