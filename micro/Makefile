@@ -115,12 +115,16 @@ UNROLL1_SRCDST :=                                          \
 UNROLL4_SRCDST := nested_loop_peeling                      \
                   nested_loop_unrolling                    \
                   path_enum_can_inv                        \
+                  mac_check                                \
+                  # safety_check                             \
 
 EXPECTED_FAILS_SRCDST := inequiv_1                         \
                          inequiv_2                         \
                          ptr_arith_ub                      \
                          path_enum_can_inv                 \
                          diff_speed                        \
+                         mac_check_fail                    \
+                         mac_check_fail                    \
                          # ptr_arith_ub [requires: pointer arithmetic overflow UB modeling]
                          # path_enum_can_inv [requires: better path enumeration or better invariant inference; see path_enum_can_inv_src.c]
 
