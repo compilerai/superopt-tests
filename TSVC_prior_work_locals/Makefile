@@ -16,21 +16,7 @@ UNROLL64_CLANG := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s162 s1
 UNROLL64_ICC := # s000 s112 s122 s1251 s127 s1281 s1351 s173 s2244 s251 s452 s453 sum1d vdotr vpv vpvpv vpvtv vtv vpvts
 
 EXPECTED_FAILS_CLANG :=                                    \
-                        s000                               \
-                        s1112                              \
-                        s112                               \
-                        s121                               \
-                        s1251                              \
-                        s1351                              \
-                        s173                               \
-                        s2244                              \
-                        s243                               \
-                        s453                               \
                         sum1d                              \
-                        vdotr                              \
-                        vpv                                \
-                        vpvts                              \
-                        vtv                                \
                         # s000 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
                         # s1112 [eqcheck timeout -- CE based pruning is apparently being ineffective?]
                         # s112 [eqcheck timeout -- CE based pruning is apparently being ineffective?]

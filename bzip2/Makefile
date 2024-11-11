@@ -45,7 +45,6 @@ EXPECTED_FAILS_CLANGV :=                                                        
                          generateMTFValues                                                                             \
                          getAndMoveToFrontDecode                                                                       \
                          hbMakeCodeLengths                                                                             \
-                         main                                                                                          \
                          qSort3                                                                                        \
                          sendMTFValues                                                                                 \
                          simpleSort                                                                                    \

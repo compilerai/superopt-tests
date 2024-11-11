@@ -17,16 +17,13 @@ EXPECTED_FAILS_GCC :=                                      \
                       ex4u                                 \
                       ex5u                                 \
                       ex6u                                 \
-                      ex9                                  \
-                      ex10                                 \
-                      ex11                                 \
                       ex12                                 \
-                      ex13u                                \
                       # ex2u [query-timeout]
                       # ex3u [query-timeout]
                       # ex4u [query-timeout]
                       # ex5u [query-timeout]
                       # ex6u [query-timeout]
+                      # ex8 [query-timeout]
                       # ex9 [query-timeout]
                       # ex10 [query-timeout]
                       # ex11 [query-timeout]

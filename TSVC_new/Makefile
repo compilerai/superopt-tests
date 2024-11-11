@@ -12,10 +12,9 @@ EXTRA_FLAGS :=                                                                 \
 UNROLL8_GCC := s111 s1111 s113 s119 s124 s125 s128 s131 s132 s1421 s174 s2233 s311 s3111 s319 s421 s423 s441 s443 s471 va vbor
                # cannot pass: s1119 non-bisimilar, s2275 loop interchange, s231 loop interchange, s235 loop interchange, s317 non-linear invariant required, s331 non-linear invariant required
 EXPECTED_FAILS_GCC :=             \
-                      s124        \
                       s174        \
                       s441        \
-                      s443        \
+                      vbor        \
                       # s124 [timeout???]
                       # s125 [query timeout]
                       # s174 [non-linear invariant required?]
@@ -31,9 +30,7 @@ EXPECTED_FAILS_CLANG :=           \
                         s124      \
                         s125      \
                         s1279     \
-                        s132      \
                         s1421     \
-                        s171      \
                         s174      \
                         s254      \
                         s271      \
@@ -42,11 +39,9 @@ EXPECTED_FAILS_CLANG :=           \
                         s273      \
                         s311      \
                         s3111     \
-                        s352      \
                         s421      \
                         s423      \
                         s471      \
-                        va        \
                         vbor      \
                         vif       \
                         # s1119 [timeout]
@@ -87,20 +82,16 @@ EXPECTED_FAILS_ICC :=               \
                       s1213         \
                       s124          \
                       s125          \
-                      s132          \
                       s1279         \
                       s1421         \
                       s174          \
-                      s253          \
                       s271          \
                       s2710         \
                       s2711         \
                       s2712         \
                       s273          \
-                      s274          \
                       s276          \
                       s3111         \
-                      s4115         \
                       s441          \
                       s442          \
                       s443          \

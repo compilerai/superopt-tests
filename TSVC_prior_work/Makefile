@@ -33,13 +33,10 @@ UNROLL16_ICC := s000 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s173 s176 s2244
                 # cannot pass: s1112 (loop reversal with mem write), s243 (loop splitting -- can do similar function without mem write), s162 (non-linear invariant required: edi == (LEN-k)&(~15))
 EXPECTED_FAILS_ICC :=           \
                       s1251     \
-                      s127      \
                       s176      \
-                      s2244     \
                       s251      \
                       s3251     \
                       vdotr     \
-                      vpvtv     \
                       vtvtv     \
                       # s1251 [query timeout]
                       # s127 [query-timeout?]
