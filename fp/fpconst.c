@@ -12,13 +12,7 @@ float mult_const(float a)
 
 int cmp_const(float a)
 {
-  return a == 3.14159 || 2*a > 1.41;
-}
-
-// XXX DELETE ME AFTER DEBUGGING
-int cmp_consti(int a)
-{
-  return a == 3 || 2*a > 1;
+  return a == 3.14159f || 2*a > 1.41f;
 }
 
 float expr1()
