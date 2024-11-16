@@ -1,5 +1,6 @@
 # List of source files
 SOURCES =\
+	R_18_6.c\
 	R_18_3.c\
 	R_18_2.c\
 	R_18_1.c\
@@ -16,6 +17,7 @@ BINS = $(SOURCES:.c=)
 CC = clang --analyze  
 
 # Individual flags for each program (order corresponds to the SOURCES list)
+CHECKER_R_18_6= -Xclang -analyzer-checker=core.StackAddressEscape
 CHECKER_R_18_3= -Xclang -analyzer-checker=alpha.unix.ArrayPointerArithmetic
 CHECKER_R_18_2= -Xclang -analyzer-checker=alpha.unix.ArrayPointerArithmetic
 CHECKER_R_18_1= -Xclang -analyzer-checker=alpha.unix.ArrayPointerArithmetic
