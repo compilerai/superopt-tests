@@ -175,8 +175,8 @@ ARCHIVE_FNAME := $(shell sh $(SUPEROPT_PROJECT_DIR)/superopt/utils/next_avail_fn
 
 .PHONY: collect_logs
 collect_logs:
-	find -path './eqcheck*/submit*/stdout' -exec python3 $(SUPEROPT_PROJECT_DIR)/superopt/utils/eq_read_log.py  {} \; > $(ARCHIVE_FNAME)
-	ln -sf $(ARCHIVE_FNAME) $(ARCHIVE_LAST)
+	find -path './eqcheck*/submit*/stdout' -exec python3 $(SUPEROPT_PROJECT_DIR)/superopt/utils/eq_read_log.py  {} \; > $(ARCHIVE_FNAME).txt
+	ln -sf $(ARCHIVE_FNAME).txt $(ARCHIVE_LAST)
 
 .PHONY: archive_run
 archive_run: collect_logs
