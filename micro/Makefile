@@ -76,6 +76,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # src_always_ub [eqgen fails due to ud2]
 
 UNROLL2_CLANG := $(PROGS)                                                      \
+                 d2s                                                           \
                  unreachable_alloc_in_src_pathset                              \
                  load_store_elim_conditional                                   \
 
