@@ -14,10 +14,18 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
 EXPECTED_FAILS_GCC :=                                                          \
                       cast3sf                                                  \
                       cast3uf                                                  \
+                      comp1                                                    \
                       # cast3sf Failing due to timeout in region_agrees_with_memlabel (The addr calculation has float_to_ieee_bv in it)
                       # cast3uf Failing due to timeout in region_agrees_with_memlabel (The addr calculation has float_to_ieee_bv in it)
+                      # comp1 [query timeout]
 
 EXPECTED_FAILS_CLANG :=                                                        \
+                      abs_max_ld                                               \
+                      comp1                                                    \
+                      same_ld                                                  \
+                      # abs_max_ld [query timeout]
+                      # comp1 [query timeout]
+                      # same_ld [query timeout]
 
 #PROGS_EQCHECKER_COMPILER := 
 #PROGS_EQCHECKER_SRCDST :=

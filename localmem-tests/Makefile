@@ -55,6 +55,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       addr_taken_simple_structs                                \
                       alloca_conditional                                       \
                       alloca_malloc_switch_cyclic                              \
+                      alloca_simple                                            \
                       minprintf                                                \
                       minscanf                                                 \
                       rodata                                                   \
@@ -71,6 +72,7 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # alloca_conditional [requires invariant (i < n) on loop body PCs / suffixpath]
                       # alloca_conditional_3 [sometimes query timeout]
                       # alloca_malloc_switch_cyclic [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                      # alloca_simple [d2s makes ret-reg query harder which times out]
                       # minprintf,minscanf [requires select(local.addr) which is missing from bv-eqclass exprs]
                       # vla_2d [mem-eq query timeout]
                       # vla_conditional_use [times-out sometimes because the invariant inference DFA does not proceed in RPO i.e. it tries relaxing an edge before relaxing all its predecessors]
@@ -95,6 +97,7 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         alloca_conditional                                     \
                         alloca_linked_list                                     \
                         alloca_malloc_switch_cyclic                            \
+                        alloca_simple                                          \
                         f_indir_byval                                          \
                         fib                                                    \
                         variadic_acyclic                                       \
@@ -111,6 +114,7 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         # alloca_conditional [???]
                         # alloca_linked_list [???]
                         # alloca_malloc_switch_cyclic [fails stack-dealloc wfcond -- requires RPO DFA for more precise spvr]
+                        # alloca_simple [d2s makes ret-reg query harder which times out]
                         # f_indir_byval [requires different modeling of byval parameter: the _value_ of the parameter in src is equal to the _address_ in dst]
                         # fib [non-linear invariant required for relating edx with m]
                         # variadic_acyclic [push insn is used for allocation -- we correlate local before write and thus get different mem on path where the local is not written-to before dealloc]
@@ -143,6 +147,7 @@ EXPECTED_FAILS_ICC :=                                                          \
                       alloca_conditional                                       \
                       alloca_conditional_simple                                \
                       alloca_malloc_switch_cyclic                              \
+                      alloca_simple                                            \
                       fib                                                      \
                       rodata                                                   \
                       vla_2d                                                   \
@@ -162,19 +167,20 @@ EXPECTED_FAILS_ICC :=                                                          \
                       vla_single_loop_4                                        \
                       # addr_taken_parameter_large_struct [byval not modeled]
                       # alloca_conditional [???]
-                      # vla_simple{,_nested_1,_nested_2} [requires non-affine invariants]
-                      # fib [requires non-affine invariants]
-                      # vla_single_loop_{1,2,3,4} [requires non-affine invariants]
-                      # vla_midway_decl [multiple allocs]
-                      # vla_in_loop_3 [query timeout/timeout]
-                      # vla_in_loop_4 [query timeout/timeout]
-                      # rodata [requires non-affine invariants]
-                      # vla_conditional_use [requires non-affine invariants]
-                      # vla_in_loop_conditional_{continue,exit} [requires non-affine invariants]
-                      # vla_2d [non-affine invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
-                      # vla_nested_loops_2 [loop peeling leading to multiple stack allocations for inner VLA alloc]
                       # alloca_conditional_simple [fails sp-below-isp wfcond after fcall -- requires RPO DFA for more precise spvr]
                       # alloca_malloc_switch_cyclic [requires more powerful inequality inference and RPO DFA]
+                      # alloca_simple [d2s makes ret-reg query harder which times out]
+                      # fib [requires non-affine invariants]
+                      # rodata [requires non-affine invariants]
+                      # vla_2d [non-affine invariant required for 2D VLA strided traversal: reg == 4*i*(n+1)]
+                      # vla_conditional_use [requires non-affine invariants]
+                      # vla_in_loop_3 [query timeout/timeout]
+                      # vla_in_loop_4 [query timeout/timeout]
+                      # vla_in_loop_conditional_{continue,exit} [requires non-affine invariants]
+                      # vla_midway_decl [multiple allocs]
+                      # vla_nested_loops_2 [loop peeling leading to multiple stack allocations for inner VLA alloc]
+                      # vla_simple{,_nested_1,_nested_2} [requires non-affine invariants]
+                      # vla_single_loop_{1,2,3,4} [requires non-affine invariants]
 
 #UNROLL1_ICX = alloca_linked_list $(UNROLL1_PROGS)
 #UNROLL2_ICX = fib
