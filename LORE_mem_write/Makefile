@@ -11,7 +11,6 @@ EXTRA_FLAGS :=                                                                 \
 UNROLL4_GCC := ex101 ex102 ex103 ex104 ex105 ex106 ex107 ex108
 UNROLL8_GCC := ex106u ex107u
 EXPECTED_FAILS_GCC :=                                                          \
-                      ex107                                                    \
                       ex107u                                                   \
                       # ex106u [timeout?]
                       # ex107 [sometimes query-timeout]
@@ -20,13 +19,11 @@ EXPECTED_FAILS_GCC :=                                                          \
 UNROLL16_CLANG := ex101 ex102 ex103 ex104 ex105 ex108
                   # not tested: ex106 ex107
 EXPECTED_FAILS_CLANG :=                                                        \
-                        ex102                                                  \
                         ex103                                                  \
                         ex104                                                  \
                         ex105                                                  \
                         ex108                                                  \
                         # ex101 [timeout?]
-                        # ex102 [timeout]
                         # ex103 [timeout]
                         # ex104 [timeout]
                         # ex105 [timeout]

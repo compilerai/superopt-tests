@@ -12,23 +12,12 @@ EXTRA_FLAGS :=                                                                 \
 UNROLL4_GCC := ex1 ex2 ex3 ex4 ex5 ex6 ex8 ex9 ex10 ex11 ex12 ex13
 UNROLL8_GCC := ex2u ex3u ex4u ex5u ex6u ex13u
 EXPECTED_FAILS_GCC :=                                      \
-                      ex2u                                 \
                       ex3u                                 \
-                      ex4u                                 \
                       ex5u                                 \
-                      ex6u                                 \
                       ex12                                 \
-                      # ex2u [query-timeout]
                       # ex3u [query-timeout]
-                      # ex4u [query-timeout]
                       # ex5u [query-timeout]
-                      # ex6u [query-timeout]
-                      # ex8 [query-timeout]
-                      # ex9 [query-timeout]
-                      # ex10 [query-timeout]
-                      # ex11 [query-timeout]
                       # ex12 [query-timeout]
-                      # ex13u [query-timeout]
 
 UNROLL16_CLANG := ex1 ex7 ex8 ex9 ex10 ex11 ex12
 EXPECTED_FAILS_CLANG :=                                    \

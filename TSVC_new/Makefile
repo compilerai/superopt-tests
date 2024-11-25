@@ -14,13 +14,11 @@ UNROLL8_GCC := s111 s1111 s113 s119 s124 s125 s128 s131 s132 s1421 s174 s2233 s3
 EXPECTED_FAILS_GCC :=             \
                       s174        \
                       s441        \
-                      vbor        \
                       # s124 [timeout???]
                       # s125 [query timeout]
                       # s174 [non-linear invariant required?]
                       # s441 [sometime query-timeouts]
                       # s443 [timeout???]
-                      # vbor [query-timeout]
 
 UNROLL64_CLANG := s1119 s116 s119 s124 s125 s1279 s131 s132 s1421 s171 s174 s252 s254 s271 s2711 s2712 s273 s311 s3111 s319 s352 s421 s423 s471 va vbor vif
                   # cannot pass: s1115 non-bisimilar, s2233 loop interchange, s317 non-linear invariant required
@@ -39,6 +37,7 @@ EXPECTED_FAILS_CLANG :=           \
                         s273      \
                         s311      \
                         s3111     \
+                        s352      \
                         s421      \
                         s423      \
                         s471      \
@@ -79,12 +78,13 @@ EXPECTED_FAILS_ICC :=               \
                       s114          \
                       s1161         \
                       s119          \
-                      s1213         \
                       s124          \
                       s125          \
                       s1279         \
+                      s132          \
                       s1421         \
                       s174          \
+                      s253          \
                       s271          \
                       s2710         \
                       s2711         \
@@ -102,7 +102,6 @@ EXPECTED_FAILS_ICC :=               \
                       # s114 [timeout]
                       # s1161 [exceeds mem limit]
                       # s119  [timeout -- simplify_bv_add_atomic() takes 50% of time]
-                      # s1213 [query-timeout]
                       # s124 [timeout???]
                       # s125 [query-timeout]
                       # s132 [query-timeout]
