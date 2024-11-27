@@ -175,12 +175,12 @@ ARCHIVE_FNAME := $(shell sh $(SUPEROPT_PROJECT_DIR)/superopt/utils/next_avail_fn
 
 .PHONY: collect_logs
 collect_logs:
-	find -path './eqcheck*/submit*/stdout' -exec python3 $(SUPEROPT_PROJECT_DIR)/superopt/utils/eq_read_log.py  {} \; > $(ARCHIVE_FNAME).txt
+	find \( -path './eqcheck*/submit*/stdout' -o -path './clangv*/submit*/stdout' \) -exec python3 $(SUPEROPT_PROJECT_DIR)/superopt/utils/eq_read_log.py  {} \; > $(ARCHIVE_FNAME).txt
 	ln -sf $(ARCHIVE_FNAME).txt $(ARCHIVE_LAST)
 
 .PHONY: archive_run
 archive_run: collect_logs
-	find . -type f -path "./eqcheck.*" ! -name "*.xml" ! -name "*.record" -print0 | apack -0 $(ARCHIVE_FNAME).zip || true
+	find -type f \( -path './eqcheck.*' -o -path './clangv*' \) ! -name '*.xml' ! -name '*.record' -print0 | apack -0 $(ARCHIVE_FNAME).zip || true
 	[ -f $(ARCHIVE_FNAME).zip ] && ln -sf $(ARCHIVE_FNAME).zip $(ARCHIVE_LAST).zip || true
 
 csv_%_helper:
