@@ -20,7 +20,7 @@ my $SUPEROPT_PROJECT_DIR = $ARGV[2];
 my $VPATH = $ARGV[3];
 my $benchmark = basename($VPATH);
 my $PWD = getcwd;
-my $num_processes_per_file = 10;
+my $num_processes_per_file = 2;
   
 my ($dst_arch, $compiler, $extraflagsarg, $expectedfailsarg, $ccoptsarg, $record_filename_arg);
 my ($opt_level);
