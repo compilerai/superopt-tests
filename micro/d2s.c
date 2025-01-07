@@ -1,15 +1,23 @@
-// on the exit path, d2s subs arr[n-1] with i*i
-// the ret-regs query becomes (sel()*sel() == i*i*sel())
-// and solver times out on this
-// without d2s, this passes
-int non_linear_comp(int* arr, int n)
+#define STEP do {            \
+    *x = (*a)&(*b);          \
+    *y = ~(*a)&(*c);         \
+    *z = (*x)^(*y);          \
+    *c = (*x)/(*y);          \
+    *d = (*z)*(*c);          \
+    *a = (*c)/2;             \
+    *b = (*d)/2;             \
+  } while (0)
+
+int non_linear_comp_2_steps(int* a, int* b, int* c, int* d, int* x, int* y, int* z)
 {
-  if (n < 1) {
-    return 0;
-  }
-#pragma clang loop vectorize(disable) unroll(disable)
-  for (int i = 0; i < n; ++i) {
-    arr[i] = i*i;
-  }
-  return arr[0]*arr[n-1];
+  STEP; STEP;
+  return *x**y**z**c**d;
+}
+
+// anything more than 2 steps chokes our preprocessing stage (pointsto and other analyses)
+// the following will timeout
+int non_linear_comp_5_steps(int* a, int* b, int* c, int* d, int* x, int* y, int* z)
+{
+  STEP; STEP; STEP; STEP; STEP;
+  return *x**y**z**c**d;
 }
