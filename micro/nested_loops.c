@@ -65,6 +65,7 @@ int nested_loops_depth_4(int *****a, int n, int m, int p, int q, int r)
   return 0;
 }
 
+/*
 int nested_loops_depth_5(int ******a, int n, int m, int p, int q, int r, int s)
 {
   for (int x = 0; x<s; x++) {
@@ -85,3 +86,4 @@ int nested_loops_depth_5(int ******a, int n, int m, int p, int q, int r, int s)
   }
   return 0;
 }
+*/
