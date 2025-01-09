@@ -99,6 +99,7 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         non_linear_comp_5_steps                                \
                         ret_long_long                                          \
                         store_store_elim                                       \
+                        unreachable_alloc_in_src_pathset_with_two_allocs       \
                         # alive_alloca [correlation of alloc fails -- the unreachable path in src cannot be correlated but the syntactic lockstep alloc-dealloc pairing insists on matching it]
                         # dead_alloca [dealloc of unreachable alloca not correlated -- can probably be fixed by enabling enumeration of dealloc even if there is no corresponding alloc]
                         # fcalls_hoist_merge [calls to printf are folded into one by conditionally setting args]
@@ -113,6 +114,7 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         # non_linear_comp_5_steps [timeout]
                         # ret_long_long [incompletness: need to include edx in return-reg expr]
                         # store_store_elim [store sinking -- heaps diverge]
+                        # unreachable_alloc_in_src_pathset_with_two_allocs [limitation of current enumeration]
 
 UNROLL1_SRCDST :=                                          \
                   ptr_arith_ub                             \
