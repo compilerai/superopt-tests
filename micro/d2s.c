@@ -29,6 +29,6 @@
 
 F_N_STEPS(1)
 F_N_STEPS(2)
+F_N_STEPS(3)
 // anything more than 2 steps chokes our preprocessing stage (pointsto and other analyses)
-// F_N_STEPS(3)
 // F_N_STEPS(5)
