@@ -62,6 +62,8 @@ EXTRA_FLAGS_CLANGV := --smt-query-timeout 180 --global-timeout 28800 --max-addre
                       #--enable-query-decomposition                                                                     \
                       # --disable-dst-to-src-submap
 
+export MAX_EQ_PROCESSES = 10
+
 # compiler flags
 GCC_EQCHECKER_FLAGS_EXTRA= $(GCC_EQCHECKER_NOUNROLL_FLAGS)
 CLANG_EQCHECKER_FLAGS_EXTRA= $(CLANG_EQCHECKER_NOUNROLL_FLAGS)
