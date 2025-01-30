@@ -27,7 +27,7 @@ CHECKER_R_18_6= -Xclang -analyzer-checker=core.StackAddressEscape
 CHECKER_R_18_3= -Xclang -analyzer-checker=alpha.unix.ArrayPointerArithmetic
 CHECKER_R_18_2= -Xclang -analyzer-checker=alpha.unix.ArrayPointerArithmetic
 CHECKER_R_18_1= -Xclang -analyzer-checker=alpha.unix.ArrayPointerArithmetic
-CHECKER_R_21_20= -Xclang -analyzer-checker=unix.StdLibOldReturnValueUseChecker
+CHECKER_R_21_20= -Xclang -analyzer-checker=alpha.unix.StdLibOldReturnValueUseChecker
 CHECKER_R_22_6= -Xclang -analyzer-checker=alpha.unix.Stream
 CHECKER_R_22_4 = -Xclang -analyzer-checker=alpha.unix.ReadOnlyStreamChecker
 CHECKER_R_9_1= -Xclang -analyzer-checker=core
