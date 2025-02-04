@@ -9,13 +9,6 @@ void use_bool ( bool_t use_bool_param ){
   return;
 }
  
-// const unsigned short int **__ctype_b_loc (void)
-//      __THROW __attribute__ ((__const__));
- 
-// # define __isctype(c, type) \
-//   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
-// # define isdigit(c)  __isctype((c), 8)
- 
 static bool_t f_13 ( uint8_t a )
 {
   int arr[5] = { 10, 20, 30, 40, 50 };
