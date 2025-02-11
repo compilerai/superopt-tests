@@ -52,7 +52,7 @@ UNROLL1_CLANG = $(UNROLL1)
 # UNROLL2 := bzip2
 # UNROLL2_CLANG = $(UNROLL2)
 
-EXTRA_FLAGS :=        --smt-query-timeout 180 --global-timeout 28800 --max-address-space-size-gb 32                    \
+EXTRA_FLAGS :=        --smt-query-timeout 180 --global-timeout 1000000 --max-address-space-size-gb 32                    \
                       --disable-removal-of-stack-from-stack-nonstack-ml-in-dst                                         
                       #--enable-query-decomposition                                                                     \
                       # --disable-dst-to-src-submap
