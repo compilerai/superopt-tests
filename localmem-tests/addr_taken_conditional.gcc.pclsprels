@@ -1,9 +1,9 @@
 =FunctionName addr_taken_conditional
-=PC: L1%1%spvEnd
+=PC: L1%6%spvEnd
 =local-addr-guesses begin
 =local.=Lentry%1%d=
 =stack-addr:
-1 : input.dst.sp=L1%1%spvEnd=sp.L1%1%spvEnd : BV:32
+1 : input.dst.sp=L1%6%spvEnd=sp.L1%6%spvEnd : BV:32
 2 : 12 : BV:32
 3 : bvadd(1, 2) : BV:32
 =stack-addr end

@@ -1,18 +1,18 @@
 =FunctionName rodata
-=PC: L6%1%spvEnd
+=PC: L6%6%spvEnd
 =local-addr-guesses begin
 =local.=Lentry%1%d=
 =stack-addr:
-1 : input.dst.sp=L6%1%spvEnd=sp.L6%1%spvEnd : BV:32
+1 : input.dst.sp=L6%6%spvEnd=sp.L6%6%spvEnd : BV:32
 2 : 13 : BV:32
 3 : bvadd(1, 2) : BV:32
 =stack-addr end
 =local-addr-guesses end
-=PC: L18%1%spvEnd
+=PC: L18%6%spvEnd
 =local-addr-guesses begin
 =local.=Lentry%6%d=
 =stack-addr:
-1 : input.dst.sp=L18%1%spvEnd=sp.L18%1%spvEnd : BV:32
+1 : input.dst.sp=L18%6%spvEnd=sp.L18%6%spvEnd : BV:32
 =stack-addr end
 =local-addr-guesses end
 =done

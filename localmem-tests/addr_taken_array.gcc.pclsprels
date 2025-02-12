@@ -1,38 +1,38 @@
 =FunctionName addr_taken_array
-=PC: L1%1%spvEnd
+=PC: L1%6%spvEnd
 =local-addr-guesses begin
 =local.=Lentry%1%d=
 =stack-addr:
-1 : input.dst.sp=L1%1%spvEnd=sp.L1%1%spvEnd : BV:32
+1 : input.dst.sp=L1%6%spvEnd=sp.L1%6%spvEnd : BV:32
 2 : 20 : BV:32
 3 : bvadd(1, 2) : BV:32
 =stack-addr end
 =local-addr-guesses end
 =done
 =FunctionName addr_taken_array_3
-=PC: L3%1%spvEnd
+=PC: L3%6%spvEnd
 =local-addr-guesses begin
 =local.=Lentry%1%d=
 =stack-addr:
-1 : input.dst.sp=L3%1%spvEnd=sp.L3%1%spvEnd : BV:32
+1 : input.dst.sp=L3%6%spvEnd=sp.L3%6%spvEnd : BV:32
 2 : 16 : BV:32
 3 : bvadd(1, 2) : BV:32
 =stack-addr end
 =local-addr-guesses end
-=PC: L3%1%spvEnd
+=PC: L3%6%spvEnd
 =local-addr-guesses begin
 =local.=Lentry%2%d=
 =stack-addr:
-1 : input.dst.sp=L3%1%spvEnd=sp.L3%1%spvEnd : BV:32
+1 : input.dst.sp=L3%6%spvEnd=sp.L3%6%spvEnd : BV:32
 2 : 272 : BV:32
 3 : bvadd(1, 2) : BV:32
 =stack-addr end
 =local-addr-guesses end
-=PC: L3%1%spvEnd
+=PC: L3%6%spvEnd
 =local-addr-guesses begin
 =local.=Lentry%3%d=
 =stack-addr:
-1 : input.dst.sp=L3%1%spvEnd=sp.L3%1%spvEnd : BV:32
+1 : input.dst.sp=L3%6%spvEnd=sp.L3%6%spvEnd : BV:32
 2 : 1296 : BV:32
 3 : bvadd(1, 2) : BV:32
 =stack-addr end
