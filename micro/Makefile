@@ -57,7 +57,6 @@ EXPECTED_FAILS_GCC :=                                                          \
                       ftmap_3_main                                             \
                       ftmap_4_main                                             \
                       ftmap_5_main                                             \
-                      non_linear_comp_3_steps                                  \
                       non_linear_comp_5_steps                                  \
                       non_linear_invariant_casting                             \
                       ret_long_long                                            \
@@ -74,7 +73,6 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # sum2d [requires: pointer arithmetic overflow UB modelling]
                       # nested_loops [requires invariant (m > 0) in due to unswitching of inner loop condition]
                       # nested_loops_depth_5 [sometimes timeout]
-                      # non_linear_comp_3_steps [query timeout/timeout]
                       # non_linear_comp_5_steps [timeout]
                       # non_linear_invariant_casting [requires: pointer arithmetic overflow UB modelling and non-linear invariant]
                       # ret_long_long [incompletness: need to include edx in return-reg expr]
@@ -95,7 +93,6 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         load_load_elim                                         \
                         load_store_elim                                        \
                         loop_hoisting                                          \
-                        non_linear_comp_3_steps                                \
                         non_linear_comp_5_steps                                \
                         ret_long_long                                          \
                         store_store_elim                                       \
@@ -110,7 +107,6 @@ EXPECTED_FAILS_CLANG :=                                                        \
                         # load_load_elim [safety check failed due to sinking of a heap load]
                         # load_store_elim [safety check failed due to sinking of a heap load]
                         # loop_hoisting [requires non-affine invariant: ecx = (n-1)&4]
-                        # non_linear_comp_3_steps [query timeout/timeout]
                         # non_linear_comp_5_steps [timeout]
                         # ret_long_long [incompletness: need to include edx in return-reg expr]
                         # store_store_elim [store sinking -- heaps diverge]
@@ -146,7 +142,6 @@ EXPECTED_FAILS_ICC :=                                                          \
                       fcalls_sink_merge                                        \
                       ftmap_2_main                                             \
                       ftmap_3_main                                             \
-                      non_linear_comp_3_steps                                  \
                       non_linear_comp_5_steps                                  \
                       ret_long_long                                            \
                       store_store_elim                                         \
@@ -156,7 +151,6 @@ EXPECTED_FAILS_ICC :=                                                          \
                       # fcalls_sink_merge [calls to bar() are sunk and merged]
                       # ftmap_2_main [need manual addr mappings]
                       # ftmap_3_main [need manual addr mappings]
-                      # non_linear_comp_3_steps [query timeout on mem-eq query: perhaps d2s is weaker than expected]
                       # non_linear_comp_5_steps [timeout]
                       # ret_long_long [incompletness: need to include edx in return-reg expr]
                       # store_store_elim [???]
