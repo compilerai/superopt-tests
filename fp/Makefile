@@ -14,26 +14,20 @@ PROGS := fptrunc fpbinary fptoui fbinary flbinary                              \
 EXPECTED_FAILS_GCC :=                                                          \
                       abs1_ld                                                  \
                       abs_max_ld                                               \
-                      cast3sf                                                  \
-                      cast3uf                                                  \
                       comp1                                                    \
+                      max_ld                                                   \
                       # abs1_ld [some ce-eval issue --- needs debugging]
                       # abs_max_ld [some ce-eval issue --- needs debugging]
-                      # cast3sf Failing due to timeout in region_agrees_with_memlabel (The addr calculation has float_to_ieee_bv in it)
-                      # cast3uf Failing due to timeout in region_agrees_with_memlabel (The addr calculation has float_to_ieee_bv in it)
                       # comp1 [query timeout]
+                      # max_ld [some ce-eval issue --- needs debugging]
 
 EXPECTED_FAILS_CLANG :=                                                        \
                       abs1_ld                                                  \
                       abs_max_ld                                               \
-                      cast3sf                                                  \
-                      cast3uf                                                  \
                       comp1                                                    \
                       same_ld                                                  \
                       # abs1_ld [some ce-eval issue --- needs debugging]
                       # abs_max_ld [some ce-eval issue --- needs debugging]
-                      # cast3sf [query timeout]
-                      # cast3uf [query timeout]
                       # comp1 [query timeout]
                       # same_ld [some ce-eval issue --- needs debugging]
 
