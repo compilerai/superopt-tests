@@ -50,9 +50,6 @@ UNROLL2_GCC := addr_taken_array                                                \
                
 EXPECTED_FAILS_GCC :=                                                          \
                       addr_taken_parameter_large_struct                        \
-                      addr_taken_parameter_scalar                              \
-                      addr_taken_scalar                                        \
-                      addr_taken_simple_structs                                \
                       alloca_conditional                                       \
                       alloca_malloc_switch_cyclic                              \
                       alloca_simple                                            \
