@@ -49,7 +49,6 @@ UNROLL2_GCC := $(PROGS) \
 EXPECTED_FAILS_GCC :=                                                          \
                       alive_alloca                                             \
                       call_ret_struct                                          \
-                      call_ret_struct_indir                                    \
                       dead_alloca                                              \
                       fcalls_sink_merge                                        \
                       ftmap_1_main                                             \
