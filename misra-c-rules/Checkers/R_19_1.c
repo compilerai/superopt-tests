@@ -63,10 +63,3 @@ void valid_memcpy() {
     char dest[5];
     memcpy(dest, src, 5); // No overlap, safe operation
 }
-
-int main() {
-    valid_struct_assignment();
-    valid_memmove();
-    valid_memcpy();
-    return 0;
-}

@@ -77,19 +77,4 @@ void compliant_func5() {
     printf("This function is actually used.\n");
 }
 
-int main() {
-    non_compliant_func1();
-    non_compliant_func2();
-    non_compliant_func3();
-    non_compliant_func4();
-    non_compliant_func5();
-    // non_compliant_func6(); // Not called, remains dead code
-    // non_compliant_func7(); // Not useful due to early return
-    
-    compliant_func1();
-    compliant_func2();
-    compliant_func3(5);
-    compliant_func4();
-    compliant_func5();
-    return 0;
-}
+

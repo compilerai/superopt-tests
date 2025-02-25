@@ -62,15 +62,3 @@ void compliant_func4() {
     }
 }
 
-int main() {
-    non_compliant_func1();
-    non_compliant_func2();
-    non_compliant_func3();
-    non_compliant_func4();
-    
-    compliant_func1();
-    compliant_func2(5);
-    compliant_func3(3);
-    compliant_func4();
-    return 0;
-}
