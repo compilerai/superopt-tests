@@ -1,5 +1,7 @@
 # List of source files
 SOURCES =\
+	R_22_3.c\
+	R_19_1.c\
 	R_21_18.c\
 	R_21_17.c\
 	R_21_13.c\
@@ -22,6 +24,8 @@ BINS = $(SOURCES:.c=)
 CC = clang --analyze  
 
 # Individual flags for each program (order corresponds to the SOURCES list)
+CHECKER_R_22_3=-Xclang -analyzer-checker=alpha.unix.Stream
+CHECKER_R_19_1=-Xclang -analyzer-checker=alpha.unix.cstring.BufferOverlap
 CHECKER_R_21_18=-Xclang -analyzer-checker=alpha.unix.cstring
 CHECKER_R_21_17=-Xclang -analyzer-checker=alpha.unix.cstring
 CHECKER_R_21_13=-Xclang -analyzer-checker=alpha.unix.CTypeFunctionsChecker
