@@ -26,8 +26,8 @@ void overlapping_struct_assignment() {
     obj.a = 10;
     obj.b = 20;
     struct Example *ptr = &obj;
-    ptr->e = &obj; // Overlapping assignment (undefined behavior)
-    memcpy((void *)&obj.a,(void *)&obj.b,12);
+    ptr->e = &obj; 
+    memcpy((void *)&obj.a,(void *)&obj.b,12);// Overlapping assignment (undefined behavior)
 }
 
 // Non-compliant: Overlapping memcpy operation
