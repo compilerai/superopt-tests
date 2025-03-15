@@ -42,8 +42,6 @@ EXPECTED_FAILS_CLANG_O3 :=                                                      
 EXPECTED_FAILS_CLANG := $(EXPECTED_FAILS_CLANG_O0)
 
 EXPECTED_FAILS_CLANGV :=                                                                                               \
-                         hbMakeCodeLengths                                                                             \
-                         qSort3                                                                                        \
                          sendMTFValues                                                                                 \
                          sortIt                                                                                        \
 
