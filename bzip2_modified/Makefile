@@ -5,7 +5,7 @@ VPATH = $(SRCDIR)/bzip2_modified
 
 UNROLL2 := bzip2_modified
 
-UNROLL2_CLANG = $(UNROLL2)
+UNROLL2_CLANG_O1 = $(UNROLL2)
 
 EXTRA_FLAGS        := --smt-query-timeout 300 --eqcheck-timeout 14400 --global-timeout 86400 --max-address-space-size-gb 32 \
                       --enable-query-decomposition                                                                          \

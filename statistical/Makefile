@@ -26,7 +26,7 @@ UNROLL2 := approximateEntropy \
            universal \
            utilities
 
-UNROLL2_CLANG = $(UNROLL2)
+UNROLL2_CLANG_O0 = $(UNROLL2)
 
 # EXTRA_FLAGS := --smt-query-timeout 300 --global-timeout 28800 --max-address-space-size-gb 32 \
 #                --disable-removal-of-stack-from-stack-nonstack-ml-in-dst

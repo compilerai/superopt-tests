@@ -9,7 +9,7 @@ EXTRA_FLAGS :=                                                                 \
                --max-address-space-size-gb 16
                #--disable-d2s # dst-to-src-submap incurs overhead
 
-UNROLL8_GCC := s111 s1111 s113 s119 s124 s125 s128 s131 s132 s1421 s174 s2233 s311 s3111 s319 s421 s423 s441 s443 s471 va vbor
+UNROLL8_GCC_O3 := s111 s1111 s113 s119 s124 s125 s128 s131 s132 s1421 s174 s2233 s311 s3111 s319 s421 s423 s441 s443 s471 va vbor
                # cannot pass: s1119 non-bisimilar, s2275 loop interchange, s231 loop interchange, s235 loop interchange, s317 non-linear invariant required, s331 non-linear invariant required
 EXPECTED_FAILS_GCC :=             \
                       s174        \
@@ -20,7 +20,7 @@ EXPECTED_FAILS_GCC :=             \
                       # s441 [sometime query-timeouts]
                       # s443 [timeout???]
 
-UNROLL64_CLANG := s1119 s116 s119 s124 s125 s1279 s131 s132 s1421 s171 s174 s252 s254 s271 s2711 s2712 s273 s311 s3111 s319 s352 s421 s423 s471 va vbor vif
+UNROLL64_CLANG_O3 := s1119 s116 s119 s124 s125 s1279 s131 s132 s1421 s171 s174 s252 s254 s271 s2711 s2712 s273 s311 s3111 s319 s352 s421 s423 s471 va vbor vif
                   # cannot pass: s1115 non-bisimilar, s2233 loop interchange, s317 non-linear invariant required
 EXPECTED_FAILS_CLANG :=           \
                         s119      \
@@ -71,7 +71,7 @@ EXPECTED_FAILS_CLANG :=           \
                         # vbor [query-timeout]
                         # vif [sometimes timeout]
 
-UNROLL64_ICC := s1111 s1115 s113 s114 s1161 s119 s1213 s124 s125 s1279 s128 s131 s132 s1421 s174 s253 s254 s271 s2710 s2711 s2712 s272 s273 s274 s276 s293 s311 s3111 s319 s4115 s421 s423 s441 s442 s443 va vbor vif
+UNROLL64_ICC_O3 := s1111 s1115 s113 s114 s1161 s119 s1213 s124 s125 s1279 s128 s131 s132 s1421 s174 s253 s254 s271 s2710 s2711 s2712 s272 s273 s274 s276 s293 s311 s3111 s319 s4115 s421 s423 s441 s442 s443 va vbor vif
 EXPECTED_FAILS_ICC :=               \
                       s1111         \
                       s1115         \

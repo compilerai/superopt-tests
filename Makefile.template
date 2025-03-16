@@ -4,23 +4,32 @@ include $(SRCDIR)/Makefile.common  # build rules
 TMPDIR_PREFIX ?= eqcheck
 EXTRA_FLAGS_I = $(EQFLAGS) --disable-json-dumps
 
-# enumerate files to be compiled from user declared UNROLL1_GCC, UNROLL2_CLANG, .... variables
+# enumerate files to be compiled from user declared UNROLL1_GCC_O0, UNROLL2_CLANG_O1, .... variables
 UNROLL_FACTORS := 1 2 4 8 16 32 64
 COMPILERS := GCC CLANG ICC ICX ACK GPP CLANGPP ICPC ICPX
-templ_unroll_compiler = UNROLL$(u)_$(compiler)
-PROGS_EQCHECKER_GCC     := $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,GCC,         $($(templ_unroll_compiler))))
-PROGS_EQCHECKER_CLANG   := $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,CLANG,       $($(templ_unroll_compiler))))
-PROGS_EQCHECKER_ICC     := $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,ICC,         $($(templ_unroll_compiler))))
-PROGS_EQCHECKER_ICX     := $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,ICX,         $($(templ_unroll_compiler))))
-PROGS_EQCHECKER_ACK     := $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,ACK,         $($(templ_unroll_compiler))))
-PROGS_EQCHECKER_GPP     := $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,GPP,         $($(templ_unroll_compiler))))
-PROGS_EQCHECKER_CLANGPP := $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,CLANGPP,     $($(templ_unroll_compiler))))
-PROGS_EQCHECKER_ICPC    := $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,ICPC,        $($(templ_unroll_compiler))))
-PROGS_EQCHECKER_ICPX    := $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,ICPX,        $($(templ_unroll_compiler))))
-PROGS_EQCHECKER_ALL     := $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,$(COMPILERS),$($(templ_unroll_compiler))))
-# PROGS_UNROLL_CUR_COMPILER specifies command line for gen_eqtest_cmds.pl in the form "unroll1 <unroll1_progs> unroll2 <unroll1_progs> ..."
-# specific to CUR_COMPILER and evaluated on demand (note = vs :=)
-PROGS_UNROLL_CUR_COMPILER = $(foreach u,$(UNROLL_FACTORS),unroll$(u) $(UNROLL$(u)_$(CUR_COMPILER)))
+OPTS := O0 O1 O2 O3
+
+templ_unroll_compiler = UNROLL$(u)_$(compiler)_$(opt)
+PROGS_EQCHECKER_GCC     := $(foreach opt,$(OPTS), $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,GCC,         $($(templ_unroll_compiler)))))
+PROGS_EQCHECKER_CLANG   := $(foreach opt,$(OPTS), $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,CLANG,       $($(templ_unroll_compiler)))))
+PROGS_EQCHECKER_ICC     := $(foreach opt,$(OPTS), $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,ICC,         $($(templ_unroll_compiler)))))
+PROGS_EQCHECKER_ICX     := $(foreach opt,$(OPTS), $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,ICX,         $($(templ_unroll_compiler)))))
+PROGS_EQCHECKER_ACK     := $(foreach opt,$(OPTS), $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,ACK,         $($(templ_unroll_compiler)))))
+PROGS_EQCHECKER_GPP     := $(foreach opt,$(OPTS), $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,GPP,         $($(templ_unroll_compiler)))))
+PROGS_EQCHECKER_CLANGPP := $(foreach opt,$(OPTS), $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,CLANGPP,     $($(templ_unroll_compiler)))))
+PROGS_EQCHECKER_ICPC    := $(foreach opt,$(OPTS), $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,ICPC,        $($(templ_unroll_compiler)))))
+PROGS_EQCHECKER_ICPX    := $(foreach opt,$(OPTS), $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,ICPX,        $($(templ_unroll_compiler)))))
+PROGS_EQCHECKER_ALL     := $(foreach opt,$(OPTS), $(foreach u,$(UNROLL_FACTORS),$(foreach compiler,$(COMPILERS),$($(templ_unroll_compiler)))))
+# PROGS_UNROLL_CUR_COMPILER_OPT_LEVEL specifies command line for gen_eqtest_cmds.pl in the form "unroll1 <unroll1_progs> unroll2 <unroll1_progs> ..."
+# specific to CUR_COMPILER and OPT_LEVEL and evaluated on demand (note = vs :=)
+# The user would write something like
+# - UNROLL1_GCC_O1 := prog1, where filename would be prog1.c
+# - or, UNROLL2_SRCDST := prog3, where filename would be prog3_src.c and prog3_dst.{c,s}
+define eval_progs_unroll
+$(if $(filter SRCDST, $(CUR_COMPILER)), $(foreach u,$(UNROLL_FACTORS),unroll$(u) $(UNROLL$(u)_$(CUR_COMPILER))), $(foreach u,$(UNROLL_FACTORS),unroll$(u) $(UNROLL$(u)_$(CUR_COMPILER)_$(OPT_LEVEL))))
+endef
+PROGS_UNROLL_CUR_COMPILER_OPT_LEVEL = $(call eval_progs_unroll)
+
 PROGS_UNROLL_CLANGV = $(foreach u,$(UNROLL_FACTORS),unroll$(u) $(UNROLL$(u)_CLANG))
 
 EQCHECKER_BC32_PROGS := $(foreach opt,O0 O3,$(addsuffix .bc32.eqchecker.$(opt), $(PROGS_EQCHECKER_ALL)))
@@ -28,7 +37,6 @@ EQCHECKER_BC64_PROGS := $(foreach opt,O0 O3,$(addsuffix .bc64.eqchecker.$(opt), 
 EQCHECKER_BC32_O3cg_PROGS = $(addsuffix .bc32.eqchecker.O3.cg, $(PROGS_EQCHECKER_ALL))
 EQCHECKER_BC64_O3cg_PROGS = $(addsuffix .bc64.eqchecker.O3.cg, $(PROGS_EQCHECKER_ALL))
 
-OPTS := O0 O1 O2 O3
 EQCHECKER_I386_GCC_PROGS   := $(foreach opt,$(OPTS),$(addsuffix .gcc.eqchecker.$(opt).i386.s,   $(PROGS_EQCHECKER_GCC)))
 EQCHECKER_X64_GCC_PROGS    := $(foreach opt,$(OPTS),$(addsuffix .gcc.eqchecker.$(opt).x64.s,    $(PROGS_EQCHECKER_GCC)))
 EQCHECKER_I386_CLANG_PROGS := $(foreach opt,$(OPTS),$(addsuffix .clang.eqchecker.$(opt).i386.s, $(PROGS_EQCHECKER_CLANG)))
@@ -79,7 +87,7 @@ all: $(ALL_PROGS)
 ack-progs: $(ACK_EQCHECKER_PROGS)
 
 eqtest_%.helper:: $(ALL_PROGS) $(SRCDIR)/Makefile.template $(SRCDIR)/scripts/gen_eqtest_cmds.pl $(VPATH)/Makefile Makefile $(EQFLAGS_FILES)
-	perl $(SRCDIR)/scripts/gen_eqtest_cmds.pl eqcheck $@ $(SUPEROPT_PROJECT_DIR) $(VPATH) $(ARCH) $(shell echo $(CUR_COMPILER) | tr A-Z a-z) $(OPT_LEVEL) "extraflags@$(EXTRA_FLAGS) $(EXTRA_FLAGS_$(CUR_COMPILER)) $(EXTRA_FLAGS_I)" "expectedfails@$(EXPECTED_FAILS_$(CUR_COMPILER))" "cc-opts@$(CC_OPTS)" "record@" $(TMPDIR_PREFIX) $(PROGS_UNROLL_CUR_COMPILER)
+	perl $(SRCDIR)/scripts/gen_eqtest_cmds.pl eqcheck $@ $(SUPEROPT_PROJECT_DIR) $(VPATH) $(ARCH) $(shell echo $(CUR_COMPILER) | tr A-Z a-z) $(OPT_LEVEL) "extraflags@$(EXTRA_FLAGS) $(EXTRA_FLAGS_$(CUR_COMPILER)) $(EXTRA_FLAGS_$(CUR_COMPILER)_$(OPT_LEVEL)) $(EXTRA_FLAGS_I)" "expectedfails@$(EXPECTED_FAILS_$(CUR_COMPILER)) $(EXPECTED_FAILS_$(CUR_COMPILER)_$(OPT_LEVEL))" "cc-opts@$(CC_OPTS)" "record@" $(TMPDIR_PREFIX) $(PROGS_UNROLL_CUR_COMPILER_OPT_LEVEL)
 
 eqtest_%_gcc.helper:: CUR_COMPILER=GCC
 eqtest_%_gPP.helper:: CUR_COMPILER=GPP

@@ -9,7 +9,7 @@ EXTRA_FLAGS :=                                                                 \
                --max-address-space-size-gb 16
                #--disable-d2s # dst-to-src-submap incurs overhead
 
-UNROLL8_GCC := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s173 s2244 s243 s251 s3251 s351 s452 s453 sum1d vdotr vpv vpvpv vpvts vpvtv vtv vtvtv
+UNROLL8_GCC_O3 := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s173 s2244 s243 s251 s3251 s351 s452 s453 sum1d vdotr vpv vpvpv vpvts vpvtv vtv vtvtv
                # cannot pass: s176 (non-bisimilar -- outer loop and inner loop collapse twice), s162 (non-linear invariant required: ecx == ((LEN-k)/4)*16)
 
 EXPECTED_FAILS_GCC :=          \
@@ -17,7 +17,7 @@ EXPECTED_FAILS_GCC :=          \
 	                    s122     \
 	                    # s122 [???]
 
-UNROLL64_CLANG := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s162 s173 s176 s2244 s243 s251 s3251 s351 s452 s453 sum1d vdotr vpv vpvpv vpvts vpvtv vtv vtvtv
+UNROLL64_CLANG_O3 := s000 s1112 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s162 s173 s176 s2244 s243 s251 s3251 s351 s452 s453 sum1d vdotr vpv vpvpv vpvts vpvtv vtv vtvtv
 EXPECTED_FAILS_CLANG :=          \
                         s162     \
                         s176     \
@@ -29,7 +29,7 @@ EXPECTED_FAILS_CLANG :=          \
                         # vpvts [sometimes query timeouts]
                         # vtv [sometimes query timeouts]
 
-UNROLL16_ICC := s000 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s173 s176 s2244 s251 s3251 s452 s453 sum1d vdotr vpv vpvpv vpvts vpvtv vtv vtvtv # should pass: s1251 (query-timeout), s176 (???), s3251 (query timeout), vtvtv (query-timeout), vtv (query-timeout)
+UNROLL16_ICC_O3 := s000 s112 s121 s122 s1221 s1251 s127 s1281 s1351 s173 s176 s2244 s251 s3251 s452 s453 sum1d vdotr vpv vpvpv vpvts vpvtv vtv vtvtv # should pass: s1251 (query-timeout), s176 (???), s3251 (query timeout), vtvtv (query-timeout), vtv (query-timeout)
                 # cannot pass: s1112 (loop reversal with mem write), s243 (loop splitting -- can do similar function without mem write), s162 (non-linear invariant required: edi == (LEN-k)&(~15))
 EXPECTED_FAILS_ICC :=           \
                       s1251     \

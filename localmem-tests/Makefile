@@ -41,12 +41,12 @@ UNROLL1_PROGS :=                                                               \
                  # fib                [u2]                                     \
                  # alloca_linked_list [u2]                                     \
 
-UNROLL1_GCC :=                                                                 \
-               fib                                                             \
-               $(UNROLL1_PROGS)                                                \
+UNROLL1_GCC_O3 :=                                                              \
+                  fib                                                          \
+                  $(UNROLL1_PROGS)                                             \
 
-UNROLL2_GCC := addr_taken_array                                                \
-	             alloca_linked_list                                              \
+UNROLL2_GCC_O3 := addr_taken_array                                             \
+                  alloca_linked_list                                           \
                
 EXPECTED_FAILS_GCC :=                                                          \
                       addr_taken_parameter_large_struct                        \
@@ -81,13 +81,13 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # vla_single_loop_1 [dealloc path correlation failing: sinking (code merging) of sp restore (dealloc) to common path instead of alloc dominating path, no coresponding path in src]
                       # vla_single_loop_{3,4} [wfcond fails on second alloc -- most likely due to missing invariants as in case of clang]
 
-UNROLL1_CLANG := alloca_linked_list                                            \
-                 addr_taken_parameter_clang                                    \
-                 addr_taken_array                                              \
-                 $(UNROLL1_PROGS)                                              \
+UNROLL1_CLANG_O3 := alloca_linked_list                                         \
+                    addr_taken_parameter_clang                                 \
+                    addr_taken_array                                           \
+                    $(UNROLL1_PROGS)                                           \
 
-UNROLL2_CLANG :=                                                               \
-                 fib       
+UNROLL2_CLANG_O3 :=                                                            \
+                    fib       
 
 EXPECTED_FAILS_CLANG :=                                                        \
                         addr_taken_parameter_large_struct                      \
@@ -133,11 +133,11 @@ UNROLL2_ACK = addr_taken_simple                                                \
               # minprintf -- harvested assembly is incorrect; looks like switch is implemented using jump table
 EXTRA_FLAGS_ACK := --disable-fcall-wfconds
 
-UNROLL1_ICC = $(UNROLL1_PROGS)                                                 \
-              fib
+UNROLL1_ICC_O3 = $(UNROLL1_PROGS)                                              \
+                 fib
 
-UNROLL2_ICC = alloca_linked_list                                               \
-              addr_taken_array                                                 \
+UNROLL2_ICC_O3 = alloca_linked_list                                            \
+                 addr_taken_array                                              \
 
 EXPECTED_FAILS_ICC :=                                                          \
                       addr_taken_parameter_large_struct                        \

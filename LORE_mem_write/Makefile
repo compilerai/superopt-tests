@@ -8,15 +8,15 @@ EXTRA_FLAGS :=                                                                 \
                --global-timeout 3600                                           \
                --max-address-space-size-gb 16
 
-UNROLL4_GCC := ex101 ex102 ex103 ex104 ex105 ex106 ex107 ex108
-UNROLL8_GCC := ex106u ex107u
+UNROLL4_GCC_O3 := ex101 ex102 ex103 ex104 ex105 ex106 ex107 ex108
+UNROLL8_GCC_O3 := ex106u ex107u
 EXPECTED_FAILS_GCC :=                                                          \
                       ex107u                                                   \
                       # ex106u [timeout?]
                       # ex107 [sometimes query-timeout]
                       # ex107u [timeout]
 
-UNROLL16_CLANG := ex101 ex102 ex103 ex104 ex105 ex108
+UNROLL16_CLANG_O3 := ex101 ex102 ex103 ex104 ex105 ex108
                   # not tested: ex106 ex107
 EXPECTED_FAILS_CLANG :=                                                        \
                         ex103                                                  \

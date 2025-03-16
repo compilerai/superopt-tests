@@ -9,8 +9,8 @@ EXTRA_FLAGS :=                                                                 \
                --max-address-space-size-gb 16
                #--disable-d2s # dst-to-src-submap incurs overhead
 
-UNROLL4_GCC := ex1 ex2 ex3 ex4 ex5 ex6 ex8 ex9 ex10 ex11 ex12 ex13
-UNROLL8_GCC := ex2u ex3u ex4u ex5u ex6u ex13u
+UNROLL4_GCC_O3 := ex1 ex2 ex3 ex4 ex5 ex6 ex8 ex9 ex10 ex11 ex12 ex13
+UNROLL8_GCC_O3 := ex2u ex3u ex4u ex5u ex6u ex13u
 EXPECTED_FAILS_GCC :=                                      \
                       ex3u                                 \
                       ex5u                                 \
@@ -19,7 +19,7 @@ EXPECTED_FAILS_GCC :=                                      \
                       # ex5u [query-timeout]
                       # ex12 [query-timeout]
 
-UNROLL16_CLANG := ex1 ex7 ex8 ex9 ex10 ex11 ex12
+UNROLL16_CLANG_O3 := ex1 ex7 ex8 ex9 ex10 ex11 ex12
 EXPECTED_FAILS_CLANG :=                                    \
                         ex1                                \
                         ex7                                \
@@ -36,7 +36,7 @@ EXPECTED_FAILS_CLANG :=                                    \
                         # ex11 [query-timeout]
                         # ex12 [timeout]
 
-UNROLL8_ICC := ex7
+UNROLL8_ICC_O3 := ex7
 EXPECTED_FAILS_ICC :=                                      \
                       ex7                                  \
                       # ex7 [assert-fail in simplification; max simplification iter counter reached]

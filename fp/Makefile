@@ -34,8 +34,8 @@ EXPECTED_FAILS_CLANG :=                                                        \
 #PROGS_EQCHECKER_COMPILER := 
 #PROGS_EQCHECKER_SRCDST :=
 
-UNROLL8_GCC := $(PROGS)
-UNROLL16_CLANG := $(PROGS)
+UNROLL8_GCC_O0 := $(PROGS)
+UNROLL16_CLANG_O0 := $(PROGS)
 
 EXPECTED_FAILS_ICC :=                                                          \
                       flcmp                                                    \

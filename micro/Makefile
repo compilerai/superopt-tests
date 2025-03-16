@@ -44,8 +44,8 @@ PROGS :=                                                                       \
          #ddec arg_passing fcall100 fcall100_with_memaccess                    \
          # src_ub : gcc harvest fails due to ud2                               \
 
-UNROLL2_GCC := $(PROGS) \
-               # load_store_elim_conditional not passing in GCC!
+UNROLL2_GCC_O3 := $(PROGS) \
+                  # load_store_elim_conditional not passing in GCC!
 EXPECTED_FAILS_GCC :=                                                          \
                       alive_alloca                                             \
                       call_ret_struct                                          \
@@ -77,9 +77,9 @@ EXPECTED_FAILS_GCC :=                                                          \
                       # ret_long_long [incompletness: need to include edx in return-reg expr]
                       # src_always_ub [eqgen fails due to ud2]
 
-UNROLL2_CLANG := $(PROGS)                                                      \
-                 unreachable_alloc_in_src_pathset                              \
-                 load_store_elim_conditional                                   \
+UNROLL2_CLANG_O3 := $(PROGS)                                                   \
+                    unreachable_alloc_in_src_pathset                           \
+                    load_store_elim_conditional                                \
 
 EXPECTED_FAILS_CLANG :=                                                        \
                         alive_alloca                                           \
@@ -132,7 +132,7 @@ EXPECTED_FAILS_SRCDST := inequiv_1                         \
                          # ptr_arith_ub [requires: pointer arithmetic overflow UB modeling]
                          # path_enum_can_inv [requires: better path enumeration or better invariant inference; see path_enum_can_inv_src.c]
 
-UNROLL1_ICC = $(PROGS)
+UNROLL1_ICC_O3 = $(PROGS)
 
 EXPECTED_FAILS_ICC :=                                                          \
                       alive_alloca                                             \
