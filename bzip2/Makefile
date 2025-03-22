@@ -29,15 +29,15 @@ EXPECTED_FAILS_CLANG_O2 :=                                                      
                            # simpleSort [fails safety check due to query timeout]
 
 EXPECTED_FAILS_CLANG_O3 :=                                                                                             \
-                           getAndMoveToFrontDecode                                                                        \
-                           getRLEpair                                                                                     \
-                           hbMakeCodeLengths                                                                              \
-                           main                                                                                           \
-                           qSort3                                                                                         \
-                           sendMTFValues                                                                                  \
-                           simpleSort                                                                                     \
-                           sortIt                                                                                         \
-                           undoReversibleTransformation_small                                                             \
+                           getAndMoveToFrontDecode                                                                     \
+                           getRLEpair                                                                                  \
+                           hbMakeCodeLengths                                                                           \
+                           main                                                                                        \
+                           qSort3                                                                                      \
+                           sendMTFValues                                                                               \
+                           simpleSort                                                                                  \
+                           sortIt                                                                                      \
+                           undoReversibleTransformation_small                                                          \
 													 
 EXPECTED_FAILS_CLANG := $(EXPECTED_FAILS_CLANG_O0)
 
@@ -50,15 +50,15 @@ UNROLL1_CLANGV_O0 = $(UNROLL1)
 # UNROLL2 := bzip2
 # UNROLL2_CLANG = $(UNROLL2)
 
-EXTRA_FLAGS :=        --smt-query-timeout 180 --global-timeout 1000000 --max-address-space-size-gb 32                    \
-                      --disable-removal-of-stack-from-stack-nonstack-ml-in-dst                                         
-                      #--enable-query-decomposition                                                                     \
-                      # --disable-dst-to-src-submap
+EXTRA_FLAGS :=        --smt-query-timeout 180 --global-timeout 1000000 --eqcheck-timeout 1000000                       \
+                      --max-address-space-size-gb 32                                                                   \
+                      --disable-removal-of-stack-from-stack-nonstack-ml-in-dst                                         \
+                      #--enable-query-decomposition                                                                    \
 
-EXTRA_FLAGS_CLANGV := --smt-query-timeout 180 --global-timeout 1000000 --max-address-space-size-gb 32                    \
-                      --disable-removal-of-stack-from-stack-nonstack-ml-in-dst                                         
-                      #--enable-query-decomposition                                                                     \
-                      # --disable-dst-to-src-submap
+EXTRA_FLAGS_CLANGV := --smt-query-timeout 180 --global-timeout 1000000 --eqcheck-timeout 1000000                       \
+                      --max-address-space-size-gb 32                                                                   \
+                      --disable-removal-of-stack-from-stack-nonstack-ml-in-dst                                         \
+                      #--enable-query-decomposition                                                                    \
 
 export MAX_EQ_PROCESSES = 10
 
