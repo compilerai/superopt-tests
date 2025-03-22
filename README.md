@@ -64,3 +64,4 @@ In addition, some environment variables are used for some paths.  The exhaustive
 3. Copy `misc/Makefile.sample` as `Makefile` into your benchmark directory and edit per your requirements
 4. Add the newly added benchmark to top-level `Makefile` as a suite: add the line `$(call add_suite,<name>, <DIR>)`
 5. Run the newly added benchmark `make run_tests_<name>`
+  - Use `EQFLAGS` for passing extra eq flags for a run.
