@@ -46,7 +46,7 @@ EXPECTED_FAILS_CLANGV :=                                                        
                          sortIt                                                                                        \
 
 UNROLL1 := bzip2
-UNROLL1_CLANG_O0 = $(UNROLL1)
+UNROLL1_CLANGV_O0 = $(UNROLL1)
 # UNROLL2 := bzip2
 # UNROLL2_CLANG = $(UNROLL2)
 
