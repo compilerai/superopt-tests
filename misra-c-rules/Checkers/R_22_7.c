@@ -1,41 +1,41 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-// Non-Compliant Example 1: Comparing EOF with a modified return value
-void non_compliant_func1() {
-    int ch = getchar();
-    ch += 1; // Modifying the return value
-    if (ch == EOF) { // Undefined behavior
-        printf("Error detected\n");
+void compliant_fgetc_check(FILE *file) {
+    int ch = fgetc(file);
+    if (ch == EOF) {  // ✅ Correct: Direct comparison with unmodified return value
+        printf("End of file reached or error occurred.\n");
     }
 }
 
-// Non-Compliant Example 2: Using EOF incorrectly in an assignment before comparison
-void non_compliant_func2() {
-    int ch;
-    if ((ch = getchar()) != EOF) { // Correct usage
-        ch = ch + 1; // Modified return value
-    }
-    if (ch == EOF) { // Incorrect comparison
-        printf("Error detected\n");
+void non_compliant_fgetc_check(FILE *file) {
+    int ch = fgetc(file);
+    if ((ch & 0xFF) == EOF) {  // ❌ Incorrect: Modification before comparison
+        printf("End of file reached or error occurred.\n");
     }
 }
 
-// Compliant Example 1: Proper EOF check without modification
-void compliant_func1() {
-    int ch = getchar();
-    if (ch == EOF) { // Correct comparison
-        printf("End of file reached or error occurred\n");
+void compliant_fputc_check(FILE *file) {
+    if (fputc('A', file) == EOF) {  // ✅ Correct: Direct comparison with unmodified return value
+        printf("Error writing to file.\n");
     }
 }
 
-// Compliant Example 2: EOF check with correct return value handling
-void compliant_func2() {
-    FILE *file = fopen("example.txt", "r");
-    if (!file) return;
-    int ch;
-    while ((ch = fgetc(file)) != EOF) { // Correct usage
-        putchar(ch);
+void non_compliant_fputc_check(FILE *file) {
+    int result = fputc('A', file);
+    if ((result + 1) == EOF) {  // ❌ Incorrect: Modification before comparison
+        printf("Error writing to file.\n");
     }
-    fclose(file);
+}
+
+void compliant_fclose_check(FILE *file) {
+    if (fclose(file) == EOF) {  // ✅ Correct: Direct comparison with unmodified return value
+        printf("Error closing file.\n");
+    }
+}
+
+void non_compliant_fclose_check(FILE *file) {
+    int result = fclose(file);
+    if ((result * -1) == EOF) {  // ❌ Incorrect: Modification before comparison
+        printf("Error closing file.\n");
+    }
 }
