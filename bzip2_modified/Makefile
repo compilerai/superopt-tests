@@ -11,10 +11,6 @@ EXTRA_FLAGS        := --smt-query-timeout 300 --eqcheck-timeout 14400 --global-t
                       --enable-query-decomposition                                                                          \
                       --disable-dst-to-src-submap                                                                           \
 
-EXTRA_FLAGS_CLANGV := --smt-query-timeout 300 --eqcheck-timeout 14400 --global-timeout 86400 --max-address-space-size-gb 32 \
-                      --enable-query-decomposition                                                                          \
-                      --disable-dst-to-src-submap                                                                           \
-
 # compiler flags
 GCC_EQCHECKER_FLAGS_EXTRA= $(GCC_EQCHECKER_NOUNROLL_FLAGS)
 CLANG_EQCHECKER_FLAGS_EXTRA= $(CLANG_EQCHECKER_NOUNROLL_FLAGS)
