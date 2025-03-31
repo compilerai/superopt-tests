@@ -9,7 +9,8 @@ EXTRA_FLAGS := --global-timeout 6000                                           \
                # --disable-removal-of-stack-from-stack-nonstack-ml-in-dst        \
 
 # test division on O0
-UNROLL1_CLANG_O0 := idiv_by_const
+UNROLL1_CLANG_O0 := idiv_by_const                                              \
+                    d2s_mem
 
 PROGS :=                                                                       \
          d2s                                                                   \
