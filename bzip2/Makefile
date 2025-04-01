@@ -43,7 +43,6 @@ EXPECTED_FAILS_CLANG := $(EXPECTED_FAILS_CLANG_O0)
 
 EXPECTED_FAILS_CLANGV :=                                                                                               \
                          sendMTFValues                                                                                 \
-                         sortIt                                                                                        \
 
 UNROLL1 := bzip2
 UNROLL1_CLANGV_O0 = $(UNROLL1)
