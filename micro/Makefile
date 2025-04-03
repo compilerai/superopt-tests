@@ -26,20 +26,20 @@ PROGS :=                                                                       \
          ftmap_3                                                               \
          ftmap_4                                                               \
          ftmap_5                                                               \
-         rodata_simple                                                         \
+         idiv                                                                  \
          load_store_elim_simple                                                \
          loop_hoisting                                                         \
          nested_loops_simple                                                   \
          non_linear_invariant_casting                                          \
          non_linear_invariant_shl                                              \
-         sum_positive                                                          \
-         idiv                                                                  \
-         simple_struct                                                         \
          ret_long_long                                                         \
+         rodata_simple                                                         \
+         simple_struct                                                         \
+         sum_positive                                                          \
                                                                                \
+         dead_and_alive_alloc                                                  \
          local_used_in_unreachable_loop                                        \
          local_used_on_unreachable_branch                                      \
-         dead_and_alive_alloc                                                  \
          # nested_loops                                                        \
          # sum1d                                                               \
          # sum2d                                                               \
